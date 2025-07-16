@@ -1,0 +1,109 @@
+<mat-card
+    class="daxa-card users-card mb-25 border-radius bg-white border-none d-block"
+    [class.component-dark-theme]="themeService.isDark()"
+    [class.rtl-enabled]="themeService.isRTLEnabled()"
+>
+    <mat-card-header>
+        <mat-card-title>
+            <h5 class="mb-0">
+                Entreprises
+            </h5>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <button type="button" mat-button class="card-header-menu-btn" >
+                Add new
+            </button>
+           
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="users-table">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="fw-medium text-black">
+                                ID
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Matricule
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Intitulé
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Adresse
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Lien webservice
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Company
+                            </th>
+                            <th scope="col" class="fw-medium text-black">
+                                Status
+                            </th>
+                             <th scope="col" class="fw-medium text-black">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-body">
+                                #ARP-1217
+                            </td>
+                            <td>
+                                <div class="info d-flex align-items-center">
+                                    <div class="image">
+                                        <img src="images/users/user15.jpg" alt="user-image">
+                                    </div>
+                                    <span class="d-block fw-medium">
+                                        Marcia Baker
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-body">
+                                marcia&#64;example.com
+                            </td>
+                            <td class="text-body">
+                                +1 555-123-4567
+                            </td>
+                            <td class="text-body">
+                                Nov 10, 2024
+                            </td>
+                            <td class="text-body">
+                                ABC Corporation
+                            </td>
+                            <td>
+                                <span class="daxa-badge d-inline-block">
+                                    Active
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-info d-flex align-items-center justify-content-end">
+                                    <button type="button" class="text-daxa" mat-button matTooltip="Edit" matTooltipPosition="above">
+                                        <i class="material-symbols-outlined">
+                                            visibility
+                                        </i>
+                                    </button>
+                                    <button type="button" class="text-body" mat-button matTooltip="View" matTooltipPosition="above">
+                                        <i class="material-symbols-outlined">
+                                            edit
+                                        </i>
+                                    </button>
+                                    <button type="button" class="text-body" mat-button matTooltip="Delete" matTooltipPosition="above">
+                                        <i class="material-symbols-outlined">
+                                            delete
+                                        </i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

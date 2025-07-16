@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <div *ngIf="type === 'clients'">
+   <app-gradient-line-chart></app-gradient-line-chart>
+  </div>
+
+  <div *ngIf="type === 'articles'">
+   <app-gradient-line-chart></app-gradient-line-chart>
+  </div>
+
+ <app-gradient-line-chart></app-gradient-line-chart>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>

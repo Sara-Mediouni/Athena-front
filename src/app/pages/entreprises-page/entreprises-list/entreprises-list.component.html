@@ -1,0 +1,85 @@
+<mat-card class="daxa-card users-card mb-25 border-radius bg-white border-none d-block" [class.rtl-enabled]="themeService.isRTLEnabled()">
+  <mat-card-header>
+    <mat-card-title>
+      <form class="search-box position-relative">
+        <i class="material-symbols-outlined">search</i>
+        <input
+          type="text"
+          class="input-search d-block w-100 border-none outline-0"
+          placeholder="Rechercher entreprise..."
+          (keyup)="applyFilter($event)"
+          #input
+        />
+      </form>
+    </mat-card-title>
+    <mat-card-subtitle>
+   <a mat-button class="add-new-btn" routerLink="/users/add-user" [disabled]="role  === 'USER'"
+                  [ngClass]="{ 'a-disabled': role  === 'USER' }"routerLink="/entreprises/add-entreprise">+ Add New</a>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="users-table">
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource">
+
+          <!-- ID -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let ent">{{ ent?.id }}</td>
+          </ng-container>
+
+          <!-- Matricule -->
+          <ng-container matColumnDef="matricule">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Matricule</th>
+            <td mat-cell *matCellDef="let ent">{{ ent?.matricule}}</td>
+          </ng-container>
+
+          <!-- Name -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let ent">{{ ent?.name}}</td>
+          </ng-container>
+
+          <!-- Adresse -->
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+            <td mat-cell *matCellDef="let ent">{{ ent?.address}}</td>
+          </ng-container>
+
+          <!-- Lien -->
+          <ng-container matColumnDef="lien">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Link Webservice</th>
+            <td mat-cell *matCellDef="let ent">{{ ent?.lien}}</td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let ent">
+              <button mat-icon-button matTooltip="Modifier" [disabled]="role  === 'USER'"
+                  [ngClass]="{ 'disabled-icon':role  === 'USER' }" [routerLink]="['/entreprises/edit', ent.id]">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button (click)="ent.id !== undefined && onDelete(ent.id)" [disabled]="role  === 'USER'"
+                  [ngClass]="{ 'disabled-icon': role  === 'USER' }" mat-icon-button matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+          </ng-container>
+
+          <!-- Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- No data -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="6">Aucune entreprise ne correspond au filtre "{{ input.value }}"</td>
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

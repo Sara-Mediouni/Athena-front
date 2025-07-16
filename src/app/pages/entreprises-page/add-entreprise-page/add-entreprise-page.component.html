@@ -1,0 +1,84 @@
+<form [formGroup]="entForm" (ngSubmit)="onSubmit()">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Add Entreprise</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item position-relative">
+        <a routerLink="/" class="d-inline-block position-relative">
+          <i class="ri-home-8-line"></i> Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item position-relative">Entreprises</li>
+      <li class="breadcrumb-item position-relative">Add Entreprise</li>
+    </ol>
+  </div>
+
+  <!-- Add Entreprise -->
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <mat-card class="daxa-card add-user-card mb-25 border-radius bg-white border-none d-block">
+        <mat-card-header>
+          <mat-card-title>
+            <h5 class="mb-0">Add Entreprise</h5>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="row">
+            <!-- Name -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Matricule</label>
+                <mat-form-field appearance="fill">
+                  <mat-label>Matricule</mat-label>
+                  <input matInput formControlName="matricule" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Entreprisename -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Entreprise Name</label>
+                <mat-form-field  appearance="fill">
+                  <mat-label>Entreprise name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+              </div>
+            </div>
+
+           
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Address</label>
+                <mat-form-field appearance="fill">
+                  <mat-label>address</mat-label>
+                  <input matInput formControlName="address" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Link -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Webservice Link</label>
+              <mat-form-field  appearance="fill">
+                  <mat-label>Webservice Link</mat-label>
+                  <input matInput formControlName="link" />
+                </mat-form-field>
+              </div>
+            </div>
+
+         
+          </div>
+
+          <!-- Buttons centered -->
+          <div class="btn-box d-flex justify-content-center gap-3 mt-3">
+            <button mat-button color="primary" type="submit" [disabled]="entForm.invalid" *ngIf="entForm">Add Entreprise</button>
+            <button mat-button color="warn" type="button">Cancel</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</form>

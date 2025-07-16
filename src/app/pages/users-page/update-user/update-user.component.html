@@ -1,0 +1,110 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Add User</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item position-relative">
+        <a routerLink="/" class="d-inline-block position-relative">
+          <i class="ri-home-8-line"></i> Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item position-relative">Users</li>
+      <li class="breadcrumb-item position-relative">Edit User</li>
+    </ol>
+  </div>
+
+  <!-- Add User -->
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <mat-card class="daxa-card add-user-card mb-25 border-radius bg-white border-none d-block">
+        <mat-card-header>
+          <mat-card-title>
+            <h5 class="mb-0">Edit User</h5>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="row">
+            <!-- Name -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Name</label>
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+              </div>
+            </div>
+
+
+            <!-- Email -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Email Address</label>
+                <mat-form-field>
+                  <mat-label>Email address</mat-label>
+                  <input matInput formControlName="email" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Role -->
+            <div class="col-sm-6">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Role</label>
+                <mat-form-field appearance="fill">
+                  <mat-label>Select a role</mat-label>
+                  
+  <mat-select formControlName="role">
+ <mat-option *ngFor="let role of roles" [value]="role"> {{ role }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Erreur si vide -->
+<div class="text-danger" *ngIf="userForm.get('role')?.hasError('required') && userForm.get('role')?.touched">
+  Role is required.
+</div>
+                 
+              </div>
+            </div>
+            
+          
+  <div class="col-sm-6">
+    <div class="mb-25">
+     <label class="main-label d-block lh-1 text-black">Entreprise(s)</label>
+<mat-form-field appearance="fill">
+  <mat-label>Entreprise(s)</mat-label>
+  <mat-select formControlName="entreprises" multiple>
+    <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
+  {{ ent.name }}
+</mat-option>
+     
+  </mat-select>
+</mat-form-field>
+
+    </div>
+  </div>
+
+
+            <!-- Password -->
+            <div class="col-sm-12">
+              <div class="mb-25">
+                <label class="main-label d-block lh-1 text-black">Password</label>
+                <mat-form-field>
+                  <mat-label>Password</mat-label>
+                  <input matInput type="password" formControlName="password" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons centered -->
+          <div class="btn-box d-flex justify-content-center gap-3 mt-3">
+            <button mat-button color="primary" type="submit" [disabled]="userForm.invalid" *ngIf="userForm" >Edit User</button>
+            <button mat-button color="warn" type="button">Cancel</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</form>

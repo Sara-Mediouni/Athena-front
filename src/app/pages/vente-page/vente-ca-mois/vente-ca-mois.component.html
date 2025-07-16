@@ -1,0 +1,35 @@
+
+   <h5 class="mb-0">Chiffre d'affaires/mois</h5>
+  <div class="breadcrumb-card mb-25 align-items-center justify-content-center">
+    
+ <form [formGroup]="form" class="filter-form" (ngSubmit)="loadData()">
+    <div class="filter-container">
+
+  
+
+   
+      <div class="filter-fields">
+        <mat-form-field appearance="fill" class="filter-field">
+          <mat-label>Année</mat-label>
+          <mat-select formControlName="year">
+            <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="filter-field">
+          <mat-label>Entreprise</mat-label>
+          <mat-select formControlName="entreprise">
+            <mat-option *ngFor="let ent of entreprises" [value]="ent">{{ ent }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+</div> </div></form>
+      <div class="filter-button-wrapper btn-box d-flex justify-content-center gap-3 mt-3">
+
+        <button mat-button class="filter-button" color="primary" type="submit">Filtrer</button>
+      </div>
+</div>
+    
+   <div class="graph-wrapper">
+    <app-basic-line-chart></app-basic-line-chart></div>
+
