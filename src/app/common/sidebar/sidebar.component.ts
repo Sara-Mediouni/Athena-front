@@ -86,8 +86,23 @@ modules = [
   if (typeof localStorage !== "undefined"){
     this.token = localStorage.getItem('accessToken');
   }
-   
-
+     if (this.token) {
+    // Récupérer l'utilisateur connecté en utilisant le token
+    this.userService.getUserConnected(this.token)
+    const subscription = this.authService.currentUser$
+    .subscribe(
+      (user) => {
+       if (user) {
+        this.currentUserRole = user.role; }
+        else {
+          this.currentUserRole = null;
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération de l\'utilisateur connecté :', error);
+        this.currentUserRole = null;
+      })}
+ 
  }
  
 

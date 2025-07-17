@@ -1,3 +1,6 @@
+
+
+<app-loader *ngIf="isLoading$ | async" class="global-loader-overlay"></app-loader>
 <div
     [ngClass]="{'blank-page': router.url === '/authentication' || router.url === '/authentication/sign-up' || router.url === '/authentication/forgot-password' || router.url === '/authentication/reset-password' || router.url === '/authentication/lock-screen' || router.url === '/authentication/logout' || router.url === '/authentication/confirm-email' || router.url === '/coming-soon'}"
     [class.card-borderd-theme]="themeService.isCardBorder()"
@@ -16,7 +19,13 @@
         [class.hide-sidebar]="themeService.isHideSidebar()"
     >
         <app-header />
-        <router-outlet />
+       
+      <div
+  [ngClass]="{'content-blurred': isLoading$ | async}"
+>
+  <router-outlet />
+</div>
+        
         <div class="flex-grow-1"></div>
         <app-footer />
     </div>

@@ -20,12 +20,12 @@ import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
 import { jwtDecode } from 'jwt-decode';
 import { UserService } from '../../../Service/UserService';
 import { AuthService } from '../../../Service/AuthService';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-entreprises-list',
 
-imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule, RouterLink, MatTableModule, MatPaginatorModule, MatTooltipModule,CommonModule,],  
+imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule, RouterLink,MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule,CommonModule,],  
 templateUrl: './entreprises-list.component.html',
   styleUrl: './entreprises-list.component.scss'
 })
@@ -33,7 +33,7 @@ export class EntreprisesListComponent {
   displayedColumns: string[] = ['id', 'matricule', 'name', 'address','lien', 'actions'];
   entreprises: EntrepriseDTO[] = [];
   errorMessage: string = '';
-  
+  isLoading = true;
    user: string | null = null;
     role: string | null = null;
   token:any;
@@ -60,12 +60,14 @@ constructor(
 
         if (this.role === 'SUPER_ADMIN') {
           this.loadEntreprises(); 
+          this.isLoading = false;
         } else {
           this.entService.getMyEntreprise().subscribe({
             next: (entreprises: EntrepriseDTO[] | null) => {
               if (entreprises && entreprises.length > 0) {
                 this.entreprises = entreprises;
                 this.dataSource.data = this.entreprises;
+                this.isLoading = false; // Fin du chargement
                 console.log('Entreprises chargées :', entreprises);
               } else {
                 console.error('Aucune entreprise trouvée');

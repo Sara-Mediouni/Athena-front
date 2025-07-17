@@ -1,19 +1,20 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { Router } from '@angular/router';
-export const authGuard: CanActivateFn = (route, state) => {
-    // Récupérer l'instance de Router
-  const router = inject(Router);
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { LoaderService } from '../apps/loader/loader.service';
 
-  // Vérifier si le token d'authentification est présent dans localStorage
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const loader = inject(LoaderService);
+
   const token = (typeof localStorage !== "undefined") ? localStorage.getItem('accessToken'): null;
 
-  // Si le token est trouvé, l'accès est autorisé
   if (token) {
+    loader.hide();
     return true;
   } else {
-    // Sinon, rediriger vers la page de login
-    router.navigate(['/authenticate']);
-    return false;
+    loader.show();
+    // Retourner un UrlTree pour rediriger sans flash
+    return router.createUrlTree(['/authentication']);
   }
 };
