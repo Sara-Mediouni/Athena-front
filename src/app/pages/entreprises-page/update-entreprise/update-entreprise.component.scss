@@ -16,6 +16,9 @@
     .mat-mdc-card {
         &.daxa-card {
             &.add-user-card {
+                width: 100%;
+                  max-width: 1200px;
+                  margin: 0 auto;
                 .mat-mdc-card-content {
                     .mat-mdc-radio-button {
                         margin-right: 30px;

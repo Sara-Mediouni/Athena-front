@@ -23,47 +23,11 @@ export class CalendarComponent {
         dayMaxEvents: true, // when too many events in a day, show the popover
         weekends: true,
         events: [
-            {
+         /*   {
                 title: 'Meeting with Developers',
                 date: '2025-02-02'
-            },
-            {
-                title: 'Consultation with Employees',
-                date: '2025-02-06'
-            },
-            {
-                title: 'Call for payment Project NOK',
-                date: '2025-02-18'
-            },
-            {
-                title: 'Meeting with UI/UX Designers',
-                date: '2025-03-22'
-            },
-            {
-                title: 'Consultation with Doctor',
-                date: '2025-03-26'
-            },
-            {
-                title: 'Meeting with Developers',
-                date: '2025-08-03'
-            },
-            {
-                title: 'Consultation with Employees',
-                date: '2025-09-07'
-            },
-            {
-                title: 'Call for payment Project NOK',
-                date: '2025-10-17'
-            },
-            {
-                title: 'Meeting with UI/UX Designers',
-                date: '2025-11-22'
-            },
-            {
-                title: 'Consultation with Doctor',
-                date: '2025-12-29'
-            }
-        ],
+            }, */
+    ],
         plugins: [dayGridPlugin]
     };
 
