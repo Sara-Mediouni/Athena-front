@@ -205,6 +205,7 @@ import { VentePageComponent } from './pages/vente-page/vente-page.component';
 import { VenteCaMoisComponent } from './pages/vente-page/vente-ca-mois/vente-ca-mois.component';
 import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client.component';
 import { authGuard } from './guard/auth.guard';
+import { AuthRoleGuard } from './guard/roleguard/role.guard';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/authentication', pathMatch: 'full'}, // Default route to authentication
@@ -378,23 +379,25 @@ export const routes: Routes = [
     {
         path: 'users',
         component: UsersPageComponent,
-        canActivate: [authGuard],
+        canActivateChild: [AuthRoleGuard],
+        canActivate: [authGuard],  
         children: [
             {path: '', component: TeamMembersComponent},
             {path: 'users-list', component: UsersListComponent},
-            {path: 'add-user', component: AddUserComponent},
-            {path: 'edit/:id', component: UpdateUserComponent},
+            {path: 'add-user', component: AddUserComponent,data: { roles: ['ADMIN', 'SUPER_ADMIN'] } },
+            {path: 'edit/:id', component: UpdateUserComponent,data: { roles: ['ADMIN', 'SUPER_ADMIN'] }},
         ]
     },
     {
         path: 'entreprises',
         component: EntreprisePageComponent,
-        canActivate: [authGuard],
+        canActivateChild: [AuthRoleGuard],
+        canActivate: [authGuard],  
         children: [
             {path: '', component: EntreprisesListComponent},
-            {path: 'add-entreprise', component: AddEntreprisePageComponent},
+            {path: 'add-entreprise', component: AddEntreprisePageComponent,data: { roles: ['ADMIN', 'SUPER_ADMIN'] }},
             {path: 'stats', component: EntrepriseStatsComponent},
-            {path: 'edit/:id', component: UpdateEntrepriseComponent},
+            {path: 'edit/:id', component: UpdateEntrepriseComponent,data: { roles: ['ADMIN', 'SUPER_ADMIN'] }},
         ]
     },
     {
