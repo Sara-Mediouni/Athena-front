@@ -1,12 +1,2 @@
 .loader-overlay {
-  position: fixed;       /* Pour qu’il couvre toute la fenêtre */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;        /* Bien au-dessus de tout */
 }
