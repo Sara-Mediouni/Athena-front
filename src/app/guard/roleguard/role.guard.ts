@@ -1,66 +1,49 @@
 // auth-role.guard.ts
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
-  CanActivateChild,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-  Router
+  CanActivateChildFn,
+  Router,
+  UrlTree
 } from '@angular/router';
-import { Observable, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { LoaderService } from '../../apps/loader/loader.service';
 import { UserService } from '../../Service/UserService';
 
+export const authRoleGuard: CanActivateChildFn = async (route, state): Promise<boolean | UrlTree> => {
+  const router = inject(Router);
+  const loader = inject(LoaderService);
+  const userService = inject(UserService);
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthRoleGuard implements CanActivateChild {
+  const token = (typeof localStorage !== 'undefined') ? localStorage.getItem('accessToken') : null;
 
-  constructor(
-    private router: Router,
-    private loader: LoaderService,
-    private userService: UserService
-  ) {}
-
-  async canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean | UrlTree> {
-    const token = localStorage.getItem('accessToken');
-
-    if (!token) {
-      this.loader.show();
-      return this.router.createUrlTree(['/authentication']);
-    }
-
-    let user;
-    try {
-      user = await firstValueFrom(this.userService.getUserConnected(token));
-    } catch (e) {
-      console.error('Erreur utilisateur :', e);
-      return this.router.createUrlTree(['/authentication']);
-    }
-
-    const userRole = user?.role || 'USER';
-    const allowedRoles = childRoute.data?.['roles'] as string[];
-
-    if (!allowedRoles || allowedRoles.includes(userRole)) {
-      this.loader.hide();
-      return true;
-    }
-
-    this.loader.hide();
-    return this.redirectByRole(userRole);
+  if (!token) {
+    loader.show();
+    return router.createUrlTree(['/authentication']);
   }
 
-  private redirectByRole(role: string): UrlTree {
-    if (role==="USER") {
-     
-        return this.router.createUrlTree(['/blank-page']);
-   
-     
-    }
-    return this.router.createUrlTree(['/dashboard']); 
+  let user;
+  try {
+    user = await firstValueFrom(userService.getUserConnected(token));
+  } catch (e) {
+    console.error('Erreur utilisateur :', e);
+    return router.createUrlTree(['/authentication']);
   }
+
+  const userRole = user?.role || 'USER';
+  const allowedRoles = route.data?.['roles'] as string[];
+
+  if (!allowedRoles || allowedRoles.includes(userRole)) {
+    loader.hide();
+    return true;
+  }
+
+  loader.hide();
+  return redirectByRole(userRole, router);
+};
+
+function redirectByRole(role: string, router: Router): UrlTree {
+  if (role === 'USER') {
+    return router.createUrlTree(['/blank-page']);
+  }
+  return router.createUrlTree(['/dashboard']);
 }
