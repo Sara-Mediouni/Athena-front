@@ -10,7 +10,7 @@ export class LoaderService {
   show() {
     this.loadingCount++;
     this.loadingSubject.next(true);
-    console.log('LoaderService show, count:', this.loadingCount);
+    
   }
 
   hide() {
@@ -20,6 +20,6 @@ export class LoaderService {
         this.loadingSubject.next(false);
       }
     }
-    console.log('LoaderService hide, count:', this.loadingCount);
+   
   }
 }

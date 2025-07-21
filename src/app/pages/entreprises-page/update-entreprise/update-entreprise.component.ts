@@ -13,13 +13,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
-import { RoleController } from '../../../Controller/RoleController';
-import { UserController } from '../../../Controller/UserController';
-import { Role } from '../../../Model/Role';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../Model/User';
-import { EntrepriseController } from '../../../Controller/EntrepriseController';
 import { EntService } from '../../../Service/entService';
 @Component({
   selector: 'app-update-entreprise',
