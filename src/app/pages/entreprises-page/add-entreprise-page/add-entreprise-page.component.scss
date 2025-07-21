@@ -81,7 +81,9 @@
                             font-weight: normal;
                             color: var(--whiteColor);
                             background-color: var(--daxaColor);
-
+                             &[disabled] {
+                    background-color: #eff3f9;
+                }
                             &:not(:first-child) {
                                 margin-left: 10px;
                                 background-color: var(--dangerColor);

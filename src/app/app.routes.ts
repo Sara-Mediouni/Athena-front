@@ -205,7 +205,7 @@ import { VentePageComponent } from './pages/vente-page/vente-page.component';
 import { VenteCaMoisComponent } from './pages/vente-page/vente-ca-mois/vente-ca-mois.component';
 import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client.component';
 import { authGuard } from './guard/auth.guard';
-import { AuthRoleGuard } from './guard/roleguard/role.guard';
+import { authRoleGuard } from './guard/roleguard/role.guard';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/authentication', pathMatch: 'full'}, // Default route to authentication
@@ -379,7 +379,7 @@ export const routes: Routes = [
     {
         path: 'users',
         component: UsersPageComponent,
-        canActivateChild: [AuthRoleGuard],
+        canActivateChild: [authRoleGuard],
         canActivate: [authGuard],  
         children: [
             {path: '', component: TeamMembersComponent},
@@ -391,7 +391,7 @@ export const routes: Routes = [
     {
         path: 'entreprises',
         component: EntreprisePageComponent,
-        canActivateChild: [AuthRoleGuard],
+        canActivateChild: [authRoleGuard],
         canActivate: [authGuard],  
         children: [
             {path: '', component: EntreprisesListComponent},
