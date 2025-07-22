@@ -1,11 +1,12 @@
 
 .preferences-container{
   margin-top: 50px!important;
+  margin-left: 50px;
 }
 .mat-mdc-card {
     &.daxa-card {
-        &.users-card {
-          
+        &.vente-card {
+          margin-bottom: 10px;
             .mat-mdc-card-content {
               
                 margin: {
@@ -16,7 +17,7 @@
             }
             &.rtl-enabled {
                 .mat-mdc-card-content {
-                    .users-table {
+                    .vente-table {
                         .mat-mdc-table {
                             .mat-mdc-header-cell {
                                 &:last-child {
@@ -43,13 +44,45 @@
         }
     }
 }
+.widgets{
+    margin-top: 50px;
+    background-color: #eff3f9;
+    padding: 50px;
+    border-radius: 10px;
+}
+    .filter-button {
+                            border: 0;
+                            height: auto;
+                            min-width: auto;
+                            min-height: auto;
+                            padding: 13px 40px;
+                            font-weight: normal;
+                            color: var(--whiteColor);
+                            background-color: var(--daxaColor);
+                            &[disabled] {
+                                background-color: #eff3f9;
+                            }
+                            &hover {
+                                background-color: var(--daxaColorHover);
+                            }
+}
 ::ng-deep {
     .mat-mdc-card {
         &.daxa-card {
-            &.users-card {
+            padding-left: 50px;
+            padding-right: 50px;
+            &.vente-card {
+                width: 100%;
+                
                 .mat-mdc-card-content {
-                  padding-top: 50px;
-                    
+                  padding-top: 20px;
+                     .title {
+                    margin-bottom: 20px;
+                    margin-left: 10px;
+                }
+                .main-label {
+                    margin-bottom: 12px;
+                }
                     
                 }
             }

@@ -47,7 +47,7 @@ export class UsersListComponent {
   
     constructor(
 
-          private entService: EntService,
+      private entService: EntService,
       public themeService: CustomizerSettingsService,
       private userController: UserController,
       private userService:UserService,
