@@ -16,7 +16,7 @@
       <mat-card-content>
 
         <!-- Formulaire de filtre -->
-        <form [formGroup]="form" class="filter-form">
+        <form [formGroup]="form" class="filter-form" (ngSubmit)="onSubmit()">
           <div class="filter-container">
 
             <!-- Sélection des dates -->
@@ -25,7 +25,7 @@
                 <label class="main-label d-block lh-1 text-black">Début</label>
                 <mat-form-field appearance="fill" class="w-100">
                   <mat-label>Date de début</mat-label>
-                  <input matInput [matDatepicker]="pickerStart" placeholder="MM/DD/YYYY">
+                  <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart" placeholder="MM/DD/YYYY">
                   <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
                   <mat-datepicker #pickerStart></mat-datepicker>
                 </mat-form-field>
@@ -35,7 +35,7 @@
                 <label class="main-label d-block lh-1 text-black">Fin</label>
                 <mat-form-field appearance="fill" class="w-100">
                   <mat-label>Date de fin</mat-label>
-                  <input matInput [matDatepicker]="pickerEnd" placeholder="MM/DD/YYYY">
+                  <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd" placeholder="MM/DD/YYYY">
                   <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                   <mat-datepicker #pickerEnd></mat-datepicker>
                 </mat-form-field>

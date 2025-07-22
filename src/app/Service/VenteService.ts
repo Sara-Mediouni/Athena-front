@@ -11,11 +11,11 @@ export class VenteService  {
 
     
 
-  private apiUrl = 'http://localhost:5500/caglobal';
+  private apiUrl = 'http://localhost:5500/api/caglobal';
   
   constructor(private http: HttpClient, private router: Router) {}
 
-   getCAGlobal(dateDebut: string, dateFin: string, mode: string,inclureBLs:string): Observable<any> {
+   getCAGlobal(dateDebut: string, dateFin: string, mode: string,InclureBLs:string): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
@@ -31,10 +31,10 @@ export class VenteService  {
     dateDebut,
     dateFin,
     mode,
-    inclureBLs
+    InclureBLs
   };
 
-  return this.http.get(`${this.apiUrl}/chiffre-affaire`, { headers, params });
+  return this.http.get(`${this.apiUrl}/chiffre-affaire`, { params ,headers });
 }
 
 

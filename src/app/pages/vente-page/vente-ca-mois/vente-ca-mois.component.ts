@@ -23,7 +23,6 @@ import { VenteService } from '../../../Service/VenteService';
   selector: 'app-vente-ca-mois',
   imports: [
     ReactiveFormsModule,
-    BasicLineChartComponent,
     TicketsOpenComponent,
     NewTicketsCreatedComponent,
     MatFormFieldModule,
@@ -61,7 +60,6 @@ export class VenteCaMoisComponent {
     
   }
  ngOnInit(): void {
-   this.loadCA();
   
   this.form.get('dateFacture')?.valueChanges.subscribe(value => {
     if (value) {
@@ -76,10 +74,14 @@ export class VenteCaMoisComponent {
   });
 }
   onSubmit(): void {
-   this.loadCA();
+    if (this.form.valid) {
+    this.loadCA(); 
+  }
   }
   loadCA(): void {
   const formValues = this.form.value;
+  console.log('formValues.dateDebut:', formValues.dateDebut);
+console.log('formValues.dateFin:', formValues.dateFin);
 
   const dateDebut = formValues.dateDebut.toISOString().split('T')[0]; // format YYYY-MM-DD
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
@@ -89,10 +91,10 @@ export class VenteCaMoisComponent {
   console.log('Date de début:', dateDebut);
   console.log('Date de fin:', dateFin);
   console.log('Inclure BLs:', inclureBLs);
-  this.venteService.getCAGlobal(dateDebut, dateFin, mode,inclureBLs).subscribe({
+  this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs).subscribe({
     next: (data) => {
       this.CAGlobal = data;
-      console.log(this.CAGlobal);
+      console.log(data);
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);
