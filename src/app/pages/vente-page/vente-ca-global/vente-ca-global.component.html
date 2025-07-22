@@ -73,6 +73,7 @@
         </form>
 
         <!-- Widgets -->
+         
         <div class="row widgets">
     <div class="col-md-6 col-xxxl-3">
 
@@ -80,7 +81,7 @@
         <app-tickets-open *ngIf="CAGlobal" [doc]="CAGlobal[0]?.document"/>
 
     </div>
-    <div class="col-md-6 col-xxxl-3">
+    <div class="col-md-6 col-sm-1 col-xxxl-3">
 
         <!-- Tickets In Progress -->
        <app-tickets-in-progress *ngIf="CAGlobal"  [caht]="CAGlobal[0]?.caht"/>

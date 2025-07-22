@@ -1,13 +1,16 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { TicketsInProgressService } from './tickets-in-progress.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-tickets-in-progress',
-    imports: [MatCardModule],
+    imports: [MatCardModule,CommonModule],
     templateUrl: './tickets-in-progress.component.html',
-    styleUrl: './tickets-in-progress.component.scss'
+    styleUrl: './tickets-in-progress.component.scss',
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TicketsInProgressComponent {
  @Input() caht: any; 

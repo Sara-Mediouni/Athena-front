@@ -36,6 +36,27 @@ export class VenteService  {
 
   return this.http.get(`${this.apiUrl}/chiffre-affaire`, { params ,headers });
 }
+  getCAPeriod(dateDebut: string, dateFin: string, mode: string,InclureBLs:string, groupBy:string): Observable<any> {
+  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
+  console.log('Token utilisé:', token);
 
+  if (!token) {
+    throw new Error('Token d\'authentification manquant');
+  }
+
+  const headers = {
+    Authorization: `Bearer ${token}`
+  };
+
+  const params = {
+    dateDebut,
+    dateFin,
+    mode,
+    InclureBLs,
+    groupBy
+  };
+
+  return this.http.get(`${this.apiUrl}/chiffre-periode`, { params ,headers });
+}
 
 }

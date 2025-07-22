@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TicketsOpenComponent } from '../../../dashboard/help-desk/tickets-open/tickets-open.component';
 import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tickets-created/new-tickets-created.component';
@@ -16,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VenteService } from '../../../Service/VenteService';
+
 
 @Component({
   selector: 'app-vente-ca-periode',
@@ -35,13 +36,14 @@ import { VenteService } from '../../../Service/VenteService';
   styleUrl: './vente-ca-periode.component.scss'
 })
 export class VenteCaPeriodeComponent {
+    @Output() groupByChange = new EventEmitter<string>();
 
+  
   data: []=[];
   form: FormGroup;
   errorMessage: string = '';
   CAGlobal: any;
-  caht: any;
-  cattc: any;
+  
   doc: any;
   
    constructor(private fb: FormBuilder,private venteService: VenteService) { 
@@ -56,9 +58,13 @@ export class VenteCaPeriodeComponent {
     inclureBLs: [false],
     dateDebut: [startOfYear],
     dateFin: [endOfYear],
+    groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
 
   });
     
+  }
+  changeGroupBy(groupBy: string): void {
+    this.groupByChange.emit(groupBy);
   }
  ngOnInit(): void {
   this.loadCA();
@@ -88,11 +94,12 @@ console.log('formValues.dateFin:', formValues.dateFin);
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
   const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
   const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture'); 
+  const groupBy = formValues.groupBy ; // Vous pouvez ajuster cette valeur selon vos besoins
   console.log('Mode sélectionné:', mode);
   console.log('Date de début:', dateDebut);
   console.log('Date de fin:', dateFin);
   console.log('Inclure BLs:', inclureBLs);
-  this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs).subscribe({
+  this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs,groupBy).subscribe({
     next: (data) => {
       this.CAGlobal = data;
       console.log(this.CAGlobal[0]);

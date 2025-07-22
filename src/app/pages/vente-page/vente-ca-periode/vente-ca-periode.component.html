@@ -59,6 +59,27 @@
                 </div>
               </div>
             </div>
+            <div class="d-flex align-items-center">
+  <span class="me-2 fw-bold">Regrouper par :</span>
+
+  <mat-checkbox
+    [checked]="form.get('groupBy')?.value === 'jour'"
+    (change)="form.get('groupBy')?.setValue('jour')">
+    Jour
+  </mat-checkbox>
+
+  <mat-checkbox
+    [checked]="form.get('groupBy')?.value === 'semaine'"
+    (change)="form.get('groupBy')?.setValue('semaine')">
+    Semaine
+  </mat-checkbox>
+
+  <mat-checkbox
+    [checked]="form.get('groupBy')?.value === 'mois'"
+    (change)="form.get('groupBy')?.setValue('mois')">
+    Mois
+  </mat-checkbox>
+</div>
 
 
 

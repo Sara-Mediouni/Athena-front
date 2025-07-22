@@ -20,13 +20,13 @@ import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tic
 import { VenteService } from '../../../Service/VenteService';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../apps/loader/loader.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-vente-ca-global',
   imports: [
     ReactiveFormsModule,
     TicketsOpenComponent,
-    NewTicketsCreatedComponent,
     MatFormFieldModule,
     MatSelectModule,
     TicketsInProgressComponent,
@@ -84,33 +84,28 @@ export class VenteCaGlobalComponent {
     this.loadCA(); 
   }
   }
-  loadCA(): void {
+ loadCA(): void {
+  this.loadingService.show(); // ← ici, avant l'appel
   const formValues = this.form.value;
-  console.log('formValues.dateDebut:', formValues.dateDebut);
-console.log('formValues.dateFin:', formValues.dateFin);
-
-  const dateDebut = formValues.dateDebut.toISOString().split('T')[0]; // format YYYY-MM-DD
+  const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
   const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture'); 
-  console.log('Mode sélectionné:', mode);
-  console.log('Date de début:', dateDebut);
-  console.log('Date de fin:', dateFin);
-  console.log('Inclure BLs:', inclureBLs);
-  this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs).subscribe({
-    
-    next: (data) => {
-      this.loadingService.show();
-      this.CAGlobal = data;
-      console.log(this.CAGlobal[0]);
-      this.loadingService.hide();
-    },
-    error: (error) => {
-      console.error('Erreur lors du chargement du CA Global', error);
-      this.errorMessage = 'Erreur lors du chargement du CA Global';
-    }
-  });
+  const mode = formValues.dateFacture ? 'dateFacture' : 'dateBL';
+
+  this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs)
+    .pipe(finalize(() => this.loadingService.hide())) // proprement
+    .subscribe({
+      next: (data) => {
+        this.CAGlobal = data;
+        console.log(this.CAGlobal[0]);
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement du CA Global', error);
+        this.errorMessage = 'Erreur lors du chargement du CA Global';
+      }
+    });
 }
+
 
 }
     
