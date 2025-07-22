@@ -76,9 +76,7 @@ export class VenteCaMoisComponent {
   });
 }
   onSubmit(): void {
-    if (this.form.valid) {
-      this.loadCA();
-    }
+   this.loadCA();
   }
   loadCA(): void {
   const formValues = this.form.value;
@@ -87,13 +85,25 @@ export class VenteCaMoisComponent {
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
   const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
   const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture'); 
-
-  
+  console.log('Mode sélectionné:', mode);
+  console.log('Date de début:', dateDebut);
+  console.log('Date de fin:', dateFin);
+  console.log('Inclure BLs:', inclureBLs);
+  this.venteService.getCAGlobal(dateDebut, dateFin, mode,inclureBLs).subscribe({
+    next: (data) => {
+      this.CAGlobal = data;
+      console.log(this.CAGlobal);
+    },
+    error: (error) => {
+      console.error('Erreur lors du chargement du CA Global', error);
+      this.errorMessage = 'Erreur lors du chargement du CA Global';
+    }
+  });
 }
 
-   
+}
     
 
 
-}
+
 
