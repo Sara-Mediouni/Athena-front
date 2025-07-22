@@ -19,6 +19,7 @@ import { TicketsClosedComponent } from '../../../dashboard/help-desk/tickets-clo
 import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tickets-created/new-tickets-created.component';
 import { VenteService } from '../../../Service/VenteService';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../../apps/loader/loader.service';
 
 @Component({
   selector: 'app-vente-ca-global',
@@ -47,7 +48,8 @@ export class VenteCaGlobalComponent {
   cattc: any;
   doc: any;
   
-   constructor(private fb: FormBuilder,private venteService: VenteService) { 
+  
+   constructor(private fb: FormBuilder,private venteService: VenteService,private loadingService: LoaderService) { 
     const now = new Date();
   const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
   const endOfYear = new Date(2022, 0, 1);
@@ -96,9 +98,12 @@ console.log('formValues.dateFin:', formValues.dateFin);
   console.log('Date de fin:', dateFin);
   console.log('Inclure BLs:', inclureBLs);
   this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs).subscribe({
+    
     next: (data) => {
+      this.loadingService.show();
       this.CAGlobal = data;
       console.log(this.CAGlobal[0]);
+      this.loadingService.hide();
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);

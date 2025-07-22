@@ -21,13 +21,12 @@ import { VenteService } from '../../../Service/VenteService';
   selector: 'app-vente-ca-periode',
     imports: [
     ReactiveFormsModule,
-    TicketsOpenComponent,
     NewTicketsCreatedComponent,
     MatFormFieldModule,
     MatSelectModule,
-    TicketsInProgressComponent,
-    TicketsClosedComponent,
+    
     MatInputModule,CommonModule,
+
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,

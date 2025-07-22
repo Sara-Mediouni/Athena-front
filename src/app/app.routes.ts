@@ -206,6 +206,7 @@ import { VenteCaGlobalComponent } from './pages/vente-page/vente-ca-global/vente
 import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client.component';
 import { authGuard } from './guard/auth.guard';
 import { authRoleGuard } from './guard/roleguard/role.guard';
+import { VenteCaPeriodeComponent } from './pages/vente-page/vente-ca-periode/vente-ca-periode.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/authentication', pathMatch: 'full'}, 
@@ -405,7 +406,7 @@ export const routes: Routes = [
         component: VentePageComponent,
         children: [
             {path: 'global', component: VenteCaGlobalComponent},
-            {path: 'periode', component: VenteCaClientComponent},
+            {path: 'periode', component: VenteCaPeriodeComponent},
             
         ]
     },
