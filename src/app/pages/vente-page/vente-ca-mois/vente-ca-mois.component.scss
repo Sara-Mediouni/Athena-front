@@ -1,64 +1,81 @@
-.container {
-  padding: 2rem;
-}
 
-.filter-container {
-  background-color: #f9f9f9;
-  padding: 2.5rem;
-  border-radius: 10px;
-  margin-bottom: 50px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.preferences-container{
+  margin-top: 50px!important;
 }
-.filter-button{
-  justify-content: center;
-}
-.filter-form {
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.filter-fields {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.filter-field {
-  min-width: 200px;
-  flex: 1;
-}
-
-.filter-button-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-.graph-wrapper{ 
-  margin-top: 50px;
-}
-.filter-container{
-  background-color: transparent;
-  margin-top: 20px;
-}
-
- .btn-box {
-                        .mat-mdc-button {
-                            border: 0;
-                            height: auto;
-                            min-width: auto;
-                            min-height: auto;
-                            padding: 13px 40px;
-                            font-weight: normal;
-                            color: var(--whiteColor);
-                            background-color: var(--daxaColor);
-
-                            &:not(:first-child) {
-                                margin-left: 10px;
-                                background-color: var(--dangerColor);
+.mat-mdc-card {
+    &.daxa-card {
+        &.users-card {
+          
+            .mat-mdc-card-content {
+              
+                margin: {
+                    left: -20px;
+                    right: -20px;
+                };
+                
+            }
+            &.rtl-enabled {
+                .mat-mdc-card-content {
+                    .users-table {
+                        .mat-mdc-table {
+                            .mat-mdc-header-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .mat-mdc-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .info {
+                                .image {
+                                    margin: {
+                                        right: 0;
+                                        left: 12px;
+                                    };
+                                }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+::ng-deep {
+    .mat-mdc-card {
+        &.daxa-card {
+            &.users-card {
+                .mat-mdc-card-content {
+                  padding-top: 50px;
+                    
+                    
+                }
+            }
+        }
+    }
+}
+.preferences-container mat-checkbox {
+  margin-bottom: 4px;
+  
+}
+
+.breadcrumb-card {
+  padding: 1rem !important;
+}
+
+label.form-label {
+  margin-bottom: 4px;
+  display: block;
+}
+/* Réduit l'espacement vertical et la taille du mat-checkbox */
+.compact-checkbox {
+  margin: 0 !important;
+  padding: 0 4px;
+}
+
+.compact-checkbox .mat-checkbox-layout {
+  margin-bottom: 0 !important;
+  align-items: center;
+}

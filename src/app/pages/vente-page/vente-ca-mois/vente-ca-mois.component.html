@@ -1,35 +1,79 @@
-
-   <h5 class="mb-0">Chiffre d'affaires/mois</h5>
-  <div class="breadcrumb-card mb-25 align-items-center justify-content-center">
-    
- <form [formGroup]="form" class="filter-form" (ngSubmit)="loadData()">
-    <div class="filter-container">
-
+ <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Chiffre d'affaires global</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item position-relative">
+        <a routerLink="/" class="d-inline-block position-relative">
+          <i class="ri-home-8-line"></i> Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item position-relative">Vente</li>
+      <li class="breadcrumb-item position-relative">CA Global</li>
+    </ol>
+  </div>
+<div class="daxa-card users-card mb-4 p-4 border-radius bg-white border-none">
   
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <mat-card class="daxa-card add-user-card border-radius bg-white border-none">
+        <mat-card-content>
 
-   
-      <div class="filter-fields">
-        <mat-form-field appearance="fill" class="filter-field">
-          <mat-label>Année</mat-label>
-          <mat-select formControlName="year">
-            <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <!-- Formulaire de filtre -->
+          <form [formGroup]="form" class="filter-form" (ngSubmit)="loadData()">
+            <div class="filter-container">
 
-        <mat-form-field appearance="fill" class="filter-field">
-          <mat-label>Entreprise</mat-label>
-          <mat-select formControlName="entreprise">
-            <mat-option *ngFor="let ent of entreprises" [value]="ent">{{ ent }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      
-</div> </div></form>
-      <div class="filter-button-wrapper btn-box d-flex justify-content-center gap-3 mt-3">
+              <!-- Sélection des dates -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Début</label>
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Date de début</mat-label>
+                    <input matInput [matDatepicker]="pickerStart" placeholder="MM/DD/YYYY">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerStart></mat-datepicker>
+                  </mat-form-field>
+                </div>
 
-        <button mat-button class="filter-button" color="primary" type="submit">Filtrer</button>
-      </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Fin</label>
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Date de fin</mat-label>
+                    <input matInput [matDatepicker]="pickerEnd" placeholder="MM/DD/YYYY">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEnd></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Préférences -->
+              <div class="mt-20">
+                <div class="d-flex flex-column align-items-start mb-2">
+  <mat-icon class="mb-1" color="primary">tune</mat-icon>
+  <h6 class="fw-semibold mb-0">Préférences</h6>
 </div>
-    
-   <div class="graph-wrapper">
-    <app-basic-line-chart></app-basic-line-chart></div>
+                <div class="d-flex flex-wrap gap-3 px-2">
+                  <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
+                  <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
+                  <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
+                </div>
+              </div>
 
+              <!-- Bouton Filtrer -->
+              <div class="d-flex justify-content-center mt-4">
+                <button mat-flat-button color="primary" type="submit">
+                  <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
+                </button>
+              </div>
+
+            </div>
+          </form>
+
+          <!-- Graphique -->
+          <div class="graph-wrapper mt-4">
+            <app-basic-line-chart></app-basic-line-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

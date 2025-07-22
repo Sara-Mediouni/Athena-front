@@ -208,12 +208,12 @@ import { authGuard } from './guard/auth.guard';
 import { authRoleGuard } from './guard/roleguard/role.guard';
 
 export const routes: Routes = [
-    {path: '', redirectTo: '/authentication', pathMatch: 'full'}, // Default route to authentication
+    {path: '', redirectTo: '/authentication', pathMatch: 'full'}, 
     {
         path: 'authentication',
         component: AuthenticationComponent,
         children: [
-            {path: '', component: SignInComponent}, // Set SignInComponent as the default for authentication
+            {path: '', component: SignInComponent}, 
             {path: 'sign-up', component: SignUpComponent},
             {path: 'forgot-password', component: ForgotPasswordComponent},
             {path: 'reset-password', component: ResetPasswordComponent},
