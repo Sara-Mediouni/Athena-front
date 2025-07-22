@@ -1,0 +1,81 @@
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+  <h5 class="mb-0">Chiffre d'affaires global</h5>
+  <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+    <li class="breadcrumb-item position-relative">
+      <a routerLink="/" class="d-inline-block position-relative">
+        <i class="ri-home-8-line"></i> Dashboard
+      </a>
+    </li>
+    <li class="breadcrumb-item position-relative">Vente</li>
+    <li class="breadcrumb-item position-relative">CA Global</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="d-flex justify-content-center">
+    <mat-card class="daxa-card vente-card border-radius bg-white border-none">
+      <mat-card-content>
+
+        <!-- Formulaire de filtre -->
+        <form [formGroup]="form" class="filter-form" (ngSubmit)="onSubmit()">
+          <div class="filter-container">
+
+            <!-- Sélection des dates -->
+            <div class="row g-3 align-items-end">
+              <div class="col-md-6">
+                <label class="main-label d-block lh-1 text-black">Début</label>
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Date de début</mat-label>
+                  <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart" placeholder="MM/DD/YYYY">
+                  <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerStart></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6">
+                <label class="main-label d-block lh-1 text-black">Fin</label>
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Date de fin</mat-label>
+                  <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd" placeholder="MM/DD/YYYY">
+                  <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerEnd></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Préférences -->
+            <div class="row mt-4 preferences-container">
+              <div class="col-md-10 offset-md-1 border border-primary">
+
+                <div class="mb-2 d-flex align-items-start">
+                  <i class="material-symbols-outlined mr-2">
+                    settings
+                  </i>
+                  <span class="title">Préférences</span>
+                </div>
+                <div class="d-flex flex-wrap gap-3 ps-2">
+                  <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
+                  <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
+                  <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Bouton Filtrer -->
+            <div class="d-flex justify-content-center mt-4">
+              <button mat-button class="filter-button" color="primary" type="submit">
+                <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+   
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

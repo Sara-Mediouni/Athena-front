@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VenteCaMoisComponent } from './vente-ca-mois.component';
+import { VenteCaMoisComponent } from './vente-ca-global.component';
 
 describe('VenteCaMoisComponent', () => {
   let component: VenteCaMoisComponent;

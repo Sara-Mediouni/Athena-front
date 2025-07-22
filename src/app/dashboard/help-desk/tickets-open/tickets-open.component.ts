@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { TicketsOpenService } from './tickets-open.service';
@@ -10,7 +10,7 @@ import { TicketsOpenService } from './tickets-open.service';
     styleUrl: './tickets-open.component.scss'
 })
 export class TicketsOpenComponent {
-
+@Input() doc: any;
     constructor(
         public themeService: CustomizerSettingsService,
         private ticketsOpenService: TicketsOpenService

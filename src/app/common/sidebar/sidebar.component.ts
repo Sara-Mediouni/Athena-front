@@ -44,8 +44,8 @@ modules = [
     name: 'Vente',
     icon: 'shopping_cart',
     items: [
-      { label: 'CA Global', link: '/vente/mois' },
-      { label: 'CA par Periode', link: '/vente/client' }
+      { label: 'CA Global', link: '/vente/global' },
+      { label: 'CA par Periode', link: '/vente/periode' }
     ]
   },
   {

@@ -1,27 +1,25 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { BasicLineChartComponent } from '../../../apexcharts/line-charts/basic-line-chart/basic-line-chart.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { AdvancedFormComponent } from '../../../forms/advanced-elements/advanced-form/advanced-form.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { RouterLink } from '@angular/router';
 import { TicketsOpenComponent } from '../../../dashboard/help-desk/tickets-open/tickets-open.component';
+import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tickets-created/new-tickets-created.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { TicketsInProgressComponent } from '../../../dashboard/help-desk/tickets-in-progress/tickets-in-progress.component';
 import { TicketsClosedComponent } from '../../../dashboard/help-desk/tickets-closed/tickets-closed.component';
-import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tickets-created/new-tickets-created.component';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VenteService } from '../../../Service/VenteService';
 
 @Component({
-  selector: 'app-vente-ca-mois',
-  imports: [
+  selector: 'app-vente-ca-periode',
+    imports: [
     ReactiveFormsModule,
     TicketsOpenComponent,
     NewTicketsCreatedComponent,
@@ -29,24 +27,28 @@ import { VenteService } from '../../../Service/VenteService';
     MatSelectModule,
     TicketsInProgressComponent,
     TicketsClosedComponent,
-    MatInputModule,
+    MatInputModule,CommonModule,
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       NgxMaterialTimepickerModule],
-  templateUrl: './vente-ca-mois.component.html',
-  styleUrl: './vente-ca-mois.component.scss'
+  templateUrl: './vente-ca-periode.component.html',
+  styleUrl: './vente-ca-periode.component.scss'
 })
-export class VenteCaMoisComponent {
+export class VenteCaPeriodeComponent {
+
   data: []=[];
   form: FormGroup;
   errorMessage: string = '';
   CAGlobal: any;
+  caht: any;
+  cattc: any;
+  doc: any;
   
    constructor(private fb: FormBuilder,private venteService: VenteService) { 
     const now = new Date();
-  const startOfYear = new Date(now.getFullYear(), 0, 1); // 1er janvier de l'année en cours
-
+  const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
+  const endOfYear = new Date(2022, 0, 1);
  
 
   this.form = this.fb.group({
@@ -54,13 +56,13 @@ export class VenteCaMoisComponent {
     dateBL: [false],
     inclureBLs: [false],
     dateDebut: [startOfYear],
-    dateFin: [now],
+    dateFin: [endOfYear],
 
   });
     
   }
  ngOnInit(): void {
-  
+  this.loadCA();
   this.form.get('dateFacture')?.valueChanges.subscribe(value => {
     if (value) {
       this.form.get('dateBL')?.setValue(false, { emitEvent: false });
@@ -94,7 +96,7 @@ console.log('formValues.dateFin:', formValues.dateFin);
   this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs).subscribe({
     next: (data) => {
       this.CAGlobal = data;
-      console.log(data);
+      console.log(this.CAGlobal[0]);
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);
@@ -105,6 +107,8 @@ console.log('formValues.dateFin:', formValues.dateFin);
 
 }
     
+
+
 
 
 

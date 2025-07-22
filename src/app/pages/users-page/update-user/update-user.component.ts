@@ -57,7 +57,7 @@ userForm!: FormGroup;
   loaduser() {
     this.userService.getUserById(this.userId).subscribe((user) => {
       console.log(user);
-const entrepriseIds = user.entreprises.map((e: any) => e.id);
+    const entrepriseIds = user.entreprises.map((e: any) => e.id);
 
     this.userForm.patchValue({
       email: user.email,

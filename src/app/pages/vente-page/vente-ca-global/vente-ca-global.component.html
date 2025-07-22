@@ -77,28 +77,24 @@
     <div class="col-md-6 col-xxxl-3">
 
         <!-- Tickets Open -->
-        <app-tickets-open />
+        <app-tickets-open *ngIf="CAGlobal" [doc]="CAGlobal[0]?.document"/>
 
     </div>
     <div class="col-md-6 col-xxxl-3">
 
         <!-- Tickets In Progress -->
-        <app-tickets-in-progress />
+       <app-tickets-in-progress *ngIf="CAGlobal"  [caht]="CAGlobal[0]?.caht"/>
+
 
     </div>
   
     <div class="col-md-6 col-xxxl-3">
 
         <!-- Tickets Closed -->
-        <app-tickets-closed />
+        <app-tickets-closed *ngIf="CAGlobal" [cattc]="CAGlobal[0]?.cattc"  />
 
     </div>
-    <div class="col-md-12 col-xxxl-6">
-
-        <!-- New Tickets Created -->
-        <app-new-tickets-created />
-
-    </div>
+  
   
 </div>
 

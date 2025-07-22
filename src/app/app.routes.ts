@@ -202,7 +202,7 @@ import { EntrepriseStatsComponent } from './pages/entreprises-page/entreprise-st
 import { UpdateEntrepriseComponent } from './pages/entreprises-page/update-entreprise/update-entreprise.component';
 import { UpdateUserComponent } from './pages/users-page/update-user/update-user.component';
 import { VentePageComponent } from './pages/vente-page/vente-page.component';
-import { VenteCaMoisComponent } from './pages/vente-page/vente-ca-mois/vente-ca-mois.component';
+import { VenteCaGlobalComponent } from './pages/vente-page/vente-ca-global/vente-ca-global.component';
 import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client.component';
 import { authGuard } from './guard/auth.guard';
 import { authRoleGuard } from './guard/roleguard/role.guard';
@@ -404,8 +404,8 @@ export const routes: Routes = [
         path: 'vente',
         component: VentePageComponent,
         children: [
-            {path: 'mois', component: VenteCaMoisComponent},
-            {path: 'client', component: VenteCaClientComponent},
+            {path: 'global', component: VenteCaGlobalComponent},
+            {path: 'periode', component: VenteCaClientComponent},
             
         ]
     },
