@@ -22,7 +22,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 
 @Component({
-  selector: 'app-vente-ca-periode',
+  selector: 'app-vente-ca-depot',
     imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -35,10 +35,10 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       MatProgressSpinner,
       NgxMaterialTimepickerModule],
-  templateUrl: './vente-ca-periode.component.html',
-  styleUrl: './vente-ca-periode.component.scss'
+  templateUrl: './vente-ca-depot.component.html',
+  styleUrl: './vente-ca-depot.component.scss'
 })
-export class VenteCaPeriodeComponent {
+export class VenteCaDepotComponent {
     @Output() groupByChange = new EventEmitter<string>();
 
   
@@ -96,14 +96,14 @@ loadCA(): void {
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
   const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
   const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
-  const groupBy = formValues.groupBy;
+  const groupBy = "depot";
 
   this.isLoading = true; 
 
   this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy).subscribe({
     next: (data) => {
       this.CAGlobal = data;
-      this.isLoading = false;
+      this.isLoading = false; 
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);

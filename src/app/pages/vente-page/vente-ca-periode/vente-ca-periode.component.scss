@@ -1,8 +1,13 @@
 
-.preferences-container{
+.container{
   margin-top: 50px!important;
+  align-content: center;
+  display: flex;
+  justify-items: center;
+  width: 100%;
   margin-left: 50px;
 }
+
 .mat-mdc-card {
     &.daxa-card {
         &.vente-card {
@@ -49,6 +54,9 @@
     background-color: #eff3f9;
     padding: 50px;
     border-radius: 10px;
+}
+.button-container{
+    margin-top: 30px;
 }
     .filter-button {
                             border: 0;
@@ -107,8 +115,28 @@ label.form-label {
   margin: 0 !important;
   padding: 0 4px;
 }
-
+.chart-container{
+    border-color: #eff3f9;
+    padding: 30px;
+    height:min-content;
+}
 .compact-checkbox .mat-checkbox-layout {
   margin-bottom: 0 !important;
   align-items: center;
+}
+.filter-options {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+mat-checkbox {
+  margin-right: 12px;
+  font-size: 0.85rem;
+}
+
+mat-icon {
+  font-size: 20px;
+  vertical-align: middle;
 }

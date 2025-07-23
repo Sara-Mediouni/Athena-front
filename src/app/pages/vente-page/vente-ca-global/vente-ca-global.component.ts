@@ -21,6 +21,7 @@ import { VenteService } from '../../../Service/VenteService';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../apps/loader/loader.service';
 import { finalize } from 'rxjs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-vente-ca-global',
@@ -32,7 +33,7 @@ import { finalize } from 'rxjs';
     TicketsInProgressComponent,
     TicketsClosedComponent,
     MatInputModule,CommonModule,
-    MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
+    MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,MatProgressSpinner,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       NgxMaterialTimepickerModule],
@@ -47,7 +48,7 @@ export class VenteCaGlobalComponent {
   caht: any;
   cattc: any;
   doc: any;
-  
+  isLoading: boolean = false;
   
    constructor(private fb: FormBuilder,private venteService: VenteService,private loadingService: LoaderService) { 
     const now = new Date();
@@ -81,27 +82,31 @@ export class VenteCaGlobalComponent {
 }
   onSubmit(): void {
     if (this.form.valid) {
+    
     this.loadCA(); 
   }
   }
  loadCA(): void {
-  this.loadingService.show(); // ← ici, avant l'appel
+  this.isLoading = true;
   const formValues = this.form.value;
   const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
   const dateFin = formValues.dateFin.toISOString().split('T')[0];
   const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
   const mode = formValues.dateFacture ? 'dateFacture' : 'dateBL';
 
+  this.isLoading = true; 
   this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs)
     .pipe(finalize(() => this.loadingService.hide())) // proprement
     .subscribe({
       next: (data) => {
         this.CAGlobal = data;
         console.log(this.CAGlobal[0]);
+          this.isLoading = false;
       },
       error: (error) => {
         console.error('Erreur lors du chargement du CA Global', error);
         this.errorMessage = 'Erreur lors du chargement du CA Global';
+          this.isLoading = false;
       }
     });
 }

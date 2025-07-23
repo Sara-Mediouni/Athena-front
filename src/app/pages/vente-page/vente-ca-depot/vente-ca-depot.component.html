@@ -1,6 +1,6 @@
-<!-- 🧭 Breadcrumb -->
+
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-  <h5 class="mb-0">Chiffre d'affaires Par Periode</h5>
+  <h5 class="mb-0">Chiffre d'affaires Par Depot</h5>
   <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
     <li class="breadcrumb-item position-relative">
       <a routerLink="/" class="d-inline-block position-relative">
@@ -8,14 +8,14 @@
       </a>
     </li>
     <li class="breadcrumb-item position-relative">Vente</li>
-    <li class="breadcrumb-item position-relative">CA par periode</li>
+    <li class="breadcrumb-item position-relative">CA par depot</li>
   </ol>
 </div>
 
-<!-- 🧩 Conteneur principal -->
+
 <div class="d-flex flex-column gap-4 w-100">
 
-  <!-- 🟦 Carte Filtres -->
+  
   <div class="filter-card-wrapper">
     <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
       <mat-card-content>
@@ -51,19 +51,7 @@
                 <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
               </div>
 
-              <!-- GroupBy -->
-              <div class="d-flex flex-wrap align-items-center gap-2">
-                <mat-icon class="me-1">calendar_view_week</mat-icon>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'jour'"
-                  (change)="form.get('groupBy')?.setValue('jour')">Jour</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'semaine'"
-                  (change)="form.get('groupBy')?.setValue('semaine')">Semaine</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'mois'"
-                  (change)="form.get('groupBy')?.setValue('mois')">Mois</mat-checkbox>
-              </div>
+            
             </div>
 
             <!-- Bouton -->
@@ -79,7 +67,7 @@
     </mat-card>
   </div>
 
-  <!-- 🟩 Carte Chart -->
+
   <div class="filter-card-wrapper">
     <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
       <mat-card-content>
