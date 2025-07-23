@@ -11,13 +11,23 @@
                 <span class="middle-bar d-block bg-black transition"></span>
                 <span class="bottom-bar d-block bg-black transition"></span>
             </div>
-            <form class="search-box position-relative">
-                <i class="material-symbols-outlined">
-                    search
-                </i>
-                <input type="text" class="input-search d-block w-100 border-none outline-0"
-                    placeholder="Search here...">
-            </form>
+           <div class="header-left-side d-flex align-items-center gap-2">
+
+  
+
+  <!-- Sélecteur d'entreprise -->
+  <mat-form-field *ngIf="entreprises?.length" class="enterprise-select">
+  <mat-label>Entreprise</mat-label>
+  <mat-select >
+      <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
+      {{ ent.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+</div>
+           
         </div>
         <ul class="header-right-side d-flex align-items-center mt-0 mb-0 pl-0 list-unstyled">
             <!-- <li>

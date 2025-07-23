@@ -28,7 +28,7 @@ export class TicketsOpenService {
                     ],
                     chart: {
                         type: "area",
-                        height: 115,
+                        height: 160,
                         zoom: {
                             enabled: false
                         },

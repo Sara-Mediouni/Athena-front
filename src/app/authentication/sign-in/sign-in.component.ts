@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
 import { AuthService } from '../../Service/AuthService';
 import { TokenService } from '../../Service/TokenService';
+import { DialogOverviewExampleDialog } from '../../ui-elements/dialog/basic-dialog/basic-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -40,7 +42,7 @@ export class SignInComponent {
         private fb: FormBuilder,
         private router: Router,
         public themeService: CustomizerSettingsService,
-        private authService :AuthService, private tokenService:TokenService
+        private authService :AuthService, private dialog: MatDialog
     ) {
         this.authForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -96,8 +98,14 @@ export class SignInComponent {
           next: (response) => {
             this.authService.setUsernameOrEmail(this.usernameOrEmail);
             console.log('Login mail:', this.usernameOrEmail);
-            this.router.navigate(['/entreprises']);
-            console.log('Login successful:', response);
+              this.dialog.open(DialogOverviewExampleDialog, {
+        data: {
+          name: "user",
+          animal: 'lion' // par exemple
+        },
+         width: '500px', 
+         maxWidth: '90vw'
+      });
       
            
           },

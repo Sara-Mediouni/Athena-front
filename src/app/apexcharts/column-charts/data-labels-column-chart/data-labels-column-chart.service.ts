@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID, Input } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Input, SimpleChanges } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -15,18 +15,29 @@ export class DataLabelsColumnChartService {
     constructor(@Inject(PLATFORM_ID) private platformId: any) {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
+  
+       setData(data: any[]) {
+        this.data = data;
+    }
 
     async loadChart(): Promise<void> {
-        if (!this.isBrowser) return;
+          if (!this.isBrowser || !this.data || this.data.length === 0) {
+            console.warn('Aucune donnée disponible ou environnement serveur');
+            return;
+        }
+       
 
         try {
             const ApexCharts = (await import('apexcharts')).default;
+console.log('Données reçues dans loadChart:', this.data);
 
             // Préparation des catégories (labels)
             const categories = this.data.map(item => item.label);
+            console.log('Categories:', categories);
 
             // Préparation des valeurs, par ex. caht (chiffre d'affaires HT)
             const seriesData = this.data.map(item => item.caht);
+            console.log('Series Data:', seriesData);
 
             const options = {
                 series: [
@@ -47,7 +58,7 @@ export class DataLabelsColumnChartService {
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: (val: number) => val.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }),
+                    formatter: (val: number) => val.toLocaleString('fr-FR', { style: 'currency', currency: 'TND' }),
                     offsetY: -25,
                     style: { fontSize: "12px", colors: ["#304758"] }
                 },
@@ -74,7 +85,7 @@ export class DataLabelsColumnChartService {
                 colors: ["#0f79f3"],
                 yaxis: {
                     labels: {
-                        formatter: (val: number) => val.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }),
+                        formatter: (val: number) => val.toLocaleString('fr-FR', { style: 'currency', currency: 'TND' }),
                         style: { colors: "#919aa3", fontSize: "14px" }
                     },
                     axisBorder: { show: false },

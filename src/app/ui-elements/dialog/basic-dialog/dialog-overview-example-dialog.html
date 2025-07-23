@@ -1,18 +1,18 @@
 <h1 mat-dialog-title>
-    Hi Mateo Luca
+    Bonjour, {{currentUser?.name || 'Guest'}}!
 </h1>
 <div mat-dialog-content>
     <p>
-        What's your favorite animal?
+        Veuillez choisir l'entreprise
     </p>
     <mat-form-field>
-        <mat-label>Favorite Animal</mat-label>
+        <mat-label>Entreprise</mat-label>
         <input matInput>
     </mat-form-field>
 </div>
-<div mat-dialog-actions class="mt-0">
+<div mat-dialog-actions class="mt-0 gap-4">
     <button mat-flat-button color="warn" (click)="onNoClick()">
-        No Thanks
+        Non merci
     </button>
     <button mat-flat-button class="daxa" [mat-dialog-close]="data.animal" cdkFocusInitial>
         Ok

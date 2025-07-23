@@ -22,13 +22,13 @@ export class TicketsInProgressService {
                 const options = {
                     series: [
                         {
-                            name: "Tickets Open",
+                            name: "CA en HT",
                             data: [47, 45, 74, 32, 56, 31, 44, 33, 45, 19]
                         }
                     ],
                     chart: {
                         type: "area",
-                        height: 115,
+                        height: 160,
                         zoom: {
                             enabled: false
                         },
@@ -37,7 +37,7 @@ export class TicketsInProgressService {
                         }
                     },
                     colors: [
-                        "#00cae3"
+                        "#147df6ff"
                     ],
                     dataLabels: {
                         enabled: false
@@ -78,7 +78,7 @@ export class TicketsInProgressService {
                         labels: {
                             show: false,
                             style: {
-                                colors: "#919aa3",
+                                colors: "#ffffffff",
                                 fontSize: "14px"
                             }
                         },

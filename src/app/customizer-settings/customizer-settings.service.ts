@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CustomizerSettingsService {
+private darkThemeSubject = new BehaviorSubject<boolean>(false);
+darkTheme$: Observable<boolean> = this.darkThemeSubject.asObservable();
 
     constructor() {
         if (typeof window !== 'undefined' && window.localStorage) {
             // Dark Mode
+           
+
+
             this.isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme') || 'false');
             this.updateDarkBodyClass();
-    
+            this.darkThemeSubject.next(this.isDarkTheme);
             // Sidebar Dark Mode
             this.isSidebarDarkTheme = JSON.parse(localStorage.getItem('isSidebarDarkTheme') || 'false');
     
@@ -42,6 +47,7 @@ export class CustomizerSettingsService {
         this.isDarkTheme = !this.isDarkTheme;
         localStorage.setItem('isDarkTheme', JSON.stringify(this.isDarkTheme));
         this.updateDarkBodyClass();
+         this.darkThemeSubject.next(this.isDarkTheme);
     }
     isDark() {
         return this.isDarkTheme;

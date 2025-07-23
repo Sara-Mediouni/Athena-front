@@ -37,7 +37,7 @@ export class VenteService  {
   return this.http.get(`${this.apiUrl}/chiffre-affaire`, { params ,headers });
 }
   getCAPeriod(dateDebut: string, dateFin: string, mode: string,InclureBLs:string, groupBy:string): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
+  const token = typeof localStorage !== 'undefined'  ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
   if (!token) {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { DataLabelsColumnChartService } from './data-labels-column-chart.service';
 
@@ -9,13 +9,13 @@ import { DataLabelsColumnChartService } from './data-labels-column-chart.service
     styleUrl: './data-labels-column-chart.component.scss'
 })
 export class DataLabelsColumnChartComponent {
-@Input() data: any;
-    constructor(
-        private dataLabelsColumnChartService: DataLabelsColumnChartService
-    ) {}
+ @Input() data: any[] = [];
 
-    ngOnInit(): void {
-        this.dataLabelsColumnChartService.loadChart();
-    }
+    constructor(private chartService: DataLabelsColumnChartService) {}
 
-}
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['data'] && this.data && this.data.length > 0) {
+            this.chartService.setData(this.data); // <-- on passe les données ici
+            this.chartService.loadChart();
+        }
+    }}

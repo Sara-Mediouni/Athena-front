@@ -22,7 +22,7 @@ export class TicketsClosedService {
                 const options = {
                     series: [
                         {
-                            name: "Tickets Open",
+                            name: "CA en TTC",
                             data: [
                                 12, 14, 2, 47, 32, 44, 14, 55, 41, 69
                             ]
@@ -30,7 +30,7 @@ export class TicketsClosedService {
                     ],
                     chart: {
                         type: "area",
-                        height: 115,
+                        height: 160,
                         zoom: {
                             enabled: false
                         },

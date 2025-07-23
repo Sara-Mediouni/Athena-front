@@ -943,6 +943,53 @@
                 right: 15px;
 
                 .header-left-side {
+                    .enterprise-select {
+  width: 100px;
+  height: fit-content; // ou adapte selon la place
+  margin: 0;
+  
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+.enterprise-select .mat-form-field-flex {
+  height: 40px;
+  align-items: center;
+}
+
+.enterprise-select .mat-select-trigger {
+  padding: 0 12px;
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.enterprise-select.mat-form-field-appearance-outline .mat-form-field-outline {
+  top: 0;
+}
+
+.enterprise-select .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  input {
+    width: 150px;
+  }
+
+  i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
                     .search-box {
                         .input-search {
                             padding: {

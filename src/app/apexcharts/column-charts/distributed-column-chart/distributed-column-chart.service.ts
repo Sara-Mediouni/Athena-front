@@ -1,5 +1,6 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Input } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 
 @Injectable({
     providedIn: 'root'
@@ -7,23 +8,40 @@ import { isPlatformBrowser } from '@angular/common';
 export class DistributedColumnChartService {
 
     private isBrowser: boolean;
-
-    constructor(@Inject(PLATFORM_ID) private platformId: any) {
+     @Input() data: any[] = [];
+    constructor(@Inject(PLATFORM_ID) private platformId: any,
+            private customizer: CustomizerSettingsService) {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
+    
+      setData(data: any[]) {
+        this.data = data;
+    }
+    async loadChart(isDarkMode: boolean): Promise<void> {
+    
 
-    async loadChart(): Promise<void> {
+const labelColor = isDarkMode ? '#fff' : '#000';
+
+
+        if (!this.isBrowser || !this.data || this.data.length === 0) {
+            console.warn('Aucune donnée disponible ou environnement serveur');
+            return;
+        }
         if (this.isBrowser) {
             try {
-                // Dynamically import ApexCharts
+                
                 const ApexCharts = (await import('apexcharts')).default;
+                 const categories = this.data.map(item => item.label);
+                 
+            
 
-                // Define chart options
+            const seriesData = this.data.map(item => item.caht);
+                
                 const options = {
                     series: [
                         {
                             name: "distibuted",
-                            data: [21, 22, 10, 28, 16, 21, 13, 30]
+                             data: seriesData
                         }
                     ],
                     chart: {
@@ -31,7 +49,7 @@ export class DistributedColumnChartService {
                         type: "bar",
                         events: {
                             click: function(chart:any, w:any, e:any) {
-                                // console.log(chart, w, e)
+                               
                             }
                         }
                     },
@@ -51,9 +69,18 @@ export class DistributedColumnChartService {
                             distributed: true
                         }
                     },
-                    dataLabels: {
-                        enabled: false
-                    },
+                   dataLabels: {
+    enabled: true,
+    formatter: function (val: number) {
+        return val.toFixed(3); // ✅ 3 décimales visibles au-dessus des barres
+    },
+    style: {
+        fontSize: '10px',
+        colors: [labelColor] 
+    },
+    offsetY: -10 // ajuste la position verticale au-dessus des barres
+}
+,
                     legend: {
                         offsetY: 5,
                         show: false,
@@ -78,16 +105,7 @@ export class DistributedColumnChartService {
                         }
                     },
                     xaxis: {
-                        categories: [
-                            ["John", "Doe"],
-                            ["Joe", "Smith"],
-                            ["Jake", "Williams"],
-                            "Amber",
-                            ["Peter", "Brown"],
-                            ["Mary", "Evans"],
-                            ["David", "Wilson"],
-                            ["Lily", "Roberts"]
-                        ],
+                        categories,
                         labels: {
                             show: true,
                             style: {
@@ -101,7 +119,7 @@ export class DistributedColumnChartService {
                                     "#26a69a",
                                     "#d10ce8"
                                 ],
-                                fontSize: "14px"
+                                fontSize: "12px"
                             }
                         },
                         axisBorder: {
@@ -119,7 +137,10 @@ export class DistributedColumnChartService {
                             style: {
                                 colors: "#919aa3",
                                 fontSize: "14px"
-                            }
+                            },
+                             formatter: function (value:any) {
+                             return value.toFixed(3); 
+    }
                         },
                         axisBorder: {
                             show: false
