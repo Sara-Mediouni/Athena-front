@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { DataLabelsColumnChartService } from './data-labels-column-chart.service';
 
@@ -9,7 +9,7 @@ import { DataLabelsColumnChartService } from './data-labels-column-chart.service
     styleUrl: './data-labels-column-chart.component.scss'
 })
 export class DataLabelsColumnChartComponent {
-
+@Input() data: any;
     constructor(
         private dataLabelsColumnChartService: DataLabelsColumnChartService
     ) {}

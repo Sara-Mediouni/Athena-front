@@ -42,50 +42,59 @@
               </div>
             </div>
 
-            <!-- Préférences -->
-            <div class="row mt-4 preferences-container">
-              <div class="col-md-10 offset-md-1 border border-primary">
+         <!-- Préférences -->
+<div class="row mt-4 preferences-container">
+  <div class="col-md-10 offset-md-1 border border-primary p-3">
 
-                <div class="mb-2 d-flex align-items-start">
-                  <i class="material-symbols-outlined mr-2">
-                    settings
-                  </i>
-                  <span class="title">Préférences</span>
-                </div>
-                <div class="d-flex flex-wrap gap-3 ps-2">
-                  <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
-                  <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
-                  <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-  <span class="me-2 fw-bold">Regrouper par :</span>
+    <!-- Titre : Préférences -->
+    <div class="mb-3 d-flex align-items-center">
+      <mat-icon class="me-2" style="font-size: 20px;">settings</mat-icon>
+      <span class="fw-bold" style="font-size: 16px;">Préférences</span>
+    </div>
 
-  <mat-checkbox
-    [checked]="form.get('groupBy')?.value === 'jour'"
-    (change)="form.get('groupBy')?.setValue('jour')">
-    Jour
-  </mat-checkbox>
+    <!-- Checkboxes -->
+    <div class="d-flex flex-wrap gap-3 mb-3">
+      <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
+      <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
+      <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
+    </div>
 
-  <mat-checkbox
-    [checked]="form.get('groupBy')?.value === 'semaine'"
-    (change)="form.get('groupBy')?.setValue('semaine')">
-    Semaine
-  </mat-checkbox>
+    <!-- Titre : Regrouper par -->
+    <div class="d-flex align-items-center mt-2 mb-1">
+      <mat-icon class="me-2" style="font-size: 20px;">calendar_view_week</mat-icon>
+      <span class="fw-bold" style="font-size: 16px;">Regrouper par</span>
+    </div>
 
-  <mat-checkbox
-    [checked]="form.get('groupBy')?.value === 'mois'"
-    (change)="form.get('groupBy')?.setValue('mois')">
-    Mois
-  </mat-checkbox>
+    <!-- Checkboxes Regrouper par -->
+    <div class="d-flex flex-wrap gap-3 ps-1">
+      <mat-checkbox
+        [checked]="form.get('groupBy')?.value === 'jour'"
+        (change)="form.get('groupBy')?.setValue('jour')">
+        Jour
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="form.get('groupBy')?.value === 'semaine'"
+        (change)="form.get('groupBy')?.setValue('semaine')">
+        Semaine
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="form.get('groupBy')?.value === 'mois'"
+        (change)="form.get('groupBy')?.setValue('mois')">
+        Mois
+      </mat-checkbox>
+    </div>
+
+  </div>
 </div>
+
 
 
 
             <!-- Bouton Filtrer -->
             <div class="d-flex justify-content-center mt-4">
-              <button mat-button class="filter-button" color="primary" type="submit">
+              <button mat-button class="filter-button" color="primary" type="submit" >
                 <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
               </button>
             </div>
@@ -94,7 +103,7 @@
         </form>
 
    
-      <app-new-tickets-created />
+      <app-data-labels-column-chart [data]="CAGlobal"/>
       </mat-card-content>
     </mat-card>
   </div>

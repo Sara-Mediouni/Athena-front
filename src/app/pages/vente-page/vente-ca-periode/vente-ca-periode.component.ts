@@ -16,18 +16,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VenteService } from '../../../Service/VenteService';
+import { DataLabelsColumnChartComponent } from '../../../apexcharts/column-charts/data-labels-column-chart/data-labels-column-chart.component';
 
 
 @Component({
   selector: 'app-vente-ca-periode',
     imports: [
     ReactiveFormsModule,
-    NewTicketsCreatedComponent,
     MatFormFieldModule,
     MatSelectModule,
     
     MatInputModule,CommonModule,
-
+    DataLabelsColumnChartComponent,
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
@@ -102,7 +102,7 @@ console.log('formValues.dateFin:', formValues.dateFin);
   this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs,groupBy).subscribe({
     next: (data) => {
       this.CAGlobal = data;
-      console.log(this.CAGlobal[0]);
+      console.log(this.CAGlobal);
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);
