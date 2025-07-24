@@ -1,0 +1,22 @@
+.enterprise-select {
+  width: 100%;
+  max-width: 350px;
+  margin-top: 1rem;
+}
+
+.no-enterprise-msg {
+  font-style: italic;
+  color: #888;
+  margin-top: 1rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancel, .btn-continue {
+  min-width: 120px;
+}

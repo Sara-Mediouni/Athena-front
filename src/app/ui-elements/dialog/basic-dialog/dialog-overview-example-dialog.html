@@ -9,7 +9,8 @@
 
   <mat-form-field *ngIf="data.entreprises?.length" appearance="fill" class="enterprise-select">
     <mat-label>Entreprise</mat-label>
-    <mat-select  (selectionChange)="selectEntreprise($event.value)">
+    <mat-select  [(value)]="selectedEntrepriseId" (selectionChange)="selectEntreprise($event.value)" 
+   >
       <mat-option *ngFor="let ent of data.entreprises" [value]="ent.id">
         {{ ent.name }}
       </mat-option>
@@ -32,7 +33,8 @@
     [disabled]="!selectedEntrepriseId"
     [mat-dialog-close]="selectedEntrepriseId"
     cdkFocusInitial
-    class="btn-continue"
+    class="btn-continue" 
+    
   >
     Continuer
   </button>

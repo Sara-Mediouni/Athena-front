@@ -76,7 +76,7 @@ export class BasicDialogComponent {
 })
 export class DialogOverviewExampleDialog {
     entreprises: EntrepriseDTO[] = [];
-    selectedEntrepriseId: number | null = null;
+    selectedEntrepriseId: string | null = null;
     private cookieService = inject(CookieService);
     constructor(
         public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
@@ -93,8 +93,8 @@ export class DialogOverviewExampleDialog {
         this.router.navigate(['/entreprises']);
     }
      selectEntreprise(ent: EntrepriseDTO) {
-        this.selectedEntrepriseId=ent.id;
-    this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
+        this.selectedEntrepriseId=ent.id.toString();
+    this.cookieService.set('selectedEntrepriseId', this.selectedEntrepriseId, 7);
   }
  
 

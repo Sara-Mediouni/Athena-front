@@ -114,7 +114,7 @@ export class SignInComponent {
           this.user = user.name;
           console.log('Données entreprises avant ouverture dialog :', entreprises);
 
-          this.dialog.open(DialogOverviewExampleDialog, {
+         const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
             data: {
               name: user.name,
               entreprises: entreprises
@@ -124,6 +124,11 @@ export class SignInComponent {
             
             
           });
+          dialogRef.afterClosed().subscribe((selectedEntrepriseId) => {
+  if (selectedEntrepriseId) {
+    // Tu peux naviguer ici
+    this.router.navigate(['/vente/global', selectedEntrepriseId]); // exemple
+  }})
         },
         error: (error) => {
           console.error('Erreur lors du chargement du user ou des entreprises :', error);
