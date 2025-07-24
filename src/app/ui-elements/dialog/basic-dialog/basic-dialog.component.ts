@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, inject, Inject} from '@angular/core';
 import {
     MatDialog,
     MAT_DIALOG_DATA,
@@ -20,6 +20,7 @@ import { h } from "../../../../../node_modules/@angular/material/module.d-3202bf
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface DialogData {
     entreprises: EntrepriseDTO[];
@@ -27,11 +28,12 @@ export interface DialogData {
 }
 
 @Component({
+    standalone: true,
     selector: 'app-basic-dialog',
     imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatCardModule],
     templateUrl: './basic-dialog.component.html',
     styleUrl: './basic-dialog.component.scss',
-    standalone: true,
+    
 })
 export class BasicDialogComponent {
 
@@ -74,6 +76,8 @@ export class BasicDialogComponent {
 })
 export class DialogOverviewExampleDialog {
     entreprises: EntrepriseDTO[] = [];
+    selectedEntrepriseId: number | null = null;
+    private cookieService = inject(CookieService);
     constructor(
         public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
         
@@ -88,7 +92,10 @@ export class DialogOverviewExampleDialog {
         this.dialogRef.close();
         this.router.navigate(['/entreprises']);
     }
-  
+     selectEntreprise(ent: EntrepriseDTO) {
+        this.selectedEntrepriseId=ent.id;
+    this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
+  }
  
 
 }

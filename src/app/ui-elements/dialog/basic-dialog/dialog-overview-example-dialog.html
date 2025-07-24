@@ -1,24 +1,39 @@
-<h1 mat-dialog-title>
-    Bonjour, {{data.name || 'Guest'}}!
+<h1 mat-dialog-title class="dialog-title">
+  Bonjour, <span class="username">{{ data.name || 'Guest' }}</span> !
 </h1>
+
 <div mat-dialog-content>
-    <p>
-        Veuillez choisir l'entreprise
-    </p>
-      <mat-form-field *ngIf="data.entreprises?.length" class="enterprise-select">
-  <mat-label>Entreprise</mat-label>
-  <mat-select >
-      <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
-      {{ ent.name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+  <p class="dialog-subtitle">
+    Veuillez choisir votre entreprise
+  </p>
+
+  <mat-form-field *ngIf="data.entreprises?.length" appearance="fill" class="enterprise-select">
+    <mat-label>Entreprise</mat-label>
+    <mat-select  (selectionChange)="selectEntreprise($event.value)">
+      <mat-option *ngFor="let ent of data.entreprises" [value]="ent.id">
+        {{ ent.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p *ngIf="!data.entreprises?.length" class="no-enterprise-msg">
+    Aucune entreprise disponible.
+  </p>
 </div>
-<div mat-dialog-actions class="mt-0 gap-4">
-    <button mat-flat-button color="warn" (click)="onNoClick()">
-        Passer
-    </button>
-    <button mat-flat-button class="daxa" [mat-dialog-close]="data.entreprises" cdkFocusInitial>
-        Continuer
-    </button>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-stroked-button color="warn" (click)="onNoClick()" class="btn-cancel">
+    Passer
+  </button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="!selectedEntrepriseId"
+    [mat-dialog-close]="selectedEntrepriseId"
+    cdkFocusInitial
+    class="btn-continue"
+  >
+    Continuer
+  </button>
 </div>

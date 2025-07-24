@@ -34,7 +34,7 @@ export class HeaderComponent {
     errorMessage: string = '';
     // isToggled
     isToggled = false;
-     private cookieService = inject(CookieService),
+     private cookieService = inject(CookieService);
     isLoading = true; 
     constructor(
         private toggleService: ToggleService,
@@ -60,6 +60,15 @@ selectEntreprise(ent: EntrepriseDTO) {
 }
     ngOnInit(): void {
     this.loadUser();  
+     const savedId = this.cookieService.get('selectedEntrepriseId');
+
+  if (savedId) {
+    const found = this.entreprises.find(e => e.id.toString() === savedId);
+    if (found) {
+      this.selectedEntreprise = found;
+    }
+  }
+
   }
     // Burger Menu Toggle
     toggle() {
