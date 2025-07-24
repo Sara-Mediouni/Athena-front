@@ -127,7 +127,7 @@ export class SignInComponent {
           dialogRef.afterClosed().subscribe((selectedEntrepriseId) => {
   if (selectedEntrepriseId) {
     // Tu peux naviguer ici
-    this.router.navigate(['/vente/global', selectedEntrepriseId]); // exemple
+    this.router.navigate(['/vente/global']); // exemple
   }})
         },
         error: (error) => {
