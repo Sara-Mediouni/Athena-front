@@ -1,3 +1,46 @@
+.entreprise-selector {
+  display: flex;
+  align-items: center;
+  margin-left: auto; // pour aligner à droite dans un header
+  button {
+    color: white; // ou la couleur principale du thème
+  }
+}
+.entreprise-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+
+  .entreprise-label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #666;
+    font-size: 14px;
+
+    .icon {
+      font-size: 20px;
+      margin-right: 4px;
+      color: #555;
+    }
+  }
+
+  .entreprise-button {
+    font-weight: 600;
+    color: #222;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 4px 12px;
+    min-width: auto;
+
+    mat-icon {
+      margin-left: 4px;
+      font-size: 20px;
+    }
+  }
+}
+
 ::ng-deep {
     .header-area {
         top: 25px;

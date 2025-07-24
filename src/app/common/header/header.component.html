@@ -15,15 +15,26 @@
 
   
 
-  <!-- Sélecteur d'entreprise -->
-  <mat-form-field *ngIf="entreprises?.length" class="enterprise-select">
-  <mat-label>Entreprise</mat-label>
-  <mat-select >
-      <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
-      {{ ent.name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<!-- HEADER DROITE / TOP BAR -->
+<div class="entreprise-selector">
+  <span class="entreprise-label">
+    <mat-icon class="icon">business</mat-icon>
+    Entreprise
+  </span>
+
+  <button mat-button [matMenuTriggerFor]="entrepriseMenu" class="entreprise-button">
+    {{ selectedEntreprise?.name || 'Choisir' }}
+    <mat-icon>expand_more</mat-icon>
+  </button>
+
+  <mat-menu #entrepriseMenu="matMenu">
+    <button mat-menu-item *ngFor="let ent of entreprises" (click)="selectEntreprise(ent)">
+      <mat-icon>apartment</mat-icon>
+      <span>{{ ent.name }}</span>
+    </button>
+  </mat-menu>
+</div>
+
 
 
 </div>

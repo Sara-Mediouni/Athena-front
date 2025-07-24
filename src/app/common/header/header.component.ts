@@ -1,26 +1,29 @@
 import { CommonModule, NgClass } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { ToggleService } from '../sidebar/toggle.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
 import { AuthService } from '../../Service/AuthService';
-import { jwtDecode } from 'jwt-decode';
-import { UserService } from '../../Service/UserService';
-import { User } from '../../Model/User';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { CookieService } from 'ngx-cookie-service';
+
 import { EntService } from '../../Service/entService';
 import { MatTableDataSource } from '@angular/material/table';
 import { EntrepriseDTO } from '../../Model/EntrepriseDTO';
+import { MatIcon } from '@angular/material/icon';
 @Component({
     selector: 'app-header',
-    imports: [NgClass, MatMenuModule, MatButtonModule, RouterLink,CommonModule,MatFormField,MatSelect,MatOption, MatLabel],
+    imports: [NgClass, MatMenuModule, MatButtonModule, RouterLink,CommonModule,MatIcon],
     templateUrl: './header.component.html',
-    styleUrl: './header.component.scss'
+    styleUrl: './header.component.scss',
+    
+
 })
 export class HeaderComponent {
+  selectedEntreprise: EntrepriseDTO | null = null;
+
+
     user: string | null = null;
     dataSource = new MatTableDataSource<EntrepriseDTO>([]);
     role: string | null = null;
@@ -31,10 +34,12 @@ export class HeaderComponent {
     errorMessage: string = '';
     // isToggled
     isToggled = false;
+     private cookieService = inject(CookieService),
     isLoading = true; 
     constructor(
         private toggleService: ToggleService,
         public themeService: CustomizerSettingsService,
+       
         private authService: AuthService,
         private entService: EntService,
         private router : Router
@@ -46,6 +51,13 @@ export class HeaderComponent {
             this.isToggled = isToggled;
         });
     }
+    
+selectEntreprise(ent: EntrepriseDTO) {
+  this.selectedEntreprise = ent;
+  this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
+  console.log('Entreprise sélectionnée :', ent);
+  // Tu peux ici notifier un service, stocker en localStorage, etc.
+}
     ngOnInit(): void {
     this.loadUser();  
   }

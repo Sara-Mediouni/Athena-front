@@ -15,9 +15,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { UserService } from '../../../Service/UserService';
 import { AuthService } from '../../../Service/AuthService';
+import { Router } from '@angular/router';
+import { h } from "../../../../../node_modules/@angular/material/module.d-3202bf3a";
+import { MatOption, MatSelect } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
 
 export interface DialogData {
-    animal: string;
+    entreprises: EntrepriseDTO[];
     name: string;
 }
 
@@ -30,21 +35,20 @@ export interface DialogData {
 })
 export class BasicDialogComponent {
 
-    // Basic Dialog
-    animal!: string;
+    
     name!: string;
-
+    entreprises: EntrepriseDTO[] = [];
     constructor(
         public dialog: MatDialog
     ) {}
 
     openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-            data: {name: this.name, animal: this.animal},
+            data: {name: this.name, entreprises: this.entreprises},
         });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
-            this.animal = result;
+            this.entreprises = result;
         });
     }
 
@@ -55,52 +59,36 @@ export class BasicDialogComponent {
     selector: 'dialog-overview-example-dialog',
     templateUrl: 'dialog-overview-example-dialog.html',
     imports: [
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatButtonModule,
-        MatDialogTitle,
-        MatDialogContent,
-        MatDialogActions,
-        MatDialogClose,
-    ]
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatOption,
+    MatSelect,
+    CommonModule
+]
 })
 export class DialogOverviewExampleDialog {
-    currentUser:any;
-     token:any;
+    entreprises: EntrepriseDTO[] = [];
     constructor(
         public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-        private authService: AuthService,
-        private userService:UserService,
+        
+        private router: Router,
         
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    ) {}
+    ) {    
+        this.entreprises = data.entreprises;
+    console.log('Entreprises reçues :', this.entreprises);}
 
     onNoClick(): void {
         this.dialogRef.close();
+        this.router.navigate(['/entreprises']);
     }
-    ngOnInit(): void {
-  if (typeof localStorage !== "undefined"){
-    this.token = localStorage.getItem('accessToken');
-  }
-     if (this.token) {
-    // Récupérer l'utilisateur connecté en utilisant le token
-    this.userService.getUserConnected(this.token)
-    const subscription = this.authService.currentUser$
-    .subscribe(
-      (user) => {
-       if (user) {
-        this.currentUser=user; }// Set the name from the user data}
-        else {
-          this.currentUser= null;
-        }
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération de l\'utilisateur connecté :', error);
-        this.currentUser = null;
-      })}
- 
- }
+  
  
 
 }

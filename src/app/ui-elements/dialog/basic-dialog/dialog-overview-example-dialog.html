@@ -1,20 +1,24 @@
 <h1 mat-dialog-title>
-    Bonjour, {{currentUser?.name || 'Guest'}}!
+    Bonjour, {{data.name || 'Guest'}}!
 </h1>
 <div mat-dialog-content>
     <p>
         Veuillez choisir l'entreprise
     </p>
-    <mat-form-field>
-        <mat-label>Entreprise</mat-label>
-        <input matInput>
-    </mat-form-field>
+      <mat-form-field *ngIf="data.entreprises?.length" class="enterprise-select">
+  <mat-label>Entreprise</mat-label>
+  <mat-select >
+      <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
+      {{ ent.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 </div>
 <div mat-dialog-actions class="mt-0 gap-4">
     <button mat-flat-button color="warn" (click)="onNoClick()">
-        Non merci
+        Passer
     </button>
-    <button mat-flat-button class="daxa" [mat-dialog-close]="data.animal" cdkFocusInitial>
-        Ok
+    <button mat-flat-button class="daxa" [mat-dialog-close]="data.entreprises" cdkFocusInitial>
+        Continuer
     </button>
 </div>
