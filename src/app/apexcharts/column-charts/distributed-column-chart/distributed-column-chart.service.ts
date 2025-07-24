@@ -6,7 +6,8 @@ import { CustomizerSettingsService } from '../../../customizer-settings/customiz
     providedIn: 'root'
 })
 export class DistributedColumnChartService {
-
+   
+   private chartInstance: any = null;
     private isBrowser: boolean;
      @Input() data: any[] = [];
     constructor(@Inject(PLATFORM_ID) private platformId: any,
@@ -27,6 +28,10 @@ const labelColor = isDarkMode ? '#fff' : '#000';
             console.warn('Aucune donnée disponible ou environnement serveur');
             return;
         }
+         if (this.chartInstance) {
+        this.chartInstance.destroy();
+        this.chartInstance = null;
+    }
         if (this.isBrowser) {
             try {
                 
@@ -148,9 +153,8 @@ const labelColor = isDarkMode ? '#fff' : '#000';
                     }
                 };
 
-                // Initialize and render the chart
-                const chart = new ApexCharts(document.querySelector('#distributed_column_chart'), options);
-                chart.render();
+                this.chartInstance = new ApexCharts(document.querySelector('#distributed_column_chart'), options);
+               this.chartInstance.render();
             } catch (error) {
                 console.error('Error loading ApexCharts:', error);
             }

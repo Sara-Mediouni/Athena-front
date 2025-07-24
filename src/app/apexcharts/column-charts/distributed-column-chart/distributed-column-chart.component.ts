@@ -2,27 +2,29 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { MatCardModule } from '@angular/material/card';
 import { DistributedColumnChartService } from './distributed-column-chart.service';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-distributed-column-chart',
-    imports: [MatCardModule],
-    templateUrl: './distributed-column-chart.component.html',
-    styleUrl: './distributed-column-chart.component.scss'
+  selector: 'app-distributed-column-chart',
+  imports: [MatCardModule],
+  templateUrl: './distributed-column-chart.component.html',
+  styleUrl: './distributed-column-chart.component.scss'
 })
 export class DistributedColumnChartComponent implements OnChanges, OnDestroy {
   @Input() data: any[] = [];
   private destroy$ = new Subject<void>();
+  private currentTheme: boolean = false;
   private hasLoadedData = false;
 
   constructor(
     private distributedColumnChartService: DistributedColumnChartService,
     private customizer: CustomizerSettingsService
   ) {
-
+    // Un seul abonnement au thème, persistant
     this.customizer.darkTheme$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isDark => {
+        this.currentTheme = isDark;
         if (this.hasLoadedData) {
           this.distributedColumnChartService.loadChart(isDark);
         }
@@ -34,17 +36,12 @@ export class DistributedColumnChartComponent implements OnChanges, OnDestroy {
       this.distributedColumnChartService.setData(this.data);
       this.hasLoadedData = true;
 
-      // Charger le graphique avec le thème actuel
-      this.customizer.darkTheme$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(isDark => {
-          this.distributedColumnChartService.loadChart(isDark);
-        });
+      // Charger directement avec le thème courant, sans nouvel abonnement
+      this.distributedColumnChartService.loadChart(this.currentTheme);
     }
   }
 
   ngOnDestroy(): void {
-    // Nettoyage de l'abonnement
     this.destroy$.next();
     this.destroy$.complete();
   }
