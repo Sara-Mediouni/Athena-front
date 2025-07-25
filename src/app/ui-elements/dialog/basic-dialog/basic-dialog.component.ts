@@ -92,8 +92,9 @@ export class DialogOverviewExampleDialog {
         this.dialogRef.close();
         this.router.navigate(['/entreprises']);
     }
-     selectEntreprise(ent: EntrepriseDTO) {
-        this.selectedEntrepriseId=ent.id.toString();
+     selectEntreprise(id: string) {
+        this.selectedEntrepriseId=id;
+        console.log('Entreprise sélectionnée :', id);
     this.cookieService.set('selectedEntrepriseId', this.selectedEntrepriseId, 7);
   }
  

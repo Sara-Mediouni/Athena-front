@@ -71,6 +71,7 @@ selectEntreprise(ent: EntrepriseDTO) {
     const found = this.entreprises.find(e => e.id.toString() === savedId);
     if (found) {
       this.selectedEntreprise = found;
+      
       console.log('Entreprise sélectionnée depuis le cookie :', this.selectedEntreprise);
     } else {
       console.log('Aucune entreprise trouvée avec cet ID');

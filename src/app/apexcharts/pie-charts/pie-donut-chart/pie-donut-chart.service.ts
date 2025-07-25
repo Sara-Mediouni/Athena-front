@@ -33,6 +33,8 @@ export class PieDonutChartService {
                 const categories = this.data.map(item => item.label);
                 
                 const seriesData = this.data.map(item => item.caht);
+                const total = seriesData.reduce((acc, val) => acc + val, 0);
+
                 // Define chart options
                 const options = {
                     series: seriesData,
@@ -73,6 +75,10 @@ export class PieDonutChartService {
                     ],
                     dataLabels: {
                         enabled: true,
+                        formatter: (val: number) => {
+    const percentage = (val).toFixed(1); // Apex passe déjà le %
+    return `${percentage}%`;
+  },
                         style: {
                             fontSize: '14px',
                         },
@@ -82,13 +88,13 @@ export class PieDonutChartService {
                         }
                     },
                     tooltip: {
-                        y: {
-                            formatter: function(val:any) {
-                                return val + "TND";
-                            }
-                        }
+                         y: {
+    formatter: (val: number) => {
+      const percentage = ((val / total) * 100).toFixed(1);
+      return `${percentage}%`;
+    }
                     }
-                };
+                }}
 
                 // Initialize and render the chart
                 this.chartInstance = new ApexCharts(document.querySelector('#pie_donut_chart'), options);
