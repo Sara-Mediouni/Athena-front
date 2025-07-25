@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VenteCaMoisComponent } from './vente-ca-global.component';
+import { VenteCaGlobalComponent } from './vente-ca-global.component';
 
 describe('VenteCaMoisComponent', () => {
-  let component: VenteCaMoisComponent;
-  let fixture: ComponentFixture<VenteCaMoisComponent>;
+  let component: VenteCaGlobalComponent;
+  let fixture: ComponentFixture<VenteCaGlobalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VenteCaMoisComponent]
+      imports: [VenteCaGlobalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VenteCaMoisComponent);
+    fixture = TestBed.createComponent(VenteCaGlobalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

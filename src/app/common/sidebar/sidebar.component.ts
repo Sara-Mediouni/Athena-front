@@ -46,7 +46,9 @@ modules = [
     items: [
       { label: 'CA Global', link: '/vente/global' },
       { label: 'CA par Periode', link: '/vente/periode' },
-      { label: 'CA par Depot', link: '/vente/depot' }
+      { label: 'CA par Depot', link: '/vente/depot' },
+      { label: 'CA par Commercial', link: '/vente/commercial' },
+      { label: 'Evolution CA', link: '/vente/evolution' },
     ]
   },
   {

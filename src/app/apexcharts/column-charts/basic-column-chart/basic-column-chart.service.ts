@@ -1,37 +1,53 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Input } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BasicColumnChartService {
-
+    private chartInstance: any = null;
+      @Input() data: any[] = [];
     private isBrowser: boolean;
-
-    constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    constructor(@Inject(PLATFORM_ID) private platformId: any,
+    private customizer: CustomizerSettingsService) {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
-
-    async loadChart(): Promise<void> {
+       setData(data: any[]) {
+        this.data = data;
+    }
+    async loadChart(isDarkMode: boolean): Promise<void> {
+        const labelColor = isDarkMode ? '#fff' : '#000';
+         if (!this.isBrowser || !this.data || this.data.length === 0) {
+            console.warn('Aucune donnée disponible ou environnement serveur');
+            return;
+        }
+         if (this.chartInstance) {
+        this.chartInstance.destroy();
+        this.chartInstance = null;
+    }
         if (this.isBrowser) {
             try {
                 // Dynamically import ApexCharts
                 const ApexCharts = (await import('apexcharts')).default;
-
+                const categories = this.data.map(item => item.label);
+                 
+            
+                const seriesDatattc=this.data.map(item => item.cattc);
+                const seriesData = this.data.map(item => item.caht);
+                console.log(seriesData);
+                console.log(seriesDatattc)
                 // Define chart options
                 const options = {
                     series: [
                         {
-                            name: "Net Profit",
-                            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                            name: "HT",
+                            data: seriesData
                         },
+                        
                         {
-                            name: "Revenue",
-                            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                        },
-                        {
-                            name: "Free Cash Flow",
-                            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                            name: "TTC",
+                            data: seriesDatattc
                         }
                     ],
                     chart: {
@@ -42,7 +58,7 @@ export class BasicColumnChartService {
                         }
                     },
                     colors: [
-                        "#00cae3", "#0f79f3", "#ffb264"
+                        "#0f79f3", "#ffb264"
                     ],
                     plotOptions: {
                         bar: {
@@ -59,17 +75,7 @@ export class BasicColumnChartService {
                         colors: ["transparent"]
                     },
                     xaxis: {
-                        categories: [
-                            "Feb",
-                            "Mar",
-                            "Apr",
-                            "May",
-                            "Jun",
-                            "Jul",
-                            "Aug",
-                            "Sep",
-                            "Oct"
-                        ],
+                        categories: categories,
                         axisBorder: {
                             show: false,
                             color: '#e0e0e0'
@@ -82,13 +88,13 @@ export class BasicColumnChartService {
                             show: true,
                             style: {
                                 colors: "#919aa3",
-                                fontSize: "14px"
+                                fontSize: "12px"
                             }
                         }
                     },
                     yaxis: {
                         title: {
-                            text: "$ (thousands)",
+                            text: "TND (thousands)",
                             style: {
                                 color: "#475569",
                                 fontSize: "14px",
@@ -100,6 +106,10 @@ export class BasicColumnChartService {
                             style: {
                                 colors: "#919aa3",
                                 fontSize: "14px"
+                            },
+                                formatter: function(val:any) {
+                                 return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                                
                             }
                         },
                         axisBorder: {
@@ -112,7 +122,8 @@ export class BasicColumnChartService {
                     tooltip: {
                         y: {
                             formatter: function(val:any) {
-                                return "$" + val;
+                                 return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                                
                             }
                         }
                     },
@@ -121,6 +132,7 @@ export class BasicColumnChartService {
                         offsetY: 5,
                         fontSize: '14px',
                         position: "bottom",
+                        marginTop:"30px",
                         horizontalAlign: "center",
                         labels: {
                             colors: "#919aa3"
@@ -138,8 +150,8 @@ export class BasicColumnChartService {
                 };
 
                 // Initialize and render the chart
-                const chart = new ApexCharts(document.querySelector('#basic_column_chart'), options);
-                chart.render();
+                this.chartInstance = new ApexCharts(document.querySelector('#basic_column_chart'), options);
+               this.chartInstance.render();
             } catch (error) {
                 console.error('Error loading ApexCharts:', error);
             }

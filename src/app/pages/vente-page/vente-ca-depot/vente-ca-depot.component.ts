@@ -19,6 +19,7 @@ import { VenteService } from '../../../Service/VenteService';
 import { DataLabelsColumnChartComponent } from '../../../apexcharts/column-charts/data-labels-column-chart/data-labels-column-chart.component';
 import { DistributedColumnChartComponent } from '../../../apexcharts/column-charts/distributed-column-chart/distributed-column-chart.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
 
 
 @Component({
@@ -29,11 +30,10 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatSelectModule,
     
     MatInputModule,CommonModule,
-    DistributedColumnChartComponent,
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
-      MatProgressSpinner,
+      MatProgressSpinner,BasicColumnChartComponent,
       NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-depot.component.html',
   styleUrl: './vente-ca-depot.component.scss'
@@ -53,7 +53,7 @@ export class VenteCaDepotComponent {
   
    constructor(private fb: FormBuilder,private venteService: VenteService) { 
     const now = new Date();
-  const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
+  const startOfYear = new Date(2021, 0, 1); 
   const endOfYear = new Date(2022, 0, 1);
  
 
@@ -63,7 +63,7 @@ export class VenteCaDepotComponent {
     inclureBLs: [false],
     dateDebut: [startOfYear],
     dateFin: [endOfYear],
-    groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
+    groupBy: ['depot'] 
 
   });
     
@@ -104,6 +104,7 @@ loadCA(): void {
     next: (data) => {
       this.CAGlobal = data;
       this.isLoading = false; 
+      console.log('CA Global:', this.CAGlobal);
     },
     error: (error) => {
       console.error('Erreur lors du chargement du CA Global', error);

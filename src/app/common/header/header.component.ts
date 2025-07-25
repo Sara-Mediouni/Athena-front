@@ -60,16 +60,24 @@ selectEntreprise(ent: EntrepriseDTO) {
 }
     ngOnInit(): void {
     this.loadUser();  
-     const savedId = this.cookieService.get('selectedEntrepriseId');
+    
+  
 
+  }
+  loadSelectedEntrepriseFromCookie() {
+  const savedId = this.cookieService.get('selectedEntrepriseId');
+  console.log('ID d\'entreprise sélectionné depuis le cookie :', savedId);
   if (savedId) {
     const found = this.entreprises.find(e => e.id.toString() === savedId);
     if (found) {
       this.selectedEntreprise = found;
+      console.log('Entreprise sélectionnée depuis le cookie :', this.selectedEntreprise);
+    } else {
+      console.log('Aucune entreprise trouvée avec cet ID');
     }
   }
+}
 
-  }
     // Burger Menu Toggle
     toggle() {
         this.toggleService.toggle();
@@ -129,6 +137,7 @@ selectEntreprise(ent: EntrepriseDTO) {
                   next: (entreprises: EntrepriseDTO[] | null) => {
                     if (entreprises && entreprises.length > 0) {
                       this.entreprises = entreprises;
+                       this.loadSelectedEntrepriseFromCookie();
                       this.isLoading = false; 
                       console.log('Entreprises chargées :', entreprises);
                     } else {
@@ -140,6 +149,7 @@ selectEntreprise(ent: EntrepriseDTO) {
                   }
                 });
               }
+            
             this.isLoading = false;
           } else {
             this.user = null;

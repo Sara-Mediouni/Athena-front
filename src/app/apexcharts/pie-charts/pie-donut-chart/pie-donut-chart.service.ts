@@ -1,30 +1,45 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Input } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PieDonutChartService {
-
+     private chartInstance: any = null;
     private isBrowser: boolean;
-
-    constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    @Input() data: any[] = [];
+    constructor(@Inject(PLATFORM_ID) private platformId: any,
+        private customizer: CustomizerSettingsService) {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
-
-    async loadChart(): Promise<void> {
+     setData(data: any[]) {
+        this.data = data;
+    }
+    async loadChart(isDarkMode: boolean): Promise<void> {
+            const labelColor = isDarkMode ? '#fff' : '#000';
+       if (!this.isBrowser || !this.data || this.data.length === 0) {
+            console.warn('Aucune donnée disponible ou environnement serveur');
+            return;
+        }
+         if (this.chartInstance) {
+        this.chartInstance.destroy();
+        this.chartInstance = null;
+    }
         if (this.isBrowser) {
             try {
                 // Dynamically import ApexCharts
                 const ApexCharts = (await import('apexcharts')).default;
-
+                const categories = this.data.map(item => item.label);
+                
+                const seriesData = this.data.map(item => item.caht);
                 // Define chart options
                 const options = {
-                    series: [44, 55, 13, 43, 22],
+                    series: seriesData,
                     chart: {
                         type: "donut"
                     },
-                    labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+                    labels: categories,
                     responsive: [
                         {
                             breakpoint: 480,
@@ -61,6 +76,7 @@ export class PieDonutChartService {
                         style: {
                             fontSize: '14px',
                         },
+                        
                         dropShadow: {
                             enabled: false
                         }
@@ -68,15 +84,15 @@ export class PieDonutChartService {
                     tooltip: {
                         y: {
                             formatter: function(val:any) {
-                                return val + "%";
+                                return val + "TND";
                             }
                         }
                     }
                 };
 
                 // Initialize and render the chart
-                const chart = new ApexCharts(document.querySelector('#pie_donut_chart'), options);
-                chart.render();
+                this.chartInstance = new ApexCharts(document.querySelector('#pie_donut_chart'), options);
+               this.chartInstance.render();
             } catch (error) {
                 console.error('Error loading ApexCharts:', error);
             }

@@ -79,7 +79,7 @@
 
         <!-- Chart -->
         <div *ngIf="!isLoading" class="chart-container">
-          <app-distributed-column-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-distributed-column-chart>
+          <app-basic-column-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-basic-column-chart>
         </div>
 
       </mat-card-content>

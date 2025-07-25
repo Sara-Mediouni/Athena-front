@@ -1,0 +1,128 @@
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Chiffre d'affaires Par Commercial</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i> Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">Vente</li>
+        <li class="breadcrumb-item position-relative">CA par Commercial</li>
+    </ol>
+</div>
+<div class="d-flex flex-column gap-4 w-100">
+
+    <!-- 🟦 Carte Filtres -->
+    <div class="filter-card-wrapper">
+        <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
+            <mat-card-content>
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row align-items-end g-2">
+
+                        <!-- Dates -->
+                        <div class="col-md-6 mb-2">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Date de début</mat-label>
+                                <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart">
+                                <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Date de fin</mat-label>
+                                <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd">
+                                <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerEnd></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Préférences + GroupBy -->
+                        <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
+                            <!-- Préférences -->
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <mat-icon class="me-1">settings</mat-icon>
+                                <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
+                                <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
+                                <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
+                            </div>
+
+
+                        </div>
+
+                        <!-- Bouton -->
+                        <div class="col-12 d-flex justify-content-end mt-2">
+                            <button mat-flat-button color="primary" type="submit">
+                                <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="filter-card-wrapper">
+        <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
+            <mat-card-content>
+
+                <!-- Loader -->
+                <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
+                    <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
+                </div>
+                
+               
+              
+                   <div *ngIf="!isLoading" class="chart-container"> 
+                  
+                   <div class="row">
+                        <div class="col-md-12" style="height: 50%; width: 80%; justify-content: center; justify-items: center;">
+                             <app-pie-donut-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-pie-donut-chart>
+                        </div>
+                        <div class="col-md-12">
+                              <table mat-table [dataSource]="dataSource">
+
+
+                                <ng-container matColumnDef="nom_co">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom Commercial</th>
+                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.label }}</td>
+                                </ng-container>
+
+                                <!-- CAHT -->
+                                <ng-container matColumnDef="caht">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CA (HT)</th>
+                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.caht.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}}</td>
+                                </ng-container>
+
+                                <!-- CATTC -->
+                                <ng-container matColumnDef="cattc">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CA(TTC)</th>
+                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.cattc.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}}</td>
+                                </ng-container>
+
+
+
+
+
+                                <!-- Rows -->
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                <!-- No data -->
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="6">Aucune recherche ne correspond au filtre </td>
+                                </tr>
+                            </table>
+                        </div>
+                           
+                        </div>
+                    </div>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                  
+               
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
