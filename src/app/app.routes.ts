@@ -203,12 +203,12 @@ import { UpdateEntrepriseComponent } from './pages/entreprises-page/update-entre
 import { UpdateUserComponent } from './pages/users-page/update-user/update-user.component';
 import { VentePageComponent } from './pages/vente-page/vente-page.component';
 import { VenteCaGlobalComponent } from './pages/vente-page/vente-ca-global/vente-ca-global.component';
-import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client.component';
 import { authGuard } from './guard/auth.guard';
 import { authRoleGuard } from './guard/roleguard/role.guard';
 import { VenteCaPeriodeComponent } from './pages/vente-page/vente-ca-periode/vente-ca-periode.component';
 import { VenteCaDepotComponent } from './pages/vente-page/vente-ca-depot/vente-ca-depot.component';
 import { VenteCaCommercialComponent } from './pages/vente-page/vente-ca-commercial/vente-ca-commercial.component';
+import { VenteCaEvolutComponent } from './pages/vente-page/vente-ca-evolut/vente-ca-evolut.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/authentication', pathMatch: 'full'}, 
@@ -411,6 +411,7 @@ export const routes: Routes = [
             {path: 'periode', component: VenteCaPeriodeComponent},
             {path: 'depot', component: VenteCaDepotComponent},
             {path: 'commercial', component: VenteCaCommercialComponent},
+            {path: 'evolutive', component: VenteCaEvolutComponent},
         ]
     },
     {

@@ -6,6 +6,9 @@
         bottom: 30px;
     };
 }
+.custom-backdrop {
+  background-color: rgba(0, 0, 0, 0.7); // Plus sombre que le standard (0.32)
+}
 .error-message{
     background-color: rgb(255, 167, 167);
     color: #e02f2f;

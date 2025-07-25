@@ -121,6 +121,7 @@ export class SignInComponent {
             },
             width: '700px',
             maxWidth: '90vw',
+            backdropClass: 'custom-backdrop'
             
             
           });

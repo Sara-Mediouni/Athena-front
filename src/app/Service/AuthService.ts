@@ -24,27 +24,35 @@ import { User } from "../Model/User";
   private signUrl = 'http://localhost:5500/api/auth/signup';
 
   private apiUrl = 'http://localhost:5500/api/auth';
- 
+  private isAuthenticated = false;
   private usernameOrEmail: string = '';
     // Ajout d'une variable pour suivre le statut de chargement
 
 
 private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public currentUser$ = this.currentUserSubject.asObservable();
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router,private userService: UserService) {
+      const token = (typeof localStorage !== "undefined") ? localStorage.getItem('accessToken'): null;
+    if (token) {
+      this.isAuthenticatedSubject.next(true);
+    }
   }
 
   login(usernameOrEmail: string, password: string): Observable<any> {
     return this.http.post<any>(this.baseUrl, { usernameOrEmail, password }).pipe(
-      tap(userData => {
-        console.log('Role Est:', userData.role);
-        if (typeof window !== 'undefined' && userData) {
-         
-          localStorage.setItem('accessToken', userData.accessToken);
-          localStorage.setItem('refreshToken', userData.refreshToken);
-        }
-      })
+     tap(userData => {
+  if (typeof window !== 'undefined' && userData) {
+    localStorage.setItem('accessToken', userData.accessToken);
+    localStorage.setItem('refreshToken', userData.refreshToken);
+
+    this.isAuthenticated = true;
+    this.isAuthenticatedSubject.next(true); // 🔥
+  }
+})
+
     );
   }
   signup(usernameOrEmail: string, name:string, password: string, role: string): Observable<any> {
@@ -105,11 +113,26 @@ private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<U
   }
 
   // Déconnexion de l'utilisateur
-  logout() {
-    this.currentUserSubject.next(null); 
-    if (typeof window !== 'undefined') {
-    localStorage.clear();}
+  logout(): void {
+  this.currentUserSubject.next(null);
+  this.isAuthenticated = false;
+  this.isAuthenticatedSubject.next(false); 
+
+  if (typeof window !== 'undefined') {
+    localStorage.clear();
   }
+}
+
+   isLoggedIn(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+   initAuth(): void {
+  const token = localStorage.getItem('accessToken');
+  const valid = !!token && !this.isAccessTokenExpired();
+
+  this.isAuthenticated = valid;
+  this.isAuthenticatedSubject.next(valid);
+}
 
   private isAccessTokenExpired(): boolean {
     if (typeof window === 'undefined') return true;

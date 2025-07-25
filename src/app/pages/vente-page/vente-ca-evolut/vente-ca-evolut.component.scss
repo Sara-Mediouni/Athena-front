@@ -1,0 +1,142 @@
+
+.container{
+  margin-top: 50px!important;
+  align-content: center;
+  display: flex;
+  justify-items: center;
+  width: 100%;
+  margin-left: 50px;
+}
+
+.mat-mdc-card {
+    &.daxa-card {
+        &.vente-card {
+          margin-bottom: 10px;
+            .mat-mdc-card-content {
+              
+                margin: {
+                    left: -20px;
+                    right: -20px;
+                };
+                
+            }
+            &.rtl-enabled {
+                .mat-mdc-card-content {
+                    .vente-table {
+                        .mat-mdc-table {
+                            .mat-mdc-header-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .mat-mdc-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .info {
+                                .image {
+                                    margin: {
+                                        right: 0;
+                                        left: 12px;
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.widgets{
+    margin-top: 50px;
+    background-color: #eff3f9;
+    padding: 50px;
+    border-radius: 10px;
+}
+.button-container{
+    margin-top: 30px;
+}
+    .filter-button {
+                            border: 0;
+                            height: auto;
+                            min-width: auto;
+                            min-height: auto;
+                            padding: 13px 40px;
+                            font-weight: normal;
+                            color: var(--whiteColor);
+                            background-color: var(--daxaColor);
+                            &[disabled] {
+                                background-color: #eff3f9;
+                            }
+                            &hover {
+                                background-color: var(--daxaColorHover);
+                            }
+}
+::ng-deep {
+    .mat-mdc-card {
+        &.daxa-card {
+            padding-left: 50px;
+            padding-right: 50px;
+            &.vente-card {
+                width: 100%;
+                
+                .mat-mdc-card-content {
+                  padding-top: 20px;
+                     .title {
+                    margin-bottom: 20px;
+                    margin-left: 10px;
+                }
+                .main-label {
+                    margin-bottom: 12px;
+                }
+                    
+                }
+            }
+        }
+    }
+}
+.preferences-container mat-checkbox {
+  margin-bottom: 4px;
+  
+}
+
+.breadcrumb-card {
+  padding: 1rem !important;
+}
+
+label.form-label {
+  margin-bottom: 4px;
+  display: block;
+}
+/* Réduit l'espacement vertical et la taille du mat-checkbox */
+.compact-checkbox {
+  margin: 0 !important;
+  padding: 0 4px;
+}
+.chart-container{
+    border-color: #eff3f9;
+    padding: 30px;
+    height:min-content;
+}
+.compact-checkbox .mat-checkbox-layout {
+  margin-bottom: 0 !important;
+  align-items: center;
+}
+.filter-options {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+mat-checkbox {
+  margin-right: 12px;
+  font-size: 0.85rem;
+}
+
+mat-icon {
+  font-size: 20px;
+  vertical-align: middle;
+}
