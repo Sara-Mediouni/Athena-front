@@ -19,39 +19,35 @@
   <div class="filter-card-wrapper">
     <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
       <mat-card-content>
-        <form [formGroup]="form" >
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="row align-items-end g-2">
 
             <!-- Dates -->
-            <div class="col-md-6 mb-2">
-             <mat-form-field appearance="outline" class="w-100">
-  <mat-label>Année de début</mat-label>
-  <input
-    matInput
-    [matDatepicker]="pickerStart"
-    formControlName="dateDebut"
-    readonly
-    (click)="pickerStart.open()"
-  >
-  <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-  <mat-datepicker
-    #pickerStart
-    startView="multi-year"
-    (yearSelected)="chooseYear($event, 'dateDebut', pickerStart)"
-    panelClass="year-picker"
-  ></mat-datepicker>
-</mat-form-field>
+     <!-- Année de début -->
+<div class="col-md-6 mb-2">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Année de début</mat-label>
+    <input matInput [matDatepicker]="pickerStart" formControlName="dateDebut" readonly (click)="pickerStart.open()">
+    <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+    <mat-datepicker #pickerStart startView="multi-year"
+      (yearSelected)="chooseYear($event, 'dateDebut', pickerStart)"
+      panelClass="year-picker">
+    </mat-datepicker>
+  </mat-form-field>
+</div>
 
-            </div>
-
-            <div class="col-md-6 mb-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Date de fin</mat-label>
-                <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd">
-                <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-                <mat-datepicker #pickerEnd></mat-datepicker>
-              </mat-form-field>
-            </div>
+<!-- Année de fin -->
+<div class="col-md-6 mb-2">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Année de fin</mat-label>
+    <input matInput [matDatepicker]="pickerEnd" formControlName="dateFin" readonly (click)="pickerEnd.open()">
+    <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+    <mat-datepicker #pickerEnd startView="multi-year"
+      (yearSelected)="chooseYear($event, 'dateFin', pickerEnd)"
+      panelClass="year-picker">
+    </mat-datepicker>
+  </mat-form-field>
+</div>
 
             <!-- Préférences  -->
             <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
@@ -63,7 +59,7 @@
                 <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
               </div>
 
-            
+
             </div>
 
             <!-- Bouton -->
@@ -91,7 +87,7 @@
 
         <!-- Chart -->
         <div *ngIf="!isLoading" class="chart-container">
-          <app-spline-area-chart *ngIf="CAGlobal?.length > 0" ></app-spline-area-chart>
+          <app-spline-area-chart *ngIf="CAGlobal1?.length > 0 || CAGlobal2?.length > 0" [data1]="CAGlobal1" [data2]="CAGlobal2"></app-spline-area-chart>
         </div>
 
       </mat-card-content>

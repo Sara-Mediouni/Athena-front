@@ -1,33 +1,71 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Input } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SplineAreaChartService {
-
+     private chartInstance: any = null;
+      @Input() data1: any[] = [];
+      @Input() data2: any[] = [];
     private isBrowser: boolean;
 
     constructor(@Inject(PLATFORM_ID) private platformId: any) {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
+    alignDatasets(data1: any[], data2: any[]) {
+  // 1. Crée un set unique de labels
+  const allLabels = Array.from(new Set([...data1.map(d => d.label), ...data2.map(d => d.label)]));
+  allLabels.sort(); // Optionnel : trie les labels (utile pour les mois ou années)
 
-    async loadChart(): Promise<void> {
+  // 2. Crée un Map rapide pour chaque dataset
+  const map1 = new Map(data1.map(d => [d.label, d.cattc]));
+  const map2 = new Map(data2.map(d => [d.label, d.cattc]));
+
+  // 3. Reconstitue les séries alignées
+  const aligned1 = allLabels.map(label => map1.get(label) ?? 0);
+  const aligned2 = allLabels.map(label => map2.get(label) ?? 0);
+  console.log('Aligned Data1:', aligned1);
+  console.log('Aligned Data2:', aligned2);
+
+  return {
+    categories: allLabels,
+    seriesData1: aligned1,
+    seriesData2: aligned2
+  };
+}
+
+     setData1(data: any[]) {
+        this.data1 = data;
+    }
+     setData2(data: any[]) {
+        this.data2 = data;
+    }
+    async loadChart(isDarkMode: boolean): Promise<void> {
+            if (!this.isBrowser || !this.data1 || this.data1.length === 0) {
+            console.warn('Aucune donnée disponible ou environnement serveur');
+            return;
+        }
+         if (this.chartInstance) {
+        this.chartInstance.destroy();
+        this.chartInstance = null;
+    }
         if (this.isBrowser) {
             try {
                 // Dynamically import ApexCharts
                 const ApexCharts = (await import('apexcharts')).default;
-
+                const { categories, seriesData1, seriesData2 } = this.alignDatasets(this.data1, this.data2);
+                
                 // Define chart options
                 const options = {
                     series: [
                         {
-                            name: "Daxa",
-                            data: [31, 40, 28, 51, 42, 109, 100]
+                            name: "Year 1",
+                            data:seriesData1
                         },
                         {
-                            name: "Social",
-                            data: [11, 32, 45, 32, 34, 52, 41]
+                            name: "Year 2",
+                            data:seriesData2
                         }
                     ],
                     chart: {
@@ -48,15 +86,8 @@ export class SplineAreaChartService {
                     ],
                     xaxis: {
                         type: "datetime",
-                        categories: [
-                            "2018-09-19T00:00:00.000Z",
-                            "2018-09-19T01:30:00.000Z",
-                            "2018-09-19T02:30:00.000Z",
-                            "2018-09-19T03:30:00.000Z",
-                            "2018-09-19T04:30:00.000Z",
-                            "2018-09-19T05:30:00.000Z",
-                            "2018-09-19T06:30:00.000Z"
-                        ],
+                        categories: 
+                        categories,
                         axisBorder: {
                             show: false,
                             color: '#e0e0e0'
@@ -70,12 +101,18 @@ export class SplineAreaChartService {
                             style: {
                                 colors: "#919aa3",
                                 fontSize: "14px"
-                            }
+                            },
                         }
                     },
                     tooltip: {
                         x: {
-                            format: "dd/MM/yy HH:mm"
+                            format: "dd/MM/yy"
+                        },
+                         y: {
+                            formatter: function(val:any) {
+                                 return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                                
+                            }
                         }
                     },
                     yaxis: {
@@ -84,7 +121,13 @@ export class SplineAreaChartService {
                             style: {
                                 colors: "#919aa3",
                                 fontSize: "14px"
-                            }
+                            },
+                            
+                            formatter: function(val:any) {
+                                 return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                                
+                            
+                        }
                         },
                         axisBorder: {
                             show: false
@@ -108,9 +151,9 @@ export class SplineAreaChartService {
                     }
                 };
 
-                // Initialize and render the chart
-                const chart = new ApexCharts(document.querySelector('#spline_area_chart'), options);
-                chart.render();
+                   // Initialize and render the chart
+                this.chartInstance = new ApexCharts(document.querySelector('#spline_area_chart'), options);
+               this.chartInstance.render();
             } catch (error) {
                 console.error('Error loading ApexCharts:', error);
             }

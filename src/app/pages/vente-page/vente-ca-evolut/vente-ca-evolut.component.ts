@@ -8,8 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { forkJoin } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -55,10 +57,10 @@ export class VenteCaEvolutComponent {
   data: [] = [];
   form: FormGroup;
   errorMessage: string = '';
-  CAGlobal: any;
+  CAGlobal1: any;
+  CAGlobal2: any;
   isLoading: boolean = false;
-startDate: Date = new Date(2020, 0, 1); // Janvier 2020
-endDate: Date = new Date(2030, 0, 1);   // Janvier 2030
+
   constructor(private fb: FormBuilder, private venteService: VenteService) {
     const now = new Date();
     const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
@@ -69,8 +71,8 @@ endDate: Date = new Date(2030, 0, 1);   // Janvier 2030
       dateFacture: [true],
       dateBL: [false],
       inclureBLs: [false],
-      dateDebut: [this.startDate],
-      dateFin: [this.endDate],
+      dateDebut: [startOfYear],
+      dateFin: [endOfYear],
       groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
 
     });
@@ -78,11 +80,19 @@ endDate: Date = new Date(2030, 0, 1);   // Janvier 2030
 
   }
   ngOnInit() {
-  const debut = this.form.get('dateDebut')?.value;
-  const fin = this.form.get('dateFin')?.value;
+this.loadBothYears();
+  this.form.get('dateFacture')?.valueChanges.subscribe(value => {
+    if (value) {
+      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
+    }
+  });
 
-  this.startDate = debut ? new Date(debut) : new Date();
-  this.endDate = fin ? new Date(fin) : new Date();
+  this.form.get('dateBL')?.valueChanges.subscribe(value => {
+    if (value) {
+      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
+    }
+  });
+
 }
  chooseYear(normalizedYear: moment.Moment, controlName: string, picker: any): void {
   const ctrl = this.form.get(controlName);
@@ -92,6 +102,52 @@ endDate: Date = new Date(2030, 0, 1);   // Janvier 2030
   }
   picker.close();
 }
+
+
+
+onSubmit(): void {
+  if (this.form.valid) {
+    this.loadBothYears();
+  }
+}
+
+loadBothYears(): void {
+  const formValues = this.form.value;
+
+  const year1 = formValues.dateDebut.getFullYear();
+  const year2 = formValues.dateFin.getFullYear();
+
+  const dateDebut1 = moment({ year: year1, month: 0, day: 1 }).format('YYYY-MM-DD');
+  const dateFin1 = moment({ year: year1, month: 11, day: 31 }).format('YYYY-MM-DD');
+
+  const dateDebut2 = moment({ year: year2, month: 0, day: 1 }).format('YYYY-MM-DD');
+  const dateFin2 = moment({ year: year2, month: 11, day: 31 }).format('YYYY-MM-DD');
+
+  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
+  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
+  const groupBy = "mois";
+
+  this.isLoading = true;
+
+  forkJoin([
+    this.venteService.getCAPeriod(dateDebut1, dateFin1, mode, inclureBLs, groupBy),
+    this.venteService.getCAPeriod(dateDebut2, dateFin2, mode, inclureBLs, groupBy)
+  ]).subscribe({
+    next: ([data1, data2]) => {
+      this.CAGlobal1 = data1;
+      this.CAGlobal2 = data2;
+      this.isLoading = false;
+      console.log('CA Global 1 :', this.CAGlobal1);
+      console.log('CA Global 2 :', this.CAGlobal2);
+    },
+    error: (error) => {
+      console.error('Erreur lors du chargement du CA Global', error);
+      this.errorMessage = 'Erreur lors du chargement du CA Global';
+      this.isLoading = false;
+    }
+  });
+}
+
 
 
 }

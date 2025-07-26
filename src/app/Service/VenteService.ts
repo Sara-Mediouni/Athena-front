@@ -16,7 +16,8 @@ export class VenteService  {
   constructor(private http: HttpClient, private router: Router) {}
 
    getCAGlobal(dateDebut: string, dateFin: string, mode: string,InclureBLs:string): Observable<any> {
-  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('accessToken'): '';
+ const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
+
   console.log('Token utilisé:', token);
 
   if (!token) {
@@ -37,7 +38,7 @@ export class VenteService  {
   return this.http.get(`${this.apiUrl}/chiffre-affaire`, { params ,headers });
 }
   getCAPeriod(dateDebut: string, dateFin: string, mode: string,InclureBLs:string, groupBy:string): Observable<any> {
-  const token = typeof localStorage !== 'undefined'  ? localStorage.getItem('accessToken'): '';
+const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   console.log('Token utilisé:', token);
 
   if (!token) {
