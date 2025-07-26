@@ -15,9 +15,28 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { VenteService } from '../../../Service/VenteService';
 import { SplineAreaChartComponent } from '../../../apexcharts/area-charts/spline-area-chart/spline-area-chart.component';
+import moment from 'moment';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
+export const YEAR_ONLY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY',
+  },
+  display: {
+    dateInput: 'YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 @Component({
   selector: 'app-vente-ca-evolut',
+  standalone: true,
+  providers: [
+  { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+  { provide: MAT_DATE_FORMATS, useValue: YEAR_ONLY_FORMATS }
+],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -32,14 +51,14 @@ import { SplineAreaChartComponent } from '../../../apexcharts/area-charts/spline
   styleUrl: './vente-ca-evolut.component.scss'
 })
 export class VenteCaEvolutComponent {
+  
   data: [] = [];
   form: FormGroup;
   errorMessage: string = '';
   CAGlobal: any;
-
-  doc: any;
   isLoading: boolean = false;
-
+startDate: Date = new Date(2020, 0, 1); // Janvier 2020
+endDate: Date = new Date(2030, 0, 1);   // Janvier 2030
   constructor(private fb: FormBuilder, private venteService: VenteService) {
     const now = new Date();
     const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
@@ -50,11 +69,29 @@ export class VenteCaEvolutComponent {
       dateFacture: [true],
       dateBL: [false],
       inclureBLs: [false],
-      dateDebut: [startOfYear],
-      dateFin: [endOfYear],
+      dateDebut: [this.startDate],
+      dateFin: [this.endDate],
       groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
 
     });
 
+
   }
+  ngOnInit() {
+  const debut = this.form.get('dateDebut')?.value;
+  const fin = this.form.get('dateFin')?.value;
+
+  this.startDate = debut ? new Date(debut) : new Date();
+  this.endDate = fin ? new Date(fin) : new Date();
+}
+ chooseYear(normalizedYear: moment.Moment, controlName: string, picker: any): void {
+  const ctrl = this.form.get(controlName);
+  if (ctrl) {
+    const selected = moment({ year: normalizedYear.year(), month: 0, day: 1 });
+    ctrl.setValue(selected);
+  }
+  picker.close();
+}
+
+
 }

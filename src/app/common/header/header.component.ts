@@ -79,6 +79,7 @@ selectEntreprise(ent: EntrepriseDTO) {
   }
 }
 
+
     // Burger Menu Toggle
     toggle() {
         this.toggleService.toggle();
@@ -101,18 +102,19 @@ selectEntreprise(ent: EntrepriseDTO) {
         this.themeService.toggleTheme();
     }
 
-      loadEntreprises(): void {
-    
-    this.entService.getAll().subscribe({
-      next: (data) => {
-        this.entreprises  = data; 
-      },
-      error: (error) => {
-        console.error('Erreur lors du chargement des entreprises', error);
-        this.errorMessage = 'Erreur lors du chargement des entreprises';
-      }
-    });
-  }
+ loadEntreprises(): void {
+  this.entService.getAll().subscribe({
+    next: (data) => {
+      this.entreprises = data;
+      this.loadSelectedEntrepriseFromCookie(); // 👈 Ajoute cette ligne ici aussi
+    },
+    error: (error) => {
+      console.error('Erreur lors du chargement des entreprises', error);
+      this.errorMessage = 'Erreur lors du chargement des entreprises';
+    }
+  });
+}
+
    loadUser(): void {
   if (typeof localStorage !== 'undefined') {
     this.token = localStorage.getItem('accessToken');

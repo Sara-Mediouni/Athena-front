@@ -73,14 +73,18 @@
                 </div>
                 
                
-              
-                   <div *ngIf="!isLoading" class="chart-container"> 
-                  
-                   <div class="row">
-                        <div class="col-md-12" style="height: 50%; width: 80%; justify-content: center; justify-items: center;">
-                             <app-pie-donut-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-pie-donut-chart>
-                        </div>
-                        <div class="col-md-12">
+              <div *ngIf="!isLoading" class="chart-container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 d-flex justify-content-center">
+      <div class="chart-wrapper">
+        <app-pie-donut-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-pie-donut-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+                             
                               <table mat-table [dataSource]="dataSource">
 
 

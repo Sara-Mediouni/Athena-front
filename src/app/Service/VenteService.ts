@@ -16,7 +16,7 @@ export class VenteService  {
   constructor(private http: HttpClient, private router: Router) {}
 
    getCAGlobal(dateDebut: string, dateFin: string, mode: string,InclureBLs:string): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
   if (!token) {

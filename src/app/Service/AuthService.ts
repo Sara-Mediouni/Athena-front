@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, tap, throwError } from "rxjs";
 import { UserService } from "./UserService";
 import { User } from "../Model/User";
 
@@ -111,6 +111,20 @@ private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
       }
     );
   }
+getCurrentUserOrLoad(): Promise<User | null> {
+  const current = this.currentUserSubject.value;
+  if (current) return Promise.resolve(current);
+
+  const token = localStorage.getItem('accessToken');
+  if (!token) return Promise.resolve(null);
+
+  return firstValueFrom(this.userService.getUserConnected(token))
+    .then(user => {
+      this.currentUserSubject.next(user);
+      return user;
+    })
+    .catch(() => null);
+}
 
   // Déconnexion de l'utilisateur
   logout(): void {

@@ -1,6 +1,6 @@
 <!-- 🧭 Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-  <h5 class="mb-0">Chiffre d'affaires Par Periode</h5>
+  <h5 class="mb-0">Evolution Chiffre d'affaires</h5>
   <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
     <li class="breadcrumb-item position-relative">
       <a routerLink="/" class="d-inline-block position-relative">
@@ -8,7 +8,7 @@
       </a>
     </li>
     <li class="breadcrumb-item position-relative">Vente</li>
-    <li class="breadcrumb-item position-relative">CA par Periode</li>
+    <li class="breadcrumb-item position-relative">Evolution CA</li>
   </ol>
 </div>
 
@@ -24,12 +24,24 @@
 
             <!-- Dates -->
             <div class="col-md-6 mb-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Date de début</mat-label>
-                <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart">
-                <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-                <mat-datepicker #pickerStart></mat-datepicker>
-              </mat-form-field>
+             <mat-form-field appearance="outline" class="w-100">
+  <mat-label>Année de début</mat-label>
+  <input
+    matInput
+    [matDatepicker]="pickerStart"
+    formControlName="dateDebut"
+    readonly
+    (click)="pickerStart.open()"
+  >
+  <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+  <mat-datepicker
+    #pickerStart
+    startView="multi-year"
+    (yearSelected)="chooseYear($event, 'dateDebut', pickerStart)"
+    panelClass="year-picker"
+  ></mat-datepicker>
+</mat-form-field>
+
             </div>
 
             <div class="col-md-6 mb-2">
@@ -41,7 +53,7 @@
               </mat-form-field>
             </div>
 
-            <!-- Préférences + GroupBy -->
+            <!-- Préférences  -->
             <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
               <!-- Préférences -->
               <div class="d-flex flex-wrap align-items-center gap-2">
@@ -51,19 +63,7 @@
                 <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
               </div>
 
-              <!-- GroupBy -->
-              <div class="d-flex flex-wrap align-items-center gap-2">
-                <mat-icon class="me-1">calendar_view_week</mat-icon>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'jour'"
-                  (change)="form.get('groupBy')?.setValue('jour')">Jour</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'semaine'"
-                  (change)="form.get('groupBy')?.setValue('semaine')">Semaine</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'mois'"
-                  (change)="form.get('groupBy')?.setValue('mois')">Mois</mat-checkbox>
-              </div>
+            
             </div>
 
             <!-- Bouton -->

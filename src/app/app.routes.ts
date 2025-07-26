@@ -411,7 +411,7 @@ export const routes: Routes = [
             {path: 'periode', component: VenteCaPeriodeComponent},
             {path: 'depot', component: VenteCaDepotComponent},
             {path: 'commercial', component: VenteCaCommercialComponent},
-            {path: 'evolutive', component: VenteCaEvolutComponent},
+            {path: 'evolution', component: VenteCaEvolutComponent},
         ]
     },
     {

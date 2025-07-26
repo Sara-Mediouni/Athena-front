@@ -8,38 +8,38 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { LoaderService } from '../../apps/loader/loader.service';
 import { UserService } from '../../Service/UserService';
+import { AuthService } from '../../Service/AuthService';
 
 export const authRoleGuard: CanActivateChildFn = async (route, state): Promise<boolean | UrlTree> => {
   const router = inject(Router);
   const loader = inject(LoaderService);
-  const userService = inject(UserService);
+  const auth = inject(AuthService);
 
-  const token = (typeof localStorage !== 'undefined') ? localStorage.getItem('accessToken') : null;
-
-  if (!token) {
-    loader.show();
+ 
+  if (!auth.isLoggedIn()) {
     return router.createUrlTree(['/authentication']);
   }
 
-  let user;
-  try {
-    user = await firstValueFrom(userService.getUserConnected(token));
-  } catch (e) {
-    console.error('Erreur utilisateur :', e);
+  
+  loader.show();
+  const user = await auth.getCurrentUserOrLoad(); 
+
+  loader.hide();
+
+  if (!user) {
     return router.createUrlTree(['/authentication']);
   }
 
-  const userRole = user?.role || 'USER';
   const allowedRoles = route.data?.['roles'] as string[];
+  const role = user.role || 'USER';
 
-  if (!allowedRoles || allowedRoles.includes(userRole)) {
-    loader.hide();
+  if (!allowedRoles || allowedRoles.includes(role)) {
     return true;
   }
 
-  loader.hide();
-  return redirectByRole(userRole, router);
+  return redirectByRole(role, router);
 };
+
 
 function redirectByRole(role: string, router: Router): UrlTree {
   if (role === 'USER') {
