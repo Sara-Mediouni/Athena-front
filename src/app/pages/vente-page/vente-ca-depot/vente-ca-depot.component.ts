@@ -20,6 +20,9 @@ import { DataLabelsColumnChartComponent } from '../../../apexcharts/column-chart
 import { DistributedColumnChartComponent } from '../../../apexcharts/column-charts/distributed-column-chart/distributed-column-chart.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
 
 
 @Component({
@@ -33,87 +36,54 @@ import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/bas
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
-      MatProgressSpinner,BasicColumnChartComponent,
+      MatProgressSpinner,BasicColumnChartComponent,VenteFilterComponent,
       NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-depot.component.html',
   styleUrl: './vente-ca-depot.component.scss'
 })
 export class VenteCaDepotComponent {
-    @Output() groupByChange = new EventEmitter<string>();
+    
 
   
   data: []=[];
-  form: FormGroup;
+  
   errorMessage: string = '';
   CAGlobal: any;
   
   doc: any;
   isLoading: boolean = false;
+  dataSource = new MatTableDataSource<EntrepriseDTO>([]);
 
   
-   constructor(private fb: FormBuilder,private venteService: VenteService) { 
-    const now = new Date();
-  const startOfYear = new Date(2021, 0, 1); 
-  const endOfYear = new Date(2022, 0, 1);
- 
+   constructor(private venteService: VenteService) { 
 
-  this.form = this.fb.group({
-    dateFacture: [true],
-    dateBL: [false],
-    inclureBLs: [false],
-    dateDebut: [startOfYear],
-    dateFin: [endOfYear],
-    groupBy: ['depot'] 
 
-  });
+  }
     
-  }
-  changeGroupBy(groupBy: string): void {
-    this.groupByChange.emit(groupBy);
-  }
- ngOnInit(): void {
-  this.loadCA();
-  this.form.get('dateFacture')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
-    }
-  });
-
-  this.form.get('dateBL')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
-    }
-  });
-}
-  onSubmit(): void {
-    if (this.form.valid) {
-    this.loadCA(); 
-  }
-  }
-loadCA(): void {
-  const formValues = this.form.value;
-  const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
-  const dateFin = formValues.dateFin.toISOString().split('T')[0];
-  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
+  
+ 
+ loadCA(filtre: any): void {
+  const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
+  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "depot";
 
-  this.isLoading = true; 
+  this.isLoading = true;
 
   this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy).subscribe({
     next: (data) => {
       this.CAGlobal = data;
-      this.isLoading = false; 
-      console.log('CA Global:', this.CAGlobal);
+      this.isLoading = false;
+      this.dataSource.data = this.CAGlobal;
     },
     error: (error) => {
-      console.error('Erreur lors du chargement du CA Global', error);
-      this.errorMessage = 'Erreur lors du chargement du CA Global';
-      this.isLoading = false; 
+      console.error('Erreur lors du chargement du CA Depot', error);
+      this.errorMessage = 'Erreur lors du chargement du CA Depot';
+      this.isLoading = false;
     }
   });
 }
-
 
 }
     

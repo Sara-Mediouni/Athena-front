@@ -11,7 +11,7 @@
     <mat-label>Entreprise</mat-label>
     <mat-select  [(value)]="selectedEntrepriseId" (selectionChange)="selectEntreprise($event.value)" 
    >
-      <mat-option *ngFor="let ent of entreprises" [value]="ent.id">
+      <mat-option *ngFor="let ent of entreprises" [value]="ent">
         {{ ent.name }}
       </mat-option>
     </mat-select>

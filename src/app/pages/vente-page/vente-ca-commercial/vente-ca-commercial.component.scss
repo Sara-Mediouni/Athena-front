@@ -1,6 +1,6 @@
 .mat-mdc-card {
     &.daxa-card {
-        &.users-card {
+        &.vente-card {
             .mat-mdc-card-content {
                 margin: {
                     left: -20px;
@@ -56,7 +56,7 @@
 ::ng-deep {
     .mat-mdc-card {
         &.daxa-card {
-            &.users-card {
+            &.vente-card {
                 .mat-mdc-card-content {
                     .users-table {
                         .mat-mdc-paginator {
@@ -78,7 +78,7 @@
 
     .mat-mdc-card {
         &.daxa-card {
-            &.users-card {
+            &.vente-card {
                 .mat-mdc-card-header {
                     .mat-mdc-button {
                         &.add-new-btn {
@@ -123,7 +123,7 @@
     ::ng-deep {
         .mat-mdc-card {
             &.daxa-card {
-                &.users-card {
+                &.vente-card {
                     .mat-mdc-card-header {
                         .mat-mdc-card-header-text {
                             display: block;
@@ -152,7 +152,7 @@
 
     .mat-mdc-card {
         &.daxa-card {
-            &.users-card {
+            &.vente-card {
                 .mat-mdc-card-content {
                     margin: {
                         left: -20px;
@@ -165,7 +165,7 @@
     ::ng-deep {
         .mat-mdc-card {
             &.daxa-card {
-                &.users-card {
+                &.vente-card {
                     .mat-mdc-card-content {
                         .users-table {
                             .mat-mdc-paginator {

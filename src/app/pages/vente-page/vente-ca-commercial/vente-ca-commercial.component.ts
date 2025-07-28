@@ -31,9 +31,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
 import { PieDonutChartComponent } from '../../../apexcharts/pie-charts/pie-donut-chart/pie-donut-chart.component';
+import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
 @Component({
   selector: 'app-vente-ca-commercial',
-  imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule,MatFormField,MatLabel,
+  imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule,
     
     MatFormFieldModule,
     MatSelectModule,
@@ -43,7 +44,7 @@ import { PieDonutChartComponent } from '../../../apexcharts/pie-charts/pie-donut
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       MatProgressSpinner,
       NgxMaterialTimepickerModule,PieDonutChartComponent,
-     RouterLink,MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule,CommonModule,],  
+     RouterLink,MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule,CommonModule,VenteFilterComponent],  
   templateUrl: './vente-ca-commercial.component.html',
   styleUrl: './vente-ca-commercial.component.scss'
 })
@@ -56,7 +57,7 @@ export class VenteCaCommercialComponent {
   isLoading = true;
    user: string | null = null;
     role: string | null = null;
-    form: FormGroup;
+   
   token:any;
   currentUser:any;
   CAGlobal: any;
@@ -71,71 +72,40 @@ constructor(
     private fb: FormBuilder,
     
     ) {
-         const now = new Date();
-  const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
-  const endOfYear = new Date(2022, 0, 1);
- 
-
-  this.form = this.fb.group({
-    dateFacture: [true],
-    dateBL: [false],
-    inclureBLs: [false],
-    dateDebut: [startOfYear],
-    dateFin: [endOfYear],
-    groupBy: ['commercial'] // Vous pouvez ajuster cette valeur selon vos besoins
-
-  });
+   
     }
-   ngOnInit(): void {
-     this.form.get('dateFacture')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
-    }
-  });
 
-  this.form.get('dateBL')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
-    }
-  });
-  this.loadCA();
-}
 
 
     
-    loadCA(): void {
-  const formValues = this.form.value;
-  const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
-  const dateFin = formValues.dateFin.toISOString().split('T')[0];
-  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
+  loadCA(filtre: any): void {
+  const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
+  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "commercial";
 
-  this.isLoading = true; 
+  this.isLoading = true;
 
   this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy).subscribe({
     next: (data) => {
       this.CAGlobal = data;
       this.isLoading = false;
       this.dataSource.data = this.CAGlobal;
-      console.log('CA Global:', this.CAGlobal);
     },
     error: (error) => {
-      console.error('Erreur lors du chargement du CA Global', error);
-      this.errorMessage = 'Erreur lors du chargement du CA Global';
-      this.isLoading = false; 
+      console.error('Erreur lors du chargement du CA Commercial', error);
+      this.errorMessage = 'Erreur lors du chargement du CA Commercial';
+      this.isLoading = false;
     }
   });
 }
+
     ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator;
     }
 
-     onSubmit(): void {
-    if (this.form.valid) {
-    this.loadCA(); 
-  }
-  }
+
 
 
 

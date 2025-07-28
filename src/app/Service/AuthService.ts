@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, tap, throwError } from "rxjs";
 import { UserService } from "./UserService";
 import { User } from "../Model/User";
-
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -34,7 +34,8 @@ private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public currentUser$ = this.currentUserSubject.asObservable();
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router,private userService: UserService) {
+  constructor(private http: HttpClient, private router: Router,private cookieService:CookieService,
+    private userService: UserService) {
       const token = (typeof localStorage !== "undefined") ? localStorage.getItem('accessToken'): null;
     if (token) {
       this.isAuthenticatedSubject.next(true);
@@ -103,11 +104,11 @@ private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
     this.userService.getUserConnected(token).subscribe(
       (user) => {
         
-        this.currentUserSubject.next(user); // Mettre à jour l'état utilisateur
+        this.currentUserSubject.next(user); 
       },
       (error) => {
         console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-        this.currentUserSubject.next(null); // Réinitialiser l'utilisateur en cas d'erreur
+        this.currentUserSubject.next(null);
       }
     );
   }
@@ -131,9 +132,12 @@ getCurrentUserOrLoad(): Promise<User | null> {
   this.currentUserSubject.next(null);
   this.isAuthenticated = false;
   this.isAuthenticatedSubject.next(false); 
+  
+
 
   if (typeof window !== 'undefined') {
     localStorage.clear();
+    this.cookieService.delete('selectedEntrepriseId');
   }
 }
 

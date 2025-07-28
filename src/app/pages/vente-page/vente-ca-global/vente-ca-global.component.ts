@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../apps/loader/loader.service';
 import { finalize } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
 
 @Component({
   selector: 'app-vente-ca-global',
@@ -35,14 +36,14 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatInputModule,CommonModule,
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,MatProgressSpinner,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
-      MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
+      MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,VenteFilterComponent,
       NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-global.component.html',
   styleUrl: './vente-ca-global.component.scss'
 })
 export class VenteCaGlobalComponent {
   data: []=[];
-  form: FormGroup;
+
   errorMessage: string = '';
   CAGlobal: any;
   caht: any;
@@ -50,49 +51,16 @@ export class VenteCaGlobalComponent {
   doc: any;
   isLoading: boolean = false;
   
-   constructor(private fb: FormBuilder,private venteService: VenteService,private loadingService: LoaderService) { 
-    const now = new Date();
-  const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
-  const endOfYear = new Date(2022, 0, 1);
- 
+   constructor(private venteService: VenteService,private loadingService: LoaderService) { 
 
-  this.form = this.fb.group({
-    dateFacture: [true],
-    dateBL: [false],
-    inclureBLs: [false],
-    dateDebut: [startOfYear],
-    dateFin: [endOfYear],
+  }
 
-  });
-    
-  }
- ngOnInit(): void {
-  this.loadCA();
-  this.form.get('dateFacture')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
-    }
-  });
+ loadCA(filtre: any): void {
+ const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
+  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
 
-  this.form.get('dateBL')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
-    }
-  });
-}
-  onSubmit(): void {
-    if (this.form.valid) {
-    
-    this.loadCA(); 
-  }
-  }
- loadCA(): void {
-  this.isLoading = true;
-  const formValues = this.form.value;
-  const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
-  const dateFin = formValues.dateFin.toISOString().split('T')[0];
-  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : 'dateBL';
 
   this.isLoading = true; 
   this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs)

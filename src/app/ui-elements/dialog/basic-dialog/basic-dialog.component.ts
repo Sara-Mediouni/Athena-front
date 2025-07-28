@@ -20,6 +20,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
 import { CookieService } from 'ngx-cookie-service';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
 
 export interface DialogData {
     entreprises: EntrepriseDTO[];
@@ -79,7 +80,7 @@ export class DialogOverviewExampleDialog {
     private cookieService = inject(CookieService);
     constructor(
         public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-        
+        private entrepriseSelectionService: EntrepriseSelectionService,
         private router: Router,
         
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -91,11 +92,12 @@ export class DialogOverviewExampleDialog {
         this.dialogRef.close();
         this.router.navigate(['/entreprises']);
     }
-     selectEntreprise(id: string) {
-        this.selectedEntrepriseId=id;
-        console.log('Entreprise sélectionnée :', id);
-    this.cookieService.set('selectedEntrepriseId', this.selectedEntrepriseId, 7);
-  }
+ selectEntreprise(ent: EntrepriseDTO) {
+  this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
+  this.entrepriseSelectionService.setSelectedEntreprise(ent);
+  this.dialogRef.close(ent);
+}
+
  
 
 }

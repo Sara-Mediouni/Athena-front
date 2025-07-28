@@ -1,0 +1,64 @@
+::ng-deep {
+    .mat-mdc-card {
+        &.daxa-card {
+            padding-left: 50px;
+            padding-right: 50px;
+            &.vente-card {
+                width: 100%;
+                
+                .mat-mdc-card-content {
+                  padding-top: 20px;
+                     .title {
+                    margin-bottom: 20px;
+                    margin-left: 10px;
+                }
+                .main-label {
+                    margin-bottom: 12px;
+                }
+                    
+                }
+            }
+        }
+    }
+}
+.mat-mdc-card {
+    &.daxa-card {
+        &.vente-card {
+          margin-bottom: 10px;
+            .mat-mdc-card-content {
+              
+                margin: {
+                    left: -20px;
+                    right: -20px;
+                };
+                
+            }
+            &.rtl-enabled {
+                .mat-mdc-card-content {
+                    .vente-table {
+                        .mat-mdc-table {
+                            .mat-mdc-header-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .mat-mdc-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .info {
+                                .image {
+                                    margin: {
+                                        right: 0;
+                                        left: 12px;
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

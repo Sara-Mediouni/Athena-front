@@ -16,56 +16,7 @@
 <div class="d-flex flex-column gap-4 w-100">
 
   
-  <div class="filter-card-wrapper">
-    <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
-      <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="row align-items-end g-2">
-
-            <!-- Dates -->
-            <div class="col-md-6 mb-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Date de début</mat-label>
-                <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart">
-                <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-                <mat-datepicker #pickerStart></mat-datepicker>
-              </mat-form-field>
-            </div>
-
-            <div class="col-md-6 mb-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Date de fin</mat-label>
-                <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd">
-                <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-                <mat-datepicker #pickerEnd></mat-datepicker>
-              </mat-form-field>
-            </div>
-
-            <!-- Préférences + GroupBy -->
-            <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
-              <!-- Préférences -->
-              <div class="d-flex flex-wrap align-items-center gap-2">
-                <mat-icon class="me-1">settings</mat-icon>
-                <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
-                <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
-                <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
-              </div>
-
-            
-            </div>
-
-            <!-- Bouton -->
-            <div class="col-12 d-flex justify-content-end mt-2">
-              <button mat-flat-button color="primary" type="submit">
-                <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
-              </button>
-            </div>
-
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <app-vente-filter (filtrer)="loadCA($event)" [defaultGroupBy]="'depot'"></app-vente-filter>
 
 
   <div class="filter-card-wrapper">
