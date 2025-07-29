@@ -88,10 +88,13 @@ export class DialogOverviewExampleDialog {
         this.entreprises = data.entreprises;
     console.log('Entreprises reçues :', this.entreprises);}
 
-    onNoClick(): void {
-        this.dialogRef.close();
-        this.router.navigate(['/entreprises']);
-    }
+  onNoClick(): void {
+  const entToUse:EntrepriseDTO = this.entreprises[0];
+  if (entToUse) {
+    this.entrepriseSelectionService.setSelectedEntreprise(entToUse);
+  }
+  this.dialogRef.close(entToUse);
+}
  selectEntreprise(ent: EntrepriseDTO) {
   this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
   this.entrepriseSelectionService.setSelectedEntreprise(ent);

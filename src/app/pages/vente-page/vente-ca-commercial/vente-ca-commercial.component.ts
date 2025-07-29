@@ -32,6 +32,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
 import { PieDonutChartComponent } from '../../../apexcharts/pie-charts/pie-donut-chart/pie-donut-chart.component';
 import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-vente-ca-commercial',
   imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule,
@@ -65,22 +67,34 @@ export class VenteCaCommercialComponent {
   dataSource = new MatTableDataSource<EntrepriseDTO>([]);
   selection = new SelectionModel<Entreprise>(true, []);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private entrepriseSub!: Subscription;
+          
+        private lastFiltre: any;
 constructor(
     public themeService: CustomizerSettingsService,
     
     private venteService: VenteService,
     private fb: FormBuilder,
-    
+     private entrepriseSelectionService: EntrepriseSelectionService
     ) {
    
     }
 
 
 
+ngOnInit(): void {
+   
+    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+      if (entreprise && this.lastFiltre) {
+        this.loadCA(this.lastFiltre);
+      }
+    });
+  }
     
   loadCA(filtre: any): void {
-  const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
-  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+    this.lastFiltre = filtre;
+  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
+  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "commercial";
@@ -104,7 +118,9 @@ constructor(
     ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator;
     }
-
+  ngOnDestroy(): void {
+    this.entrepriseSub?.unsubscribe();
+  }
 
 
 

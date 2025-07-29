@@ -12,6 +12,7 @@
     &.daxa-card {
         &.vente-card {
           margin-bottom: 10px;
+          overflow-x: scroll;
             .mat-mdc-card-content {
               
                 margin: {
@@ -115,11 +116,7 @@ label.form-label {
   margin: 0 !important;
   padding: 0 4px;
 }
-.chart-container{
-    border-color: #eff3f9;
-    padding: 30px;
-    height:min-content;
-}
+
 .compact-checkbox .mat-checkbox-layout {
   margin-bottom: 0 !important;
   align-items: center;
@@ -135,7 +132,19 @@ mat-checkbox {
   margin-right: 12px;
   font-size: 0.85rem;
 }
+.scrollable-chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
 
+.chart-container {
+  width: 100%;
+}
+.scrollable-chart app-line-area-chart {
+  min-width: 800px;
+  display: block;
+}
 mat-icon {
   font-size: 20px;
   vertical-align: middle;

@@ -1,4 +1,3 @@
-<!-- 🧭 Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
   <h5 class="mb-0">Evolution Chiffre d'affaires</h5>
   <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
@@ -12,84 +11,28 @@
   </ol>
 </div>
 
-<!-- 🧩 Conteneur principal -->
+
 <div class="d-flex flex-column gap-4 w-100">
 
-  <!-- 🟦 Carte Filtres -->
-  <div class="filter-card-wrapper">
-    <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
-      <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="row align-items-end g-2">
-
-            <!-- Dates -->
-     <!-- Année de début -->
-<div class="col-md-6 mb-2">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Année de début</mat-label>
-    <input matInput [matDatepicker]="pickerStart" formControlName="dateDebut" readonly (click)="pickerStart.open()">
-    <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-    <mat-datepicker #pickerStart startView="multi-year"
-      (yearSelected)="chooseYear($event, 'dateDebut', pickerStart)"
-      panelClass="year-picker">
-    </mat-datepicker>
-  </mat-form-field>
-</div>
-
-<!-- Année de fin -->
-<div class="col-md-6 mb-2">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Année de fin</mat-label>
-    <input matInput [matDatepicker]="pickerEnd" formControlName="dateFin" readonly (click)="pickerEnd.open()">
-    <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-    <mat-datepicker #pickerEnd startView="multi-year"
-      (yearSelected)="chooseYear($event, 'dateFin', pickerEnd)"
-      panelClass="year-picker">
-    </mat-datepicker>
-  </mat-form-field>
-</div>
-
-            <!-- Préférences  -->
-            <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
-              <!-- Préférences -->
-              <div class="d-flex flex-wrap align-items-center gap-2">
-                <mat-icon class="me-1">settings</mat-icon>
-                <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
-                <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
-                <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
-              </div>
+<app-vente-filter (filtrer)="loadCA($event)"  [showExtendedDates]="true" [defaultGroupBy]="'mois'" ></app-vente-filter>
 
 
-            </div>
-
-            <!-- Bouton -->
-            <div class="col-12 d-flex justify-content-end mt-2">
-              <button mat-flat-button color="primary" type="submit">
-                <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
-              </button>
-            </div>
-
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <!-- 🟩 Carte Chart -->
   <div class="filter-card-wrapper">
     <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
       <mat-card-content>
 
-        <!-- Loader -->
+
         <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
           <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
         </div>
 
-        <!-- Chart -->
-        <div *ngIf="!isLoading" class="chart-container">
-          <app-spline-area-chart *ngIf="CAGlobal1?.length > 0 || CAGlobal2?.length > 0" [data1]="CAGlobal1" [data2]="CAGlobal2"></app-spline-area-chart>
-        </div>
 
+       <div *ngIf="!isLoading" class="chart-container">
+  <div class="scrollable-chart">
+          <app-line-area-chart *ngIf="CAGlobal1?.length > 0 || CAGlobal2?.length > 0" [data1]="CAGlobal1"
+            [data2]="CAGlobal2" [start1]="start1" [start2]="start2" [end1]="end1" [end2]="end2"></app-line-area-chart>
+        </div>
+ </div>
       </mat-card-content>
     </mat-card>
   </div>

@@ -38,6 +38,7 @@
 .mat-mdc-card {
     &.daxa-card {
         &.vente-card {
+          overflow-x: scroll;
           margin-bottom: 10px;
             .mat-mdc-card-content {
               

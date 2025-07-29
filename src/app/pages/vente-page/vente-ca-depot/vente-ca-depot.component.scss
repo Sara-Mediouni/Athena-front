@@ -39,6 +39,7 @@
     &.daxa-card {
         &.vente-card {
           margin-bottom: 10px;
+          overflow-x: scroll;
             .mat-mdc-card-content {
               
                 margin: {
@@ -123,6 +124,19 @@
             }
         }
     }
+}
+.scrollable-chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.chart-container {
+  width: 100%;
+}
+.scrollable-chart app-basic-column-chart {
+  min-width: 900px;
+  display: block;
 }
 .preferences-container mat-checkbox {
   margin-bottom: 4px;

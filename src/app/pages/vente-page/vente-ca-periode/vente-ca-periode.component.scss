@@ -11,6 +11,7 @@
 .mat-mdc-card {
     &.daxa-card {
         &.vente-card {
+            overflow-x: scroll;
           margin-bottom: 10px;
             .mat-mdc-card-content {
               
@@ -115,11 +116,25 @@ label.form-label {
   margin: 0 !important;
   padding: 0 4px;
 }
-.chart-container{
-    border-color: #eff3f9;
-    padding: 30px;
-    height:min-content;
+.filter-card-wrapper{
+    overflow-x: scroll;
+  
 }
+.scrollable-chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.chart-container {
+  width: 100%;
+}
+.scrollable-chart app-basic-column-chart {
+  min-width: 800px;
+  display: block;
+}
+
+
 .compact-checkbox .mat-checkbox-layout {
   margin-bottom: 0 !important;
   align-items: center;

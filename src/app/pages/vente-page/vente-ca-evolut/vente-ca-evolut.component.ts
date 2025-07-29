@@ -11,7 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -20,25 +20,15 @@ import { SplineAreaChartComponent } from '../../../apexcharts/area-charts/spline
 import moment from 'moment';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { LineAreaChartComponent } from '../../../apexcharts/mixed-charts/line-area-chart/line-area-chart.component';
+import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
+import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
 
-export const YEAR_ONLY_FORMATS = {
-  parse: {
-    dateInput: 'YYYY',
-  },
-  display: {
-    dateInput: 'YYYY',
-    monthYearLabel: 'YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'YYYY',
-  },
-};
 @Component({
   selector: 'app-vente-ca-evolut',
   standalone: true,
-  providers: [
-  { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-  { provide: MAT_DATE_FORMATS, useValue: YEAR_ONLY_FORMATS }
-],
+ 
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -47,90 +37,61 @@ export const YEAR_ONLY_FORMATS = {
     MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
     MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
     MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
-    MatProgressSpinner, SplineAreaChartComponent,
+    MatProgressSpinner, LineAreaChartComponent,VenteFilterComponent,
     NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-evolut.component.html',
   styleUrl: './vente-ca-evolut.component.scss'
 })
 export class VenteCaEvolutComponent {
-  
+    private entrepriseSub!: Subscription;
+      
+    private lastFiltre: any;
   data: [] = [];
-  form: FormGroup;
   errorMessage: string = '';
   CAGlobal1: any;
   CAGlobal2: any;
   isLoading: boolean = false;
+  start1:any;
+  start2:any;
+  end1:any;
+  end2:any;
+  constructor(private venteService: VenteService,
+      private entrepriseSelectionService: EntrepriseSelectionService) {
+   
 
-  constructor(private fb: FormBuilder, private venteService: VenteService) {
-    const now = new Date();
-    const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
-    const endOfYear = new Date(2022, 0, 1);
+  }
 
 
-    this.form = this.fb.group({
-      dateFacture: [true],
-      dateBL: [false],
-      inclureBLs: [false],
-      dateDebut: [startOfYear],
-      dateFin: [endOfYear],
-      groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
 
+
+  ngOnInit(): void {
+   
+    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+      if (entreprise && this.lastFiltre) {
+        this.loadCA(this.lastFiltre);
+      }
     });
-
-
   }
-  ngOnInit() {
-this.loadBothYears();
-  this.form.get('dateFacture')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
-    }
-  });
 
-  this.form.get('dateBL')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
-    }
-  });
-
-}
- chooseYear(normalizedYear: moment.Moment, controlName: string, picker: any): void {
-  const ctrl = this.form.get(controlName);
-  if (ctrl) {
-    const selected = moment({ year: normalizedYear.year(), month: 0, day: 1 });
-    ctrl.setValue(selected);
-  }
-  picker.close();
-}
-
-
-
-onSubmit(): void {
-  if (this.form.valid) {
-    this.loadBothYears();
-  }
-}
-
-loadBothYears(): void {
-  const formValues = this.form.value;
-
-  const year1 = formValues.dateDebut.getFullYear();
-  const year2 = formValues.dateFin.getFullYear();
-
-  const dateDebut1 = moment({ year: year1, month: 0, day: 1 }).format('YYYY-MM-DD');
-  const dateFin1 = moment({ year: year1, month: 11, day: 31 }).format('YYYY-MM-DD');
-
-  const dateDebut2 = moment({ year: year2, month: 0, day: 1 }).format('YYYY-MM-DD');
-  const dateFin2 = moment({ year: year2, month: 11, day: 31 }).format('YYYY-MM-DD');
-
-  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
+loadCA(filtre: any): void {
+  
+ this.lastFiltre = filtre;
+  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
+  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
+    const dateDebut2 = filtre.dateDebut2.toLocaleDateString('fr-CA');
+  const dateFin2 = filtre.dateFin2.toLocaleDateString('fr-CA');
+  this.start1=dateDebut;
+  this.end1=dateFin;
+  this.start2=dateDebut2;
+  this.end2=dateFin2;
+  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "mois";
 
   this.isLoading = true;
 
   forkJoin([
-    this.venteService.getCAPeriod(dateDebut1, dateFin1, mode, inclureBLs, groupBy),
+    this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy),
     this.venteService.getCAPeriod(dateDebut2, dateFin2, mode, inclureBLs, groupBy)
   ]).subscribe({
     next: ([data1, data2]) => {
@@ -148,6 +109,8 @@ loadBothYears(): void {
   });
 }
 
-
+ngOnDestroy(): void {
+    this.entrepriseSub?.unsubscribe();
+  }
 
 }

@@ -1,6 +1,7 @@
 .mat-mdc-card {
     &.daxa-card {
         &.vente-card {
+            overflow-x: scroll;
             .mat-mdc-card-content {
                 margin: {
                     left: -20px;
@@ -52,7 +53,20 @@
             }
         }
     }
+.scrollable-chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
 
+.chart-container {
+  width: 100%;
+}
+
+.scrollable-chart app-pie-donut-chart {
+  min-width: 800px;
+  display: block;
+}
 ::ng-deep {
     .mat-mdc-card {
         &.daxa-card {

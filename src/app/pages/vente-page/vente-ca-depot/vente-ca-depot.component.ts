@@ -23,6 +23,8 @@ import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/bas
 import { MatTableDataSource } from '@angular/material/table';
 import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
 import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -46,6 +48,9 @@ export class VenteCaDepotComponent {
 
   
   data: []=[];
+  private entrepriseSub!: Subscription;
+        
+      private lastFiltre: any;
   
   errorMessage: string = '';
   CAGlobal: any;
@@ -55,16 +60,29 @@ export class VenteCaDepotComponent {
   dataSource = new MatTableDataSource<EntrepriseDTO>([]);
 
   
-   constructor(private venteService: VenteService) { 
+   constructor(private venteService: VenteService,
+         private entrepriseSelectionService: EntrepriseSelectionService) { 
 
 
   }
     
+  ngOnInit(): void {
+   
+    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+      if (entreprise && this.lastFiltre) {
+        this.loadCA(this.lastFiltre);
+      }
+    });
+  }
+
   
- 
+ ngOnDestroy(): void {
+    this.entrepriseSub?.unsubscribe();
+  }
  loadCA(filtre: any): void {
-  const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
-  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+  this.lastFiltre = filtre;
+  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
+  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "depot";

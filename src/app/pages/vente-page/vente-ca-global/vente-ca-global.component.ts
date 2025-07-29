@@ -20,10 +20,11 @@ import { NewTicketsCreatedComponent } from '../../../dashboard/help-desk/new-tic
 import { VenteService } from '../../../Service/VenteService';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../apps/loader/loader.service';
-import { finalize } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
-
+import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+import { EntrepriseSelectionService } from "../../../Service/EntrepriseSelectionService";
 @Component({
   selector: 'app-vente-ca-global',
   imports: [
@@ -50,14 +51,30 @@ export class VenteCaGlobalComponent {
   cattc: any;
   doc: any;
   isLoading: boolean = false;
-  
-   constructor(private venteService: VenteService,private loadingService: LoaderService) { 
+    private entrepriseSub!: Subscription;
+    
+  private lastFiltre: any;
+   constructor(private venteService: VenteService,private loadingService: LoaderService,
+    private entrepriseSelectionService: EntrepriseSelectionService){}
 
+
+  
+  ngOnInit(): void {
+   
+    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+      if (entreprise && this.lastFiltre) {
+        this.loadCA(this.lastFiltre);
+      }
+    });
   }
 
+  ngOnDestroy(): void {
+    this.entrepriseSub?.unsubscribe();
+  }
  loadCA(filtre: any): void {
- const dateDebut = filtre.dateDebut.toISOString().split('T')[0];
-  const dateFin = filtre.dateFin.toISOString().split('T')[0];
+  this.lastFiltre = filtre;
+ const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
+  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
 

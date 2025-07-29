@@ -23,16 +23,17 @@
     <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
       <mat-card-content>
 
-        <!-- Loader -->
+       
         <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
           <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
         </div>
 
-        <!-- Chart -->
+        
         <div *ngIf="!isLoading" class="chart-container">
+  <div class="scrollable-chart">
           <app-basic-column-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-basic-column-chart>
         </div>
-
+ </div>
       </mat-card-content>
     </mat-card>
   </div>

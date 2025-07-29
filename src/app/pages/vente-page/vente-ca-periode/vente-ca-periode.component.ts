@@ -20,6 +20,10 @@ import { DataLabelsColumnChartComponent } from '../../../apexcharts/column-chart
 import { DistributedColumnChartComponent } from '../../../apexcharts/column-charts/distributed-column-chart/distributed-column-chart.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
+import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
+import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -29,7 +33,7 @@ import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/bas
     MatFormFieldModule,
     MatSelectModule,
     BasicColumnChartComponent,
-    MatInputModule,CommonModule,
+    MatInputModule,CommonModule,VenteFilterComponent,
     MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
       MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
@@ -43,60 +47,37 @@ export class VenteCaPeriodeComponent {
 
   
   data: []=[];
-  form: FormGroup;
   errorMessage: string = '';
   CAGlobal: any;
-  
+     private entrepriseSub!: Subscription;
+      
+    private lastFiltre: any;
   doc: any;
   isLoading: boolean = false;
 
   
-   constructor(private fb: FormBuilder,private venteService: VenteService) { 
-    const now = new Date();
-  const startOfYear = new Date(2021, 0, 1); // 1er janvier de l'année en cours
-  const endOfYear = new Date(2022, 0, 1);
+   constructor(private fb: FormBuilder,private venteService: VenteService,
+       private entrepriseSelectionService: EntrepriseSelectionService) { 
+       }
  
+  ngOnInit(): void {
+   
+    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+      if (entreprise && this.lastFiltre) {
+        this.loadCA(this.lastFiltre);
+      }
+    });
+  }
 
-  this.form = this.fb.group({
-    dateFacture: [true],
-    dateBL: [false],
-    inclureBLs: [false],
-    dateDebut: [startOfYear],
-    dateFin: [endOfYear],
-    groupBy: ['mois'] // Vous pouvez ajuster cette valeur selon vos besoins
 
-  });
-    
-  }
-  changeGroupBy(groupBy: string): void {
-    this.groupByChange.emit(groupBy);
-  }
- ngOnInit(): void {
-  this.loadCA();
-  this.form.get('dateFacture')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateBL')?.setValue(false, { emitEvent: false });
-    }
-  });
+loadCA(filtre: any): void {
+  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
+  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
+  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
 
-  this.form.get('dateBL')?.valueChanges.subscribe(value => {
-    if (value) {
-      this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
-    }
-  });
-}
-  onSubmit(): void {
-    if (this.form.valid) {
-    this.loadCA(); 
-  }
-  }
-loadCA(): void {
-  const formValues = this.form.value;
-  const dateDebut = formValues.dateDebut.toISOString().split('T')[0];
-  const dateFin = formValues.dateFin.toISOString().split('T')[0];
-  const inclureBLs = formValues.inclureBLs ? 'true' : 'false';
-  const mode = formValues.dateFacture ? 'dateFacture' : (formValues.dateBL ? 'dateBL' : 'dateFacture');
-  const groupBy = formValues.groupBy;
+
+  const groupBy = filtre.groupBy;
 
   this.isLoading = true; 
 
