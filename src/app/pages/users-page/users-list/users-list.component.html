@@ -15,6 +15,9 @@
   </mat-card-header>
 
   <mat-card-content>
+        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
+          <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
+        </div>
     <div class="users-table">
       <div class="table-responsive">
         <table mat-table [dataSource]="dataSource">

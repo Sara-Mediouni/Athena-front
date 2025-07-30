@@ -10,8 +10,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
 
   const token = (typeof localStorage !== "undefined") ? localStorage.getItem('accessToken'): null;
+console.log('AuthGuard - isLoggedIn:', auth.isLoggedIn());
 
   return auth.isLoggedIn()
     ? true
     : router.createUrlTree(['/authentication']);
+
 };

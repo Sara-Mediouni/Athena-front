@@ -93,7 +93,7 @@ export class LineAreaChartService {
             }
           ],
           chart: {
-            height: 400,
+            height: 350,
             type: "line",
             toolbar: {
               show: true,
@@ -144,7 +144,7 @@ export class LineAreaChartService {
           ],
           fill: {
             type: "solid",
-            opacity: [0.7, 1]
+            opacity: [0.4, 1]
           },
           labels: categories,
           markers: {
@@ -203,6 +203,9 @@ export class LineAreaChartService {
           ]
           ,
           xaxis: {
+            
+        tickPlacement: 'on',
+    
             axisBorder: {
               show: false,
               color: '#e0e0e0'

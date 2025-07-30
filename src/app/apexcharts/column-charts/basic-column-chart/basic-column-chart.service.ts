@@ -52,6 +52,7 @@ export class BasicColumnChartService {
                         }
                     ],
                     chart: {
+                       ...(this.data.length > 30 && { width: this.data.length * 50 }),
                         type: "bar",
                         zoom: {
                             enabled: true,
@@ -122,6 +123,7 @@ export class BasicColumnChartService {
                         colors: ["transparent"]
                     },
                     xaxis: {
+                          tickPlacement: 'on',
                         categories: categories,
 
 
@@ -143,6 +145,7 @@ export class BasicColumnChartService {
                     },
 
                     yaxis: {
+                        min: 0, 
                         title: {
                             text: "TND (thousands)",
                             style: {

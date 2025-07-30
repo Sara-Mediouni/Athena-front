@@ -20,10 +20,12 @@ import { EntService } from '../../../Service/entService';
 import { Entreprise } from '../../../Model/Entreprise';
 import { jwtDecode } from 'jwt-decode';
 import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-users-list',
-    imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule, RouterLink, MatTableModule, MatPaginatorModule, MatCheckboxModule, MatTooltipModule,CommonModule,],
+    imports: [MatCardModule, MatMenuModule, MatButtonModule,MatIconModule, RouterLink, MatTableModule,MatProgressSpinner,
+       MatPaginatorModule, MatCheckboxModule, MatTooltipModule,CommonModule,],
     templateUrl: './users-list.component.html',
     styleUrl: './users-list.component.scss'
 })
@@ -44,7 +46,8 @@ export class UsersListComponent {
     selectedUser: User = new User(0, '', '',  '', Role.USER,[]);
   
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+    
+    isLoading: boolean = false;
     constructor(
 
       private entService: EntService,
@@ -121,14 +124,17 @@ ngOnInit(): void {
     }
   
     getAllUsers(): void {
+      this.isLoading = true;
       this.userService.getAllUsers().subscribe({
       next: (data) => {
         this.dataSource.data  = data; 
+        this.isLoading = false;
         console.log(data);
       },
       error: (error) => {
         console.error('Erreur lors du chargement des utilisateurs', error);
         this.errorMessage = 'Erreur lors du chargement des utilisateurs';
+        this.isLoading = false;
       }
     });
     }
