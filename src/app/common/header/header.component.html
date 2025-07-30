@@ -16,7 +16,7 @@
   
 
 <!-- HEADER DROITE / TOP BAR -->
-<div class="entreprise-selector">
+<div class="entreprise-selector" >
   <span class="entreprise-label">
     <mat-icon class="icon">business</mat-icon>
     Entreprise
@@ -27,7 +27,7 @@
     <mat-icon>expand_more</mat-icon>
   </button>
 
-<mat-menu #entrepriseMenu="matMenu">
+<mat-menu #entrepriseMenu="matMenu" >
   <button mat-menu-item *ngFor="let ent of entreprises" (click)="selectEntreprise(ent)">
     <mat-icon>apartment</mat-icon>
     <span>{{ ent.name }}</span>

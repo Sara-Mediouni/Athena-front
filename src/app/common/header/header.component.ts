@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-   
+  
   this.subscriptions.add(
     this.authService.currentUser$.subscribe(user => {
       if (user) {
@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     })
   );
 
-
+    
     this.loadUser();
 
     
@@ -152,6 +152,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.entService.getAll().subscribe({
               next: (data) => {
                 this.entreprises = data;
+                console.log('ENTREPRISES:', data);
+
                 this.loadSelectedEntrepriseFromCookie();
                 this.isLoading = false; 
               },
@@ -166,6 +168,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               next: (entreprises: EntrepriseDTO[] | null) => {
                 if (entreprises && entreprises.length > 0) {
                   this.entreprises = entreprises;
+                     this.cdRef.detectChanges(); 
                   this.loadSelectedEntrepriseFromCookie();
                 } else {
                   console.error('Aucune entreprise trouvée');
