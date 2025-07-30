@@ -90,9 +90,9 @@ loadCA(filtre: any): void {
 
   this.isLoading = true;
 
-  forkJoin([
-    this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy),
-    this.venteService.getCAPeriod(dateDebut2, dateFin2, mode, inclureBLs, groupBy)
+  forkJoin([ this.venteService.getCAPeriod(dateDebut2, dateFin2, mode, inclureBLs, groupBy),
+    this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy)
+   
   ]).subscribe({
     next: ([data1, data2]) => {
       this.CAGlobal1 = data1;

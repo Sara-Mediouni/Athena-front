@@ -211,7 +211,7 @@ import { VenteCaCommercialComponent } from './pages/vente-page/vente-ca-commerci
 import { VenteCaEvolutComponent } from './pages/vente-page/vente-ca-evolut/vente-ca-evolut.component';
 
 export const routes: Routes = [
-    {path: '', redirectTo: '/authentication', pathMatch: 'full'}, 
+    {path: '', redirectTo: '/entreprises', pathMatch: 'full'}, 
     {
         path: 'authentication',
         component: AuthenticationComponent,

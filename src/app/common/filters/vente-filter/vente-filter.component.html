@@ -1,79 +1,76 @@
- <div class="filter-card-wrapper">
-        <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
-            <mat-card-content>
-                <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                    <div class="row align-items-end g-2">
-
-                        <!-- Dates -->
-                        <div class="col-md-6 mb-2">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Début Période</mat-label>
-                                <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart">
-                                <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-                                <mat-datepicker #pickerStart></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="col-md-6 mb-2">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Fin Période</mat-label>
-                                <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd">
-                                <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-                                <mat-datepicker #pickerEnd></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-<!-- Dates supplémentaires affichées uniquement si showExtendedDates est vrai -->
-<div class="col-md-6 mb-2" *ngIf="showExtendedDates">
-    <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Début Période</mat-label>
-        <input formControlName="dateDebut2" matInput [matDatepicker]="pickerPeriodeDebut">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerPeriodeDebut"></mat-datepicker-toggle>
-        <mat-datepicker #pickerPeriodeDebut></mat-datepicker>
-    </mat-form-field>
-</div>
-
-<div class="col-md-6 mb-2" *ngIf="showExtendedDates">
-    <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Fin Période</mat-label>
-        <input formControlName="dateFin2" matInput [matDatepicker]="pickerPeriodeFin">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerPeriodeFin"></mat-datepicker-toggle>
-        <mat-datepicker #pickerPeriodeFin></mat-datepicker>
-    </mat-form-field>
-</div>
-
-                        <!-- Préférences + GroupBy -->
-                        <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
-                            <!-- Préférences -->
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-                                <mat-icon class="me-1">settings</mat-icon>
-                                <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
-                                <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
-                                <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
-                            </div>
-
-  <div class="d-flex flex-wrap align-items-center gap-2"  *ngIf="showGroupBy">
-                <mat-icon class="me-1">calendar_view_week</mat-icon>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'jour'"
-                  (change)="form.get('groupBy')?.setValue('jour')">Jour</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'semaine'"
-                  (change)="form.get('groupBy')?.setValue('semaine')">Semaine</mat-checkbox>
-                <mat-checkbox
-                  [checked]="form.get('groupBy')?.value === 'mois'"
-                  (change)="form.get('groupBy')?.setValue('mois')">Mois</mat-checkbox>
-              </div>
-                        </div>
-
-                        <!-- Bouton -->
-                        <div class="col-12 d-flex justify-content-end mt-2">
-                            <button mat-flat-button color="primary" type="submit">
-                                <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
-                            </button>
-                        </div>
-
+<div class="filter-card-wrapper">
+    <mat-card class="daxa-card vente-card border-radius bg-white border-none p-3 w-100">
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row align-items-end g-2">
+                    <!-- Dates supplémentaires affichées uniquement si showExtendedDates est vrai -->
+                    <div class="col-md-6 mb-2" *ngIf="showExtendedDates">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Début Période</mat-label>
+                            <input formControlName="dateDebut2" matInput [matDatepicker]="pickerPeriodeDebut">
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerPeriodeDebut"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerPeriodeDebut></mat-datepicker>
+                        </mat-form-field>
                     </div>
-                </form>
-            </mat-card-content>
-        </mat-card>
-    </div>
+
+                    <div class="col-md-6 mb-2" *ngIf="showExtendedDates">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Fin Période</mat-label>
+                            <input formControlName="dateFin2" matInput [matDatepicker]="pickerPeriodeFin">
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerPeriodeFin"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerPeriodeFin></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <!-- Dates -->
+                    <div class="col-md-6 mb-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Début Période</mat-label>
+                            <input formControlName="dateDebut" matInput [matDatepicker]="pickerStart">
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerStart></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Fin Période</mat-label>
+                            <input formControlName="dateFin" matInput [matDatepicker]="pickerEnd">
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerEnd></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!-- Préférences + GroupBy -->
+                    <div class="col-12 d-flex flex-wrap justify-content-between gap-3 align-items-center mt-2">
+                        <!-- Préférences -->
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <mat-icon class="me-1">settings</mat-icon>
+                            <mat-checkbox formControlName="dateFacture">Date Facture</mat-checkbox>
+                            <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
+                            <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
+                        </div>
+
+                        <div class="d-flex flex-wrap align-items-center gap-2" *ngIf="showGroupBy">
+                            <mat-icon class="me-1">calendar_view_week</mat-icon>
+                            <mat-checkbox [checked]="form.get('groupBy')?.value === 'jour'"
+                                (change)="form.get('groupBy')?.setValue('jour')">Jour</mat-checkbox>
+                            <mat-checkbox [checked]="form.get('groupBy')?.value === 'semaine'"
+                                (change)="form.get('groupBy')?.setValue('semaine')">Semaine</mat-checkbox>
+                            <mat-checkbox [checked]="form.get('groupBy')?.value === 'mois'"
+                                (change)="form.get('groupBy')?.setValue('mois')">Mois</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <!-- Bouton -->
+                    <div class="col-12 d-flex justify-content-end mt-2">
+                        <button mat-flat-button color="primary" type="submit">
+                            <mat-icon class="me-1">filter_alt</mat-icon> Filtrer
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

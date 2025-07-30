@@ -32,9 +32,9 @@ export class VenteFilterComponent implements OnInit {
  
   
   const now = new Date();
-  const startOfYear = new Date(2023, 0, 1); 
-  const endOfYear = new Date(2023, 11, 31);
  
+   const startOfYear = new Date(2024, 0, 1); // 1er janvier de l'année en cours
+  const endOfYear = new Date(2024, 11, 31);
 
   this.form = this.fb.group({
     dateFacture: [true],
@@ -48,8 +48,9 @@ export class VenteFilterComponent implements OnInit {
 
   ngOnInit(): void {
     const now = new Date();
-  const startOfYear = new Date(2024, 0, 1); // 1er janvier de l'année en cours
-  const endOfYear = new Date(2024, 11, 31);
+     const startOfYear = new Date(2023, 0, 1); 
+  const endOfYear = new Date(2023, 11, 31);
+
      this.form.get('dateFacture')?.valueChanges.subscribe(value => {
     if (value) {
       this.form.get('dateBL')?.setValue(false, { emitEvent: false });
