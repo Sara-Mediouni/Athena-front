@@ -100,18 +100,33 @@ private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
       localStorage.setItem('refreshToken', refreshToken);
     }
   }
- loadUserFromToken(token: string): void {
+loadUserFromLocalStorage(): Promise<void> {
+  if (typeof localStorage !== 'undefined') {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      return this.loadUserFromToken(token); 
+    }
+  }
+  return Promise.resolve(); 
+}
+
+
+loadUserFromToken(token: string): Promise<void> {
+  return new Promise((resolve, reject) => {
     this.userService.getUserConnected(token).subscribe(
       (user) => {
-        
-        this.currentUserSubject.next(user); 
+        this.currentUserSubject.next(user);
+        resolve();
       },
       (error) => {
         console.error('Erreur lors de la récupération de l\'utilisateur:', error);
         this.currentUserSubject.next(null);
+        resolve(); // On résout quand même pour ne pas bloquer l'app
       }
     );
-  }
+  });
+}
+
 getCurrentUserOrLoad(): Promise<User | null> {
   const current = this.currentUserSubject.value;
   if (current) return Promise.resolve(current);

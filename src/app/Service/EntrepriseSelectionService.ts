@@ -22,7 +22,8 @@ constructor() {
 
   setSelectedEntreprise(ent: EntrepriseDTO) {
     this.selectedEntrepriseSubject.next(ent);
-    localStorage.setItem('selectedEntreprise', JSON.stringify(ent)); // 👈 persistée ici
+    this.cookieService.set('selectedEntrepriseId', ent.id.toString(), 7);
+   
   }
 
   getSelectedEntreprise(): EntrepriseDTO | null {

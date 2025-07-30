@@ -71,6 +71,7 @@ export class VenteCaPeriodeComponent {
 
 
 loadCA(filtre: any): void {
+  this.lastFiltre = filtre;
   const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
   const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';

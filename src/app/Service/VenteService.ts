@@ -54,7 +54,7 @@ getCAGlobal(dateDebut: string, dateFin: string, mode: string, InclureBLs: string
 }
 
 getCAPeriod(dateDebut: string, dateFin: string, mode: string, InclureBLs: string, groupBy: string): Observable<any> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('accessToken') : null;
   if (!token) {
     return throwError(() => new Error('Token d\'authentification manquant'));
   }
@@ -66,8 +66,8 @@ getCAPeriod(dateDebut: string, dateFin: string, mode: string, InclureBLs: string
   return this.entrepriseSelectionService.selectedEntreprise$.pipe(
     take(1),
     switchMap(ent => {
-      if (!ent) {
-        return throwError(() => new Error('Aucune entreprise sélectionnée'));
+      if (!ent || !ent.id) {
+        return throwError(() => new Error('Aucune entreprise sélectionnée ou ID manquant'));
       }
 
       const params = new HttpParams()
@@ -76,12 +76,13 @@ getCAPeriod(dateDebut: string, dateFin: string, mode: string, InclureBLs: string
         .set('mode', mode)
         .set('InclureBLs', InclureBLs)
         .set('groupBy', groupBy)
-        .set('id', ent.id.toString());
+        .set('id', ent.id.toString()); // Assure-toi que ent.id existe ici
 
       return this.http.get(`${this.apiUrl}/chiffre-periode`, { headers, params });
     })
   );
 }
+
 
 
 }

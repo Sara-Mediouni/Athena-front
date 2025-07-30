@@ -10,10 +10,13 @@
   background-color: rgba(0, 0, 0, 0.1); // Plus sombre que le standard (0.32)
 }
 .error-message{
-    background-color: rgb(255, 167, 167);
+    background-color: rgb(252, 191, 191);
     color: #e02f2f;
-    height:60px;
-    padding: auto;
+    height:40px;
+    padding: 10px;
+    justify-content: center;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 .daxa-form {
     max-width: 930px;

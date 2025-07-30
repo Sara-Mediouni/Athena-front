@@ -242,57 +242,57 @@
                     </div>
                 </mat-menu>
             </li> -->
-            <li>
-                <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-menu-btn">
-                    <img src="images/admin.png" alt="profile-image">
-                    <span class="status d-inline-block rounded-circle position-absolute"></span>
-                </button>
-                <mat-menu class="profile-menu-dropdown" #profileMenu="matMenu" xPosition="before">
+          <li>
+  <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-menu-btn">
+    <img src="images/admin.png" alt="profile-image">
+    <span class="status d-inline-block rounded-circle position-absolute"></span>
+  </button>
+  <mat-menu class="profile-menu-dropdown" #profileMenu="matMenu" xPosition="before">
+    
+    <!-- Bloc affiché si on charge encore -->
+    <div *ngIf="isLoading" class="loading-spinner p-3 text-center">
+      <p>Chargement...</p>
+    </div>
+    
+    <!-- Bloc affiché seulement quand les données sont prêtes -->
+    <div *ngIf="!isLoading">
+      <div class="menu-header d-flex align-items-center">
+        <img src="images/admin.png" alt="profile-image">
+        <div class="title">
+          <a routerLink="/my-profile" class="d-inline-block fw-medium">
+            {{ user }}
+          </a>
+          <span class="designation d-block text-body">
+            {{ role }}
+          </span>
+        </div>
+      </div>
+      <ul class="menu-body pl-0 mb-0 mt-0 list-unstyled">
+        <li class="position-relative transition fw-medium">
+          <i class="material-symbols-outlined">person</i>
+          My Profile
+          <a routerLink="/my-profile" class="link-btn d-block position-absolute"></a>
+        </li>
+        <li class="position-relative transition fw-medium">
+          <i class="material-symbols-outlined">settings</i>
+          Settings
+          <a routerLink="/settings" class="link-btn d-block position-absolute"></a>
+        </li>
+        <li class="position-relative transition fw-medium">
+          <i class="material-symbols-outlined">info</i>
+          Support
+          <a routerLink="/settings/connections" class="link-btn d-block position-absolute"></a>
+        </li>
+        <li class="position-relative transition fw-medium">
+          <i class="material-symbols-outlined">logout</i>
+          Logout
+          <a (click)="logout()" class="link-btn d-block position-absolute"></a>
+        </li>
+      </ul>
+    </div>
+  </mat-menu>
+</li>
 
-                    <!-- Bloc affiché si on charge encore -->
-                    <div *ngIf="isLoading" class="loading-spinner p-3 text-center">
-                        <p>Chargement...</p>
-                    </div>
-
-                    <!-- Bloc affiché seulement quand les données sont prêtes -->
-                    <div *ngIf="!isLoading">
-                        <div class="menu-header d-flex align-items-center">
-                            <img src="images/admin.png" alt="profile-image">
-                            <div class="title">
-                                <a routerLink="/my-profile" class="d-inline-block fw-medium">
-                                    {{ user }}
-                                </a>
-                                <span class="designation d-block text-body">
-                                    {{ role }}
-                                </span>
-                            </div>
-                        </div>
-                        <ul class="menu-body pl-0 mb-0 mt-0 list-unstyled">
-                            <li class="position-relative transition fw-medium">
-                                <i class="material-symbols-outlined">person</i>
-                                My Profile
-                                <a routerLink="/my-profile" class="link-btn d-block position-absolute"></a>
-                            </li>
-                            <li class="position-relative transition fw-medium">
-                                <i class="material-symbols-outlined">settings</i>
-                                Settings
-                                <a routerLink="/settings" class="link-btn d-block position-absolute"></a>
-                            </li>
-                            <li class="position-relative transition fw-medium">
-                                <i class="material-symbols-outlined">info</i>
-                                Support
-                                <a routerLink="/settings/connections" class="link-btn d-block position-absolute"></a>
-                            </li>
-                            <li class="position-relative transition fw-medium">
-                                <i class="material-symbols-outlined">logout</i>
-                                Logout
-                                <a (click)="logout()" class="link-btn d-block position-absolute"></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </mat-menu>
-            </li>
         </ul>
     </div>
 </header>

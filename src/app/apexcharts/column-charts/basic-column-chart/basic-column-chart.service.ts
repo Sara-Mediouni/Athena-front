@@ -52,7 +52,7 @@ export class BasicColumnChartService {
                         }
                     ],
                     chart: {
-                       ...(this.data.length > 30 && { width: this.data.length * 50 }),
+                      // ...(this.data?.length > 30 && { width: this.data?.length * 50 }),
                         type: "bar",
                         zoom: {
                             enabled: true,
@@ -68,6 +68,7 @@ export class BasicColumnChartService {
                                 border: '#0D47A1'
                             }
                         },
+                        offsetY: 20,
                         height: 350,
                         toolbar: {
                             show: true,
@@ -82,22 +83,50 @@ export class BasicColumnChartService {
       </svg>`, index: 1,
                                         title: 'Télécharger PDF',
                                         click: () => {
-                                            if (!this.chartInstance) {
-                                                console.error('Chart not initialized.');
-                                                return;
-                                            }
-                                            this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
-                                                const width = this.chartInstance.w.globals.svgWidth / 2 || 400;
-                                                const height = this.chartInstance.w.globals.svgHeight / 2 || 400;
-                                                const pdf = new jsPDF({
-                                                    orientation: 'landscape',
-                                                    unit: 'px',
-                                                    format: [width, height]
-                                                });
-                                                pdf.addImage(imgURI, 'PNG', 0, 0, width, height);
-                                                pdf.save('chart.pdf');
-                                            });
-                                        }
+  if (!this.chartInstance) {
+    console.error('Chart not initialized.');
+    return;
+  }
+
+  // Obtenir l'URI de l'image du graphique
+  this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
+    const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
+    const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
+
+    // Créer un document PDF avec un format A4
+    const pdf = new jsPDF({
+      orientation: 'landscape',  // Format paysage (landscape)
+      unit: 'px',                // Unité en pixels
+      format: 'a4',              // Format A4 standard
+    });
+
+    // Récupérer les dimensions de la page A4 en paysage
+    const pageWidth = 595;   // Largeur de la page A4 en paysage
+    const pageHeight = 421;  // Hauteur de la page A4 en paysage
+
+    // Calculer l'échelle nécessaire pour que le graphique tienne sur la page
+    const scaleX = pageWidth / originalWidth;  // Facteur d'échelle en largeur
+    const scaleY = pageHeight / originalHeight; // Facteur d'échelle en hauteur
+
+    // Prendre le plus petit facteur d'échelle pour garder les proportions
+    const scaleFactor = Math.min(scaleX, scaleY);
+
+    // Appliquer l'échelle pour redimensionner l'image
+    const newWidth = originalWidth * scaleFactor;
+    const newHeight = originalHeight * scaleFactor;
+
+    // Centrer le graphique dans la page PDF
+    const x = (pageWidth - newWidth) / 2;  // Position X pour centrer l'image
+    const y = (pageHeight - newHeight) / 2; // Position Y pour centrer l'image
+
+    // Ajouter l'image du graphique dans le PDF
+    pdf.addImage(imgURI, 'PNG', x, y, newWidth, newHeight);
+
+    // Sauvegarder le PDF
+    pdf.save('chart.pdf');
+  });
+}
+
                                     }
                                 ]
 
@@ -140,7 +169,12 @@ export class BasicColumnChartService {
                             style: {
                                 colors: "#919aa3",
                                 fontSize: "12px"
-                            }
+                            },
+                            
+  formatter: function(val: string) {
+    // Limite l'affichage à 20 caractères max
+    return val?.length > 20 ? val.slice(0, 20) + '…' : val;
+  }
                         }
                     },
 
@@ -182,7 +216,7 @@ export class BasicColumnChartService {
                     },
                     legend: {
                         show: true,
-                        offsetY: 5,
+                        offsetY: 30,
                         fontSize: '14px',
                         position: "bottom",
                         marginTop: "30px",

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { BasicColumnChartService } from './basic-column-chart.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -6,38 +6,48 @@ import { CustomizerSettingsService } from '../../../customizer-settings/customiz
 
 @Component({
     selector: 'app-basic-column-chart',
+    standalone: true,
     imports: [MatCardModule],
     templateUrl: './basic-column-chart.component.html',
     styleUrl: './basic-column-chart.component.scss'
 })
-export class BasicColumnChartComponent {
-@Input() data: any[] = [];
+export class BasicColumnChartComponent implements AfterViewInit, OnChanges, OnDestroy {
+  @Input() data: any[] = [];
+
   private destroy$ = new Subject<void>();
   private currentTheme: boolean = false;
   private hasLoadedData = false;
+  private viewInitialized = false;
 
-    constructor(
-        private basicColumnChartService: BasicColumnChartService,
-        private customizer: CustomizerSettingsService
-    
-    ) {
-         this.customizer.darkTheme$
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(isDark => {
-                this.currentTheme = isDark;
-                if (this.hasLoadedData) {
-             this.basicColumnChartService.loadChart(isDark);      
+  constructor(
+    private basicColumnChartService: BasicColumnChartService,
+    private customizer: CustomizerSettingsService
+  ) {
+    this.customizer.darkTheme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isDark => {
+        this.currentTheme = isDark;
+        if (this.hasLoadedData && this.viewInitialized) {
+          this.basicColumnChartService.loadChart(isDark);
         }
-              });
-    }
+      });
+  }
 
-     ngOnChanges(changes: SimpleChanges): void {
+  ngAfterViewInit(): void {
+    this.viewInitialized = true;
+    if (this.hasLoadedData) {
+      this.basicColumnChartService.loadChart(this.currentTheme);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data && this.data.length > 0) {
       this.basicColumnChartService.setData(this.data);
       this.hasLoadedData = true;
 
-      // Charger directement avec le thème courant, sans nouvel abonnement
-      this.basicColumnChartService.loadChart(this.currentTheme);
+      if (this.viewInitialized) {
+        this.basicColumnChartService.loadChart(this.currentTheme);
+      }
     }
   }
 
@@ -45,5 +55,4 @@ export class BasicColumnChartComponent {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

@@ -67,12 +67,13 @@ export class VenteCaDepotComponent {
   }
     
   ngOnInit(): void {
-   
+   this.isLoading=true;
     this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
       if (entreprise && this.lastFiltre) {
         this.loadCA(this.lastFiltre);
       }
     });
+    this.isLoading=false;
   }
 
   

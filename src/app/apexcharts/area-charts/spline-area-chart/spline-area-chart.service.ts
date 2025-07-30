@@ -85,7 +85,7 @@ export class SplineAreaChartService {
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${toolbarColor}"
 >
         <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM14 3.5V9h5.5L14 3.5zM8 17h2v-1H8v1zm0-3h2v-1H8v1zm0-3h6v-1H8v1z"/>
-      </svg>`, 
+      </svg>`,
                                         index: 1,
                                         title: 'Télécharger PDF',
                                         click: () => {
@@ -93,18 +93,48 @@ export class SplineAreaChartService {
                                                 console.error('Chart not initialized.');
                                                 return;
                                             }
+
+                                            // Obtenir l'URI de l'image du graphique
                                             this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
-                                                const width = this.chartInstance.w.globals.svgWidth / 2 || 400;
-                                                const height = this.chartInstance.w.globals.svgHeight / 2 || 400;
+                                                const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
+                                                const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
+
+                                                // Créer un document PDF avec un format A4
                                                 const pdf = new jsPDF({
-                                                    orientation: 'landscape',
-                                                    unit: 'px',
-                                                    format: [width, height]
+                                                    orientation: 'landscape',  // Format paysage (landscape)
+                                                    unit: 'px',                // Unité en pixels
+                                                    format: 'a4',              // Format A4 standard
                                                 });
-                                                pdf.addImage(imgURI, 'PNG', 0, 0, width, height);
+
+                                                // Récupérer les dimensions de la page A4 en paysage
+                                                const pageWidth = 595;   // Largeur de la page A4 en paysage
+                                                const pageHeight = 421;  // Hauteur de la page A4 en paysage
+
+                                                // Calculer l'échelle nécessaire pour que le graphique tienne sur la page
+                                                const scaleX = pageWidth / originalWidth;  // Facteur d'échelle en largeur
+                                                const scaleY = pageHeight / originalHeight; // Facteur d'échelle en hauteur
+
+                                                // Prendre le plus petit facteur d'échelle pour garder les proportions
+                                                const scaleFactor = Math.min(scaleX, scaleY);
+
+                                                // Appliquer l'échelle pour redimensionner l'image
+                                                const newWidth = originalWidth * scaleFactor;
+                                                const newHeight = originalHeight * scaleFactor;
+
+                                                // Centrer le graphique dans la page PDF
+                                                const x = (pageWidth - newWidth) / 2;  // Position X pour centrer l'image
+                                                const y = (pageHeight - newHeight) / 2; // Position Y pour centrer l'image
+
+                                                // Ajouter l'image du graphique dans le PDF
+                                                pdf.addImage(imgURI, 'PNG', x, y, newWidth, newHeight);
+
+                                                // Sauvegarder le PDF
                                                 pdf.save('chart.pdf');
                                             });
                                         }
+
+
+
                                     }
                                 ]
 

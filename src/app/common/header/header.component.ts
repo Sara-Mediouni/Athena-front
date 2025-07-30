@@ -54,13 +54,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+   
+  this.subscriptions.add(
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.user = user.name;
+        this.role = user.role;
+        this.isLoading = false;
+      } else {
+        this.user = null;
+        this.role = null;
+        this.isLoading = false;
+      }
+      this.cdRef.detectChanges();
+    })
+  );
+
+
     this.loadUser();
 
     
     this.subscriptions.add(
       this.entrepriseSelectionService.selectedEntreprise$.subscribe(ent => {
         this.selectedEntreprise = ent;
-        this.cdRef.detectChanges(); // forcer rafraîchissement UI si besoin
+        this.cdRef.detectChanges(); 
       })
     );
   }
@@ -118,73 +135,72 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   loadUser(): void {
-    if (typeof localStorage !== 'undefined') {
-      this.token = localStorage.getItem('accessToken');
+  if (typeof localStorage !== 'undefined') {
+    this.token = localStorage.getItem('accessToken');
 
-      if (this.token) {
-        this.isLoading = true;
+    if (this.token) {
+      this.isLoading = true;
 
-        this.authService.loadUserFromToken(this.token);
+      this.authService.loadUserFromToken(this.token);
 
-        const sub = this.authService.currentUser$.subscribe(user => {
-          if (user) {
-            this.user = user.name;
-            this.role = user.role;
-
-            if (this.role === 'SUPER_ADMIN') {
-              this.entService.getAll().subscribe({
-                next: (data) => {
-                  this.entreprises = data;
-                  this.loadSelectedEntrepriseFromCookie();
-                  this.isLoading = false;
-                },
-                error: (error) => {
-                  console.error('Erreur lors du chargement des entreprises', error);
-                  this.errorMessage = 'Erreur lors du chargement des entreprises';
-                  this.isLoading = false;
-                }
-              });
-            } else {
-              this.entService.getMyEntreprise().subscribe({
-                next: (entreprises: EntrepriseDTO[] | null) => {
-                  if (entreprises && entreprises.length > 0) {
-                    this.entreprises = entreprises;
-                    this.loadSelectedEntrepriseFromCookie();
-                    this.isLoading = false;
-                    console.log('Entreprises chargées :', entreprises);
-                  } else {
-                    console.error('Aucune entreprise trouvée');
-                    this.isLoading = false;
-                  }
-                },
-                error: (err) => {
-                  console.error('Erreur lors du chargement des entreprises', err);
-                  this.isLoading = false;
-                }
-              });
-            }
+      const sub = this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          this.user = user.name;
+          this.role = user.role;
+          this.cdRef.detectChanges(); 
+          if (this.role === 'SUPER_ADMIN') {
+            this.entService.getAll().subscribe({
+              next: (data) => {
+                this.entreprises = data;
+                this.loadSelectedEntrepriseFromCookie();
+                this.isLoading = false; 
+              },
+              error: (error) => {
+                console.error('Erreur lors du chargement des entreprises', error);
+                this.errorMessage = 'Erreur lors du chargement des entreprises';
+                this.isLoading = false;
+              }
+            });
           } else {
-            this.user = null;
-            this.role = null;
-            this.isLoading = false;
+            this.entService.getMyEntreprise().subscribe({
+              next: (entreprises: EntrepriseDTO[] | null) => {
+                if (entreprises && entreprises.length > 0) {
+                  this.entreprises = entreprises;
+                  this.loadSelectedEntrepriseFromCookie();
+                } else {
+                  console.error('Aucune entreprise trouvée');
+                }
+                this.isLoading = false; // Fin du chargement
+              },
+              error: (err) => {
+                console.error('Erreur lors du chargement des entreprises', err);
+                this.isLoading = false; // Fin du chargement en cas d'erreur
+              }
+            });
           }
-        });
+        } else {
+          this.user = null;
+          this.role = null;
+          this.isLoading = false;
+        }
+      });
 
-        this.subscriptions.add(sub);
+      this.subscriptions.add(sub);
 
-      } else {
-        console.error('Aucun token trouvé dans localStorage');
-        this.user = null;
-        this.role = null;
-        this.isLoading = false;
-      }
     } else {
-      console.error('localStorage n\'est pas disponible');
+      console.error('Aucun token trouvé dans localStorage');
       this.user = null;
       this.role = null;
-      this.isLoading = false;
+      this.isLoading = false; // Fin du chargement même si le token est manquant
     }
+  } else {
+    console.error('localStorage n\'est pas disponible');
+    this.user = null;
+    this.role = null;
+    this.isLoading = false; // Fin du chargement si localStorage est indisponible
   }
+}
+
 
   logout() {
     this.authService.logout();

@@ -70,7 +70,7 @@ export class SignInComponent {
     if (this.error !== null) {
       setTimeout(() => {
         this.error = null;
-      }, 3000);
+      }, 2000);
     }
   }
 
