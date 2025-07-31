@@ -22,7 +22,7 @@ export class TicketsOpenService {
                 const options = {
                     series: [
                         {
-                            name: "Tickets Open",
+                            name: "Documents",
                             data: [15, 75, 47, 65, 14, 32, 19, 54, 44, 61]
                         }
                     ],

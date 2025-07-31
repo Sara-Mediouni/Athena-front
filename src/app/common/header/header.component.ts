@@ -54,33 +54,56 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    this.authService.loadUserFromToken(token); // Appelé ailleurs ? Supprime si déjà fait
+  }
+
+  const userSub = this.authService.currentUser$.subscribe(user => {
+    if (user) {
+      console.log('[HeaderComponent] User reçu :', user);
+      this.user = user.name;
+      this.role = user.role;
+
+      this.isLoading = true;
+
+      const entrepriseObs = this.role === 'SUPER_ADMIN'
+        ? this.entService.getAll()
+        : this.entService.getMyEntreprise();
+
+      entrepriseObs.subscribe({
+        next: (data) => {
+          console.log('Entreprises chargées :', data);
+          this.entreprises = data;
+          this.loadSelectedEntrepriseFromCookie();
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erreur entreprises', err);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.user = null;
+      this.role = null;
+      this.entreprises = [];
+      this.isLoading = false;
+    }
+
+    this.cdRef.detectChanges();
+  });
+
+  this.subscriptions.add(userSub);
+
+  // Entreprise sélectionnée
   this.subscriptions.add(
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.user = user.name;
-        this.role = user.role;
-        this.isLoading = false;
-      } else {
-        this.user = null;
-        this.role = null;
-        this.isLoading = false;
-      }
+    this.entrepriseSelectionService.selectedEntreprise$.subscribe(ent => {
+      this.selectedEntreprise = ent;
       this.cdRef.detectChanges();
     })
   );
-
-    
-    this.loadUser();
-
-    
-    this.subscriptions.add(
-      this.entrepriseSelectionService.selectedEntreprise$.subscribe(ent => {
-        this.selectedEntreprise = ent;
-        this.cdRef.detectChanges(); 
-      })
-    );
-  }
+}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -152,6 +175,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.entService.getAll().subscribe({
               next: (data) => {
                 this.entreprises = data;
+                   this.cdRef.detectChanges(); 
                 console.log('ENTREPRISES:', data);
 
                 this.loadSelectedEntrepriseFromCookie();

@@ -27,6 +27,7 @@ export class VenteFilterComponent implements OnInit {
   @Output() filtrer = new EventEmitter<any>(); 
   form: FormGroup;
   @Input() showExtendedDates: boolean = false; 
+  @Input() showExtendedValues: boolean = false; 
   @Input() showGroupBy: boolean=false;
   constructor(private fb: FormBuilder) {
  
@@ -42,7 +43,9 @@ export class VenteFilterComponent implements OnInit {
     inclureBLs: [false],
     dateDebut: [startOfYear],
     dateFin: [endOfYear],
-    groupBy: [this.defaultGroupBy] // Vous pouvez ajuster cette valeur selon vos besoins
+    groupBy: [this.defaultGroupBy], // Vous pouvez ajuster cette valeur selon vos besoins
+    HT: [true],
+    TTC: [false],
 
   });}
 
@@ -60,6 +63,17 @@ export class VenteFilterComponent implements OnInit {
   this.form.get('dateBL')?.valueChanges.subscribe(value => {
     if (value) {
       this.form.get('dateFacture')?.setValue(false, { emitEvent: false });
+    }
+  });
+     this.form.get('HT')?.valueChanges.subscribe(value => {
+    if (value) {
+      this.form.get('TTC')?.setValue(false, { emitEvent: false });
+    }
+  });
+
+  this.form.get('TTC')?.valueChanges.subscribe(value => {
+    if (value) {
+      this.form.get('HT')?.setValue(false, { emitEvent: false });
     }
   });
     if (this.showExtendedDates) {

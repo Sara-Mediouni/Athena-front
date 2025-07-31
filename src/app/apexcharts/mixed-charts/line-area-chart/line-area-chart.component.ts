@@ -17,6 +17,8 @@ export class LineAreaChartComponent {
   @Input() start2: any[] = [];
   @Input() end1: any[] = [];
   @Input() end2: any[] = [];
+  @Input() CAHT:any;
+  @Input() CATTC:any;
      private destroy$ = new Subject<void>();
       private currentTheme: boolean = false;
       private hasLoadedData = false;
@@ -50,6 +52,12 @@ ngOnChanges(changes: SimpleChanges): void {
    }
    if (changes['end2'] && this.end2 && this.end2.length > 0) {
       this.lineAreaChartService.setEnd2(this.end2);
+   }
+    if (changes['CAHT'] && this.CAHT && this.CAHT.length > 0) {
+      this.lineAreaChartService.setCAHT(this.CAHT);
+   }
+     if (changes['CATTC'] && this.CATTC && this.CATTC.length > 0) {
+      this.lineAreaChartService.setCATTC(this.CATTC);
    }
     if ((this.data1 && this.data1.length > 0) || (this.data2 && this.data2.length > 0)) {
       this.hasLoadedData = true;

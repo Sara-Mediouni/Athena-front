@@ -52,6 +52,8 @@ export class VenteCaEvolutComponent {
   CAGlobal2: any;
   isLoading: boolean = false;
   start1:any;
+  CATTC:any;
+  CAHT:any;
   start2:any;
   end1:any;
   end2:any;
@@ -80,6 +82,8 @@ loadCA(filtre: any): void {
   const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
     const dateDebut2 = filtre.dateDebut2.toLocaleDateString('fr-CA');
   const dateFin2 = filtre.dateFin2.toLocaleDateString('fr-CA');
+  this.CAHT= filtre.HT ? 'true' : 'false';
+  this.CATTC= filtre.TTC ? 'true' : 'false';
   this.start1=dateDebut;
   this.end1=dateFin;
   this.start2=dateDebut2;

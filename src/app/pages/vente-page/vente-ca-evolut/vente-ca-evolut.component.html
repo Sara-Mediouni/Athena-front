@@ -14,7 +14,7 @@
 
 <div class="d-flex flex-column gap-4 w-100">
 
-<app-vente-filter (filtrer)="loadCA($event)"  [showExtendedDates]="true" [defaultGroupBy]="'mois'" ></app-vente-filter>
+<app-vente-filter (filtrer)="loadCA($event)"  [showExtendedDates]="true" [defaultGroupBy]="'mois'" [showExtendedValues]="true"></app-vente-filter>
 
 
   <div class="filter-card-wrapper">
@@ -30,7 +30,7 @@
        <div *ngIf="!isLoading" class="chart-container">
   <div class="scrollable-chart">
           <app-line-area-chart *ngIf="CAGlobal1?.length > 0 || CAGlobal2?.length > 0" [data1]="CAGlobal1"
-            [data2]="CAGlobal2" [start1]="start1" [start2]="start2" [end1]="end1" [end2]="end2"></app-line-area-chart>
+            [data2]="CAGlobal2" [start1]="start1" [start2]="start2" [end1]="end1" [end2]="end2" [CAHT]="CAHT" [CATTC]="CATTC"></app-line-area-chart>
         </div>
  </div>
       </mat-card-content>

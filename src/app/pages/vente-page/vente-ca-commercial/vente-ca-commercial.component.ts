@@ -60,7 +60,7 @@ export class VenteCaCommercialComponent {
    user: string | null = null;
     role: string | null = null;
    
-  token:any;
+ 
   currentUser:any;
   CAGlobal: any;
     data: []=[];

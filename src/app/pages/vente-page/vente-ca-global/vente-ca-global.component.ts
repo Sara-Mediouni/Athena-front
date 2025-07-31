@@ -77,10 +77,10 @@ export class VenteCaGlobalComponent {
   const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
-
+  console.log(inclureBLs);
 
   this.isLoading = true; 
-  this.venteService.getCAGlobal(dateDebut, dateFin, mode, inclureBLs)
+  this.venteService.getCAGlobal(dateDebut, dateFin, inclureBLs, mode)
     .pipe(finalize(() => this.loadingService.hide())) // proprement
     .subscribe({
       next: (data) => {

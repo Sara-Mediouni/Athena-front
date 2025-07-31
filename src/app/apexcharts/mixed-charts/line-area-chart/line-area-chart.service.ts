@@ -11,6 +11,8 @@ export class LineAreaChartService {
   private chartInstance: any = null;
   data1: any[] = [];
   data2: any[] = [];
+  CAHT:any;
+  CATTC:any;
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -23,13 +25,21 @@ export class LineAreaChartService {
 
     // 3. Extraire seulement les mois pour l’axe X
     const monthOnlyLabels = Array.from(
-      new Set(allLabels.map(label => label.split(' ')[0])) // 'mars 2023' => 'mars'
+      new Set(allLabels.map(label => label.split(' ')[0])) 
     );
+let map1: Map<string, number>;
+let map2: Map<string, number>;
 
-    // 4. Crée des Map pour accès rapide
-    const map1 = new Map(data1.map(d => [d.label, d.cattc]));
-    const map2 = new Map(data2.map(d => [d.label, d.cattc]));
-
+if (this.CATTC === 'true') {
+  map1 = new Map(data1.map(d => [d.label, d.cattc]));
+  map2 = new Map(data2.map(d => [d.label, d.cattc]));
+ 
+} else {
+  map1 = new Map(data1.map(d => [d.label, d.caht]));
+  map2 = new Map(data2.map(d => [d.label, d.caht]));
+} 
+console.log(map1);
+  console.log(map2);
     // 5. Reconstituer les séries
     const aligned1 = monthOnlyLabels.map(month => {
       const fullLabel = allLabels.find(l => l.startsWith(month) && l.includes('2023'));
@@ -52,6 +62,8 @@ export class LineAreaChartService {
   start2: any;
   end1: any;
   end2: any;
+   setCAHT(caht: any) { this.CAHT= caht }
+   setCATTC(cattc: any) { this.CATTC= cattc}
   setStart1(start1: any) { this.start1 = start1 }
   setStart2(start1: any) { this.start2 = start1 }
   setEnd1(start1: any) { this.end1 = start1 }
@@ -177,57 +189,32 @@ export class LineAreaChartService {
           markers: {
             size: 0
           },
-          yaxis: [
-            {
-              min: 0,
-              title: {
-                text: "Series A",
-                style: {
-                  color: "#475569",
-                  fontSize: "14px",
-                  fontWeight: 500
-                }
-              },
-              labels: {
-                style: {
-                  colors: "#919aa3",
-                  fontSize: "14px"
-                },
-                formatter: function (val: any) {
-                  return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+       yaxis: [
+  {
+    min: 0,
+    title: {
+      text: this.CAHT === 'true' ? "CA(HT)": "CA(TTC)",
+      style: {
+        color: "#475569",
+        fontSize: "14px",
+        fontWeight: 500
+      }
+    },
+    labels: {
+      style: {
+        colors: "#919aa3",
+        fontSize: "14px"
+      },
+      formatter: function (val:any) {
+        return Math.round(val); // Supprime les décimales
+      }
+    },
+    axisBorder: {
+      show: false
+    }
+  }
+]
 
-                }
-              }
-              ,
-              axisBorder: {
-                show: false
-              }
-            },
-            {
-              opposite: true,
-              title: {
-                text: "Series B",
-                style: {
-                  color: "#475569",
-                  fontSize: "14px",
-                  fontWeight: 500
-                }
-              },
-              labels: {
-                style: {
-                  colors: "#919aa3",
-                  fontSize: "14px"
-                },
-                formatter: function (val: any) {
-                  return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-
-                }
-              },
-              axisBorder: {
-                show: false
-              }
-            }
-          ]
           ,
           xaxis: {
             

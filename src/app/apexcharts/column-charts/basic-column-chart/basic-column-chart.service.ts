@@ -194,10 +194,9 @@ export class BasicColumnChartService {
                                 colors: "#919aa3",
                                 fontSize: "14px"
                             },
-                            formatter: function (val: any) {
-                                return val.toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-
-                            }
+                              formatter: function (val:any) {
+        return Math.round(val); // Supprime les décimales
+      }
                         },
                         axisBorder: {
                             show: false
