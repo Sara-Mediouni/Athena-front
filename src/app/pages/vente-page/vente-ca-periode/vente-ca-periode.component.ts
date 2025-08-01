@@ -78,7 +78,7 @@ loadCA(filtre: any): void {
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
 
 
-  const groupBy = filtre.groupBy;
+  const groupBy = filtre.groupBy || 'mois';
 
   this.isLoading = true; 
 

@@ -34,7 +34,7 @@ export class VenteFilterComponent implements OnInit {
   
   const now = new Date();
  
-   const startOfYear = new Date(2024, 0, 1); // 1er janvier de l'année en cours
+   const startOfYear = new Date(2024, 0, 1); 
   const endOfYear = new Date(2024, 11, 31);
 
   this.form = this.fb.group({
@@ -43,7 +43,7 @@ export class VenteFilterComponent implements OnInit {
     inclureBLs: [false],
     dateDebut: [startOfYear],
     dateFin: [endOfYear],
-    groupBy: [this.defaultGroupBy], // Vous pouvez ajuster cette valeur selon vos besoins
+    groupBy: [this.defaultGroupBy||'mois'],
     HT: [true],
     TTC: [false],
 
