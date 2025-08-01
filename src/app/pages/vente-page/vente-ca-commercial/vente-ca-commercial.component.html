@@ -66,11 +66,10 @@
 
 
 
-                                <!-- Rows -->
+                                
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                                <!-- No data -->
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="6">Aucune recherche ne correspond au filtre </td>
                                 </tr>

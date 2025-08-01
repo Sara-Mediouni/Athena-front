@@ -50,7 +50,7 @@ private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
     localStorage.setItem('refreshToken', userData.refreshToken);
 
     this.isAuthenticated = true;
-    this.isAuthenticatedSubject.next(true); // 🔥
+    this.isAuthenticatedSubject.next(true); 
   }
 })
 

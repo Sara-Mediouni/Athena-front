@@ -108,7 +108,7 @@ export class TicketsInProgressService {
                          }
                 };
 
-                // Initialize and render the chart
+                
                 const chart = new ApexCharts(document.querySelector('#help_desk_tickets_in_progress_chart'), options);
                 chart.render();
             } catch (error) {

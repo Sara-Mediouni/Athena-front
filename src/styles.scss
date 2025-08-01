@@ -1,3 +1,17 @@
+// Utilities CSS
+@use "./utilities";
+
+// UI Kit CSS
+@use "./ui-kit";
+
+// Typography CSS
+@use "./typography";
+
+// RTL CSS
+@use "./rtl";
+
+// Dark CSS
+@use "./dark";
 /* You can add global styles to this file, and also import other style files */
 :root {
     --fontFamily: 'Outfit', sans-serif;
@@ -67,20 +81,7 @@ button {
     margin-bottom: 25px !important;
 }
 
-// Utilities CSS
-@import "./utilities";
 
-// UI Kit CSS
-@import "./ui-kit";
-
-// Typography CSS
-@import "./typography";
-
-// RTL CSS
-@import "./rtl";
-
-// Dark CSS
-@import "./dark";
 
 /* Max width 767px */
 @media only screen and (max-width : 767px) {
