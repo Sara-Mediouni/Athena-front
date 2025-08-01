@@ -101,7 +101,7 @@ export class RangeColumnChartService {
                         strokeDashArray: 5,
                         borderColor: "#e0e0e0",
                         row: {
-                            colors: ["#f4f6fc", "transparent"], // takes an array which will be repeated on columns
+                            colors: ["#f4f6fc", "transparent"],  
                             opacity: 0.5
                         }
                     },

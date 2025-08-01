@@ -62,15 +62,13 @@ ngOnInit(): void {
   this.token = localStorage.getItem('accessToken'); 
 
   if (this.token) {
-    // Récupérer l'utilisateur connecté en utilisant le token
-    this.userService.getUserConnected(this.token).subscribe(
+     this.userService.getUserConnected(this.token).subscribe(
       (user) => {
         this.currentUser = user;
         this.currentUserRole = user.role; 
         console.log(this.currentUser);
 
-        // Maintenant que currentUserRole est défini, on peut faire les vérifications
-        if (this.currentUserRole === "USER") {
+         if (this.currentUserRole === "USER") {
           try {
             this.dataSource.data = [this.currentUser];
             console.log(this.dataSource.data);
@@ -78,7 +76,7 @@ ngOnInit(): void {
             console.error("Erreur lors du traitement des données utilisateur:", error);
           }
         } else {
-          this.getAllUsers(); // Si le rôle n'est pas "USER", récupérer tous les utilisateurs
+          this.getAllUsers();  
         }
       },
       (error) => {
@@ -143,7 +141,7 @@ ngOnInit(): void {
   if (confirm(`Supprimer l'utilisateur "${id}" ?`)) {
     this.userController.deleteUser(id).subscribe({
       next: () => {
-        this.getAllUsers(); // recharge la liste après suppression
+        this.getAllUsers();  
       },
       error: err => {
         console.error('Erreur de suppression :', err);

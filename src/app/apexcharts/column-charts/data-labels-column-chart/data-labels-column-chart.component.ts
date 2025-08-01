@@ -15,7 +15,7 @@ export class DataLabelsColumnChartComponent {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['data'] && this.data && this.data.length > 0) {
-            this.chartService.setData(this.data); // <-- on passe les données ici
+            this.chartService.setData(this.data); 
             this.chartService.loadChart();
         }
     }}

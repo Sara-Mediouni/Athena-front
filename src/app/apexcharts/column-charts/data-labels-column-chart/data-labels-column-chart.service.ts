@@ -8,7 +8,7 @@ export class DataLabelsColumnChartService {
     private isBrowser: boolean;
     private chart: any;
 
-    // Données à injecter (ton JSON)
+    
     @Input() data: any[] = [];
    
 
@@ -31,12 +31,11 @@ export class DataLabelsColumnChartService {
             const ApexCharts = (await import('apexcharts')).default;
 console.log('Données reçues dans loadChart:', this.data);
 
-            // Préparation des catégories (labels)
+             
             const categories = this.data.map(item => item.label);
             console.log('Categories:', categories);
 
-            // Préparation des valeurs, par ex. caht (chiffre d'affaires HT)
-            const seriesData = this.data.map(item => item.caht);
+             const seriesData = this.data.map(item => item.caht);
             console.log('Series Data:', seriesData);
 
             const options = {
@@ -104,8 +103,7 @@ console.log('Données reçues dans loadChart:', this.data);
                 }
             };
 
-            // Si un chart est déjà rendu, le détruire avant de recréer
-            if(this.chart) {
+             if(this.chart) {
                 this.chart.destroy();
             }
 

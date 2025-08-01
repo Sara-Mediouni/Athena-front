@@ -77,13 +77,13 @@ const labelColor = isDarkMode ? '#fff' : '#000';
                    dataLabels: {
     enabled: true,
     formatter: function (val: number) {
-        return val.toFixed(3); // ✅ 3 décimales visibles au-dessus des barres
+        return val.toFixed(3); 
     },
     style: {
         fontSize: '10px',
         colors: [labelColor] 
     },
-    offsetY: -10 // ajuste la position verticale au-dessus des barres
+    offsetY: -10 
 }
 ,
                     legend: {
@@ -105,7 +105,7 @@ const labelColor = isDarkMode ? '#fff' : '#000';
                         strokeDashArray: 5,
                         borderColor: "#e0e0e0",
                         row: {
-                            colors: ["#f4f6fc", "transparent"], // takes an array which will be repeated on columns
+                            colors: ["#f4f6fc", "transparent"],  
                             opacity: 0.5
                         }
                     },

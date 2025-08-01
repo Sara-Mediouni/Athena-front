@@ -20,8 +20,7 @@ export class PieDonutChartService {
         const colors = new Set<string>();
 
         while (colors.size < count) {
-            // Génère une couleur hex aléatoire
-            const color = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+             const color = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
             colors.add(color);
         }
 
@@ -54,9 +53,9 @@ export class PieDonutChartService {
                     chart: {
                         type: "donut",
                          zoom: {
-      enabled: true,       // active le zoom
-      type: 'x',           // zoom horizontal (peut être 'x', 'y' ou 'xy')
-      autoScaleYaxis: true // ajuste l'axe Y automatiquement lors du zoom
+      enabled: true,       
+      type: 'x',           
+      autoScaleYaxis: true 
     },
                         toolbar: {
                                 show: true,
@@ -167,7 +166,7 @@ export class PieDonutChartService {
                     dataLabels: {
                         enabled: true,
                         formatter: (val: number) => {
-                            const percentage = (val).toFixed(1); // Apex passe déjà le %
+                            const percentage = (val).toFixed(1); 
                             return `${percentage}%`;
                         },
                         style: {

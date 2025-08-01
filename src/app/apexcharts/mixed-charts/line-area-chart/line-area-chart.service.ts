@@ -17,14 +17,11 @@ export class LineAreaChartService {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
   alignDatasets(data1: any[], data2: any[]) {
-    // 1. Crée un set de tous les labels (ex: 'mars 2023', 'mars 2024')
-    const allLabels = Array.from(new Set([...data1.map(d => d.label), ...data2.map(d => d.label)]));
+     const allLabels = Array.from(new Set([...data1.map(d => d.label), ...data2.map(d => d.label)]));
 
-    // 2. Trie pour garder l'ordre
-    allLabels.sort((a, b) => new Date('01 ' + a).getTime() - new Date('01 ' + b).getTime());
+     allLabels.sort((a, b) => new Date('01 ' + a).getTime() - new Date('01 ' + b).getTime());
 
-    // 3. Extraire seulement les mois pour l’axe X
-    const monthOnlyLabels = Array.from(
+     const monthOnlyLabels = Array.from(
       new Set(allLabels.map(label => label.split(' ')[0])) 
     );
 let map1: Map<string, number>;
@@ -40,8 +37,7 @@ if (this.CATTC === 'true') {
 } 
 console.log(map1);
   console.log(map2);
-    // 5. Reconstituer les séries
-    const aligned1 = monthOnlyLabels.map(month => {
+     const aligned1 = monthOnlyLabels.map(month => {
       const fullLabel = allLabels.find(l => l.startsWith(month) && l.includes('2023'));
       return fullLabel ? (map1.get(fullLabel) ?? 0) : 0;
     });
@@ -52,9 +48,9 @@ console.log(map1);
     });
 
     return {
-      categories: monthOnlyLabels, // 'janvier', 'février', ...
-      seriesData1: aligned1,       // Pour 2023
-      seriesData2: aligned2        // Pour 2024
+      categories: monthOnlyLabels,  
+      seriesData1: aligned1,       
+      seriesData2: aligned2        
     };
   }
 
@@ -90,7 +86,7 @@ console.log(map1);
         const ApexCharts = (await import('apexcharts')).default;
         const { categories, seriesData1, seriesData2 } = this.alignDatasets(this.data1, this.data2);
 
-        // Define chart options
+       
         const options = {
           series: [
             {
@@ -129,7 +125,7 @@ console.log(map1);
                                                                     return;
                                                                 }
                     
-                                                                // Obtenir l'URI de l'image du graphique
+                                                                
                                                                 this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
                                                                     const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
                                                                     const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
@@ -206,7 +202,7 @@ console.log(map1);
         fontSize: "14px"
       },
       formatter: function (val:any) {
-        return Math.round(val); // Supprime les décimales
+        return Math.round(val);  
       }
     },
     axisBorder: {

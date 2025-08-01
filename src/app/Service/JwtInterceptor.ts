@@ -15,8 +15,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const accessToken = localStorage.getItem('accessToken');
 
-        // Ajout du token d'accès s'il est disponible
-        let authReq = req;
+         let authReq = req;
         if (accessToken) {
           authReq = req.clone({
             setHeaders: { Authorization: `Bearer ${accessToken}` }
@@ -25,23 +24,19 @@ export class JwtInterceptor implements HttpInterceptor {
     
         return next.handle(authReq).pipe(
           catchError((error: HttpErrorResponse) => {
-            // Si une erreur 401 est reçue, essayons de rafraîchir le token
-            if (error.status === 401) {
+             if (error.status === 401) {
               return this.authService.refreshToken().pipe(
                 switchMap((newTokens: any) => {
-                  // Stocker le nouveau token
-                  const newAccessToken = newTokens.accessToken;
+                   const newAccessToken = newTokens.accessToken;
                   localStorage.setItem('accessToken', newAccessToken);
     
-                  // Rejouer la requête initiale avec le nouveau token
-                  const newRequest = req.clone({
+                   const newRequest = req.clone({
                     setHeaders: { Authorization: `Bearer ${newAccessToken}` }
                   });
                   return next.handle(newRequest);
                 }),
                 catchError((refreshError) => {
-                  // En cas d'échec de rafraîchissement, déconnecter l'utilisateur
-                  this.authService.logout();
+                   this.authService.logout();
                   return throwError(refreshError);
                 })
               );

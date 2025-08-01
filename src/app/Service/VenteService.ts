@@ -76,7 +76,7 @@ getCAPeriod(dateDebut: string, dateFin: string, mode: string, InclureBLs: string
         .set('mode', mode)
         .set('InclureBLs', InclureBLs)
         .set('groupBy', groupBy)
-        .set('id', ent.id.toString()); // Assure-toi que ent.id existe ici
+        .set('id', ent.id.toString()); 
 
       return this.http.get(`${this.apiUrl}/chiffre-periode`, { headers, params });
     })

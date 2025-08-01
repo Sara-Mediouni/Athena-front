@@ -48,7 +48,7 @@ userForm!: FormGroup;
   ) {}
     ngOnInit(): void {
       this.entrepriseService.getAll().subscribe((allEntreprises) => {
-    this.entreprises = allEntreprises; // ← pour le <mat-select>
+    this.entreprises = allEntreprises; 
   });
     this.userId = +this.route.snapshot.paramMap.get('id')!;
     this.initForm();
@@ -64,7 +64,7 @@ userForm!: FormGroup;
       name: user.name,
       role: user.role,
       password:user.password,
-      entreprises: entrepriseIds  // ← on ne met que les IDs ici
+      entreprises: entrepriseIds  
     });
     
     });

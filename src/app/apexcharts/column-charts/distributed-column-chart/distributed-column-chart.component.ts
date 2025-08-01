@@ -20,8 +20,7 @@ export class DistributedColumnChartComponent implements OnChanges, OnDestroy {
     private distributedColumnChartService: DistributedColumnChartService,
     private customizer: CustomizerSettingsService
   ) {
-    // Un seul abonnement au thème, persistant
-    this.customizer.darkTheme$
+     this.customizer.darkTheme$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isDark => {
         this.currentTheme = isDark;
@@ -36,8 +35,7 @@ export class DistributedColumnChartComponent implements OnChanges, OnDestroy {
       this.distributedColumnChartService.setData(this.data);
       this.hasLoadedData = true;
 
-      // Charger directement avec le thème courant, sans nouvel abonnement
-      this.distributedColumnChartService.loadChart(this.currentTheme);
+       this.distributedColumnChartService.loadChart(this.currentTheme);
     }
   }
 

@@ -56,7 +56,7 @@ export class BasicDialogComponent {
 
 }
 
-// Dialog Overview Example Dialog
+ 
 @Component({
     selector: 'dialog-overview-example-dialog',
     templateUrl: 'dialog-overview-example-dialog.html',

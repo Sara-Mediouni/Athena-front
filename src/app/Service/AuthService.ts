@@ -26,8 +26,7 @@ import { CookieService } from 'ngx-cookie-service';
   private apiUrl = 'http://localhost:5500/api/auth';
   private isAuthenticated = false;
   private usernameOrEmail: string = '';
-    // Ajout d'une variable pour suivre le statut de chargement
-
+ 
 
 private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
@@ -121,7 +120,7 @@ loadUserFromToken(token: string): Promise<void> {
       (error) => {
         console.error('Erreur lors de la récupération de l\'utilisateur:', error);
         this.currentUserSubject.next(null);
-        resolve(); // On résout quand même pour ne pas bloquer l'app
+        resolve(); 
       }
     );
   });
@@ -142,7 +141,7 @@ getCurrentUserOrLoad(): Promise<User | null> {
     .catch(() => null);
 }
 
-  // Déconnexion de l'utilisateur
+ 
   logout(): void {
   this.currentUserSubject.next(null);
   this.isAuthenticated = false;

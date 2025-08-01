@@ -31,8 +31,7 @@ getAll(): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
   
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -46,8 +45,7 @@ deleteEntreprise(id: number): Observable<void> {
     const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -60,8 +58,7 @@ updateEntreprise(id: number, data: any): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -75,8 +72,7 @@ getEntrepriseById(id: number): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -89,8 +85,7 @@ getMyEntreprise(): Observable<EntrepriseDTO[] | null> {
   const token =  (typeof window !== 'undefined') && localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 

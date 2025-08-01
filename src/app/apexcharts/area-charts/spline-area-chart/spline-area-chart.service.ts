@@ -15,16 +15,13 @@ export class SplineAreaChartService {
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
     alignDatasets(data1: any[], data2: any[]) {
-        // 1. Crée un set unique de labels
-        const allLabels = Array.from(new Set([...data1.map(d => d.label), ...data2.map(d => d.label)]));
-        allLabels.sort(); // Optionnel : trie les labels (utile pour les mois ou années)
+         const allLabels = Array.from(new Set([...data1.map(d => d.label), ...data2.map(d => d.label)]));
+        allLabels.sort();  
 
-        // 2. Crée un Map rapide pour chaque dataset
-        const map1 = new Map(data1.map(d => [d.label, d.cattc]));
+         const map1 = new Map(data1.map(d => [d.label, d.cattc]));
         const map2 = new Map(data2.map(d => [d.label, d.cattc]));
 
-        // 3. Reconstitue les séries alignées
-        const aligned1 = allLabels.map(label => map1.get(label) ?? 0);
+         const aligned1 = allLabels.map(label => map1.get(label) ?? 0);
         const aligned2 = allLabels.map(label => map2.get(label) ?? 0);
         console.log('Aligned Data1:', aligned1);
         console.log('Aligned Data2:', aligned2);
@@ -55,12 +52,10 @@ export class SplineAreaChartService {
             try {
                 const toolbarColor = isDarkMode ? 'white' : 'red';
 
-                // Dynamically import ApexCharts
-                const ApexCharts = (await import('apexcharts')).default;
+                 const ApexCharts = (await import('apexcharts')).default;
                 const { categories, seriesData1, seriesData2 } = this.alignDatasets(this.data1, this.data2);
 
-                // Define chart options
-                const options = {
+                 const options = {
                     series: [
                         {
                             name: "Year 1",
@@ -94,8 +89,7 @@ export class SplineAreaChartService {
                                                 return;
                                             }
 
-                                            // Obtenir l'URI de l'image du graphique
-                                            this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
+                                             this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
                                                 const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
                                                 const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
 

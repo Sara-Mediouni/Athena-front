@@ -57,7 +57,7 @@ ngOnInit(): void {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     role: ['', Validators.required],
-    entreprises: [[], Validators.required] // ← ici, initialise comme tableau vide
+    entreprises: [[], Validators.required]  
   });
 
   this.loadEntreprises();

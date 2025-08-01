@@ -22,7 +22,7 @@ export class AppComponent {
     mode: ProgressSpinnerMode = 'indeterminate';
     title = 'Athena';
 
-    // Observable à utiliser dans le template avec async
+    
     isLoading$ = this.loadingService.loading$;
     isSidebarToggled = false;
 

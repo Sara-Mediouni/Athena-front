@@ -17,8 +17,7 @@ export class UserService {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -31,8 +30,7 @@ updateUser(id: number, data: any): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
 
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -45,8 +43,7 @@ getAllUsers(): Observable<any> {
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
   
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -61,8 +58,7 @@ getUsersByMyEntreprise(){
   const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
   console.log('Token utilisé:', token);
   
-  // Vérifie que le token existe bien
-  if (!token) {
+   if (!token) {
     throw new Error('Token d\'authentification manquant');
   }
 
@@ -78,11 +74,10 @@ getUsersByMyEntreprise(){
       const decodedToken: any = jwtDecode(token);
       const userId = decodedToken.userId;
       
-      // Récupérer l'utilisateur par ID
-      return this.getUserById(userId).pipe(
+       return this.getUserById(userId).pipe(
         catchError((error:any) => {
           console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-          throw error; // Relancer l'erreur pour la gestion dans le composant
+          throw error;  
         })
       );
     } else {
