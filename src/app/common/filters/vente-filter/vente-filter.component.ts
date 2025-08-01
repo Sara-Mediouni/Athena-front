@@ -8,18 +8,24 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatNativeDateModule } from '@angular/material/core'; // pour le datepicker
 import { CommonModule } from '@angular/common';
-import { startOfDay } from '@fullcalendar/core/internal.js';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MY_DATE_FORMATS } from '../../../app.config';
 
 @Component({
   selector: 'app-vente-filter',
   standalone:true,
-  imports: [MatCard,MatCardContent,ReactiveFormsModule,MatNativeDateModule, MatCardModule,MatIconModule,MatButtonModule,MatCheckboxModule
-    ,MatDatepickerModule,MatInputModule,MatFormFieldModule,CommonModule,
+  imports: [MatCard,MatCardContent,ReactiveFormsModule, MatCardModule,MatIconModule,MatButtonModule,MatCheckboxModule
+    ,MatDatepickerModule,MatInputModule,MatFormFieldModule,CommonModule,MatMomentDateModule,
   ],
   templateUrl: './vente-filter.component.html',
-  styleUrl: './vente-filter.component.scss'
+  styleUrl: './vente-filter.component.scss',
+  providers: [
+ { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+   { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  ]
 })
 export class VenteFilterComponent implements OnInit {
   

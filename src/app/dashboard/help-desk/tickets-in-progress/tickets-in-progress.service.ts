@@ -102,7 +102,10 @@ export class TicketsInProgressService {
                         show: false,
                         strokeDashArray: 5,
                         borderColor: "#e0e0e0"
-                    }
+                    },
+                    tooltip: {
+                       enabled: false
+                         }
                 };
 
                 // Initialize and render the chart

@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
@@ -34,9 +33,9 @@ import { Subscription } from 'rxjs';
     MatSelectModule,
     BasicColumnChartComponent,
     MatInputModule,CommonModule,VenteFilterComponent,
-    MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
+    MatButtonModule,MatDatepickerModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
-      MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
+       FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       MatProgressSpinner,
       NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-periode.component.html',
@@ -72,8 +71,10 @@ export class VenteCaPeriodeComponent {
 
 loadCA(filtre: any): void {
   this.lastFiltre = filtre;
-  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
-  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
+  const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];
+
+
+  const dateFin = new Date(filtre.dateFin).toISOString().split('T')[0];
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
 

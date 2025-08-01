@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,9 +33,8 @@ import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule, CommonModule,
-    MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
-    MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
-    MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
+    MatButtonModule, MatDatepickerModule, MatCheckboxModule,
+    MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
     MatProgressSpinner, LineAreaChartComponent,VenteFilterComponent,
     NgxMaterialTimepickerModule],
   templateUrl: './vente-ca-evolut.component.html',
@@ -78,10 +76,12 @@ export class VenteCaEvolutComponent {
 loadCA(filtre: any): void {
   
  this.lastFiltre = filtre;
-  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
-  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
-    const dateDebut2 = filtre.dateDebut2.toLocaleDateString('fr-CA');
-  const dateFin2 = filtre.dateFin2.toLocaleDateString('fr-CA');
+ const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];
+
+
+  const dateFin = new Date(filtre.dateFin).toISOString().split('T')[0];
+    const dateDebut2 = new Date(filtre.dateDebut2).toISOString().split('T')[0];
+  const dateFin2 = new Date(filtre.dateFin2).toISOString().split('T')[0];
   this.CAHT= filtre.HT ? 'true' : 'false';
   this.CATTC= filtre.TTC ? 'true' : 'false';
   this.start1=dateDebut;

@@ -20,6 +20,7 @@ export class TicketsOpenService {
 
                 // Define chart options
                 const options = {
+                     
                     series: [
                         {
                             name: "Documents",
@@ -53,6 +54,7 @@ export class TicketsOpenService {
                             opacityTo: 0.5
                         }
                     },
+                    
                     labels: [
                         "10 Mar 2024",
                         "11 Mar 2024",
@@ -102,7 +104,11 @@ export class TicketsOpenService {
                         show: false,
                         strokeDashArray: 5,
                         borderColor: "#e0e0e0"
-                    }
+                    },
+                    tooltip: {
+                       enabled: false
+                         }
+
                 };
 
                 // Initialize and render the chart

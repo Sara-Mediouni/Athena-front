@@ -24,7 +24,6 @@ import { VenteService } from '../../../Service/VenteService';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -41,9 +40,9 @@ import { Subscription } from 'rxjs';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,CommonModule,
-    MatButtonModule,MatDatepickerModule,MatNativeDateModule,MatCheckboxModule,
-     MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
-      MatNativeDateModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
+    MatButtonModule,MatDatepickerModule,MatCheckboxModule,
+     MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule
+      , FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       MatProgressSpinner,
       NgxMaterialTimepickerModule,PieDonutChartComponent,
      RouterLink,MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule,CommonModule,VenteFilterComponent],  
@@ -93,8 +92,8 @@ ngOnInit(): void {
     
   loadCA(filtre: any): void {
     this.lastFiltre = filtre;
-  const dateDebut = filtre.dateDebut.toLocaleDateString('fr-CA');
-  const dateFin = filtre.dateFin.toLocaleDateString('fr-CA');
+  const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];
+  const dateFin = new Date(filtre.dateFin).toISOString().split('T')[0];
   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
   const groupBy = "commercial";
