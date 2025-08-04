@@ -209,6 +209,8 @@ import { VenteCaPeriodeComponent } from './pages/vente-page/vente-ca-periode/ven
 import { VenteCaDepotComponent } from './pages/vente-page/vente-ca-depot/vente-ca-depot.component';
 import { VenteCaCommercialComponent } from './pages/vente-page/vente-ca-commercial/vente-ca-commercial.component';
 import { VenteCaEvolutComponent } from './pages/vente-page/vente-ca-evolut/vente-ca-evolut.component';
+import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client/vente-ca-client.component';
+import { VenteCaArticleComponent } from './pages/vente-page/vente-ca-client/vente-ca-article/vente-ca-article.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/entreprises', pathMatch: 'full'}, 
@@ -411,6 +413,9 @@ export const routes: Routes = [
             {path: 'periode', component: VenteCaPeriodeComponent},
             {path: 'depot', component: VenteCaDepotComponent},
             {path: 'commercial', component: VenteCaCommercialComponent},
+            {path: 'client', component: VenteCaClientComponent},
+             {path: 'article', component: VenteCaArticleComponent},
+
             {path: 'evolution', component: VenteCaEvolutComponent},
         ]
     },

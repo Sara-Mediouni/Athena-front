@@ -48,6 +48,8 @@ modules = [
       { label: 'CA par Periode', link: '/vente/periode' },
       { label: 'CA par Depot', link: '/vente/depot' },
       { label: 'CA par Commercial', link: '/vente/commercial' },
+      { label: 'CA par Article', link: '/vente/article' },
+      { label: 'CA par Client', link: '/vente/client' },
       { label: 'Evolution CA', link: '/vente/evolution' },
     ]
   },

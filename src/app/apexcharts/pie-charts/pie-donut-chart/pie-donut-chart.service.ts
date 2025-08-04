@@ -20,7 +20,7 @@ export class PieDonutChartService {
         const colors = new Set<string>();
 
         while (colors.size < count) {
-             const color = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            const color = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
             colors.add(color);
         }
 
@@ -47,25 +47,25 @@ export class PieDonutChartService {
                 const total = seriesData.reduce((acc, val) => acc + val, 0);
                 const colors = this.generateUniqueColors(this.data.length);
 
-             const toolbarColor = isDarkMode ? 'white' : 'red';
+                const toolbarColor = isDarkMode ? 'white' : 'red';
                 const options = {
                     series: seriesData,
                     chart: {
                         type: "donut",
-                         zoom: {
-      enabled: true,       
-      type: 'x',           
-      autoScaleYaxis: true 
-    },
+                        zoom: {
+                            enabled: true,
+                            type: 'x',
+                            autoScaleYaxis: true
+                        },
                         toolbar: {
-                                show: true,
-  
-      
-    
+                            show: true,
+
+
+
                             tools: {
                                 download: true,
                                 customIcons: [
-                                     {
+                                    {
                                         icon: `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${toolbarColor}"
 >
@@ -74,55 +74,55 @@ export class PieDonutChartService {
                                         index: 1,
                                         title: 'Télécharger PDF',
                                         click: () => {
-  if (!this.chartInstance) {
-    console.error('Chart not initialized.');
-    return;
-  }
+                                            if (!this.chartInstance) {
+                                                console.error('Chart not initialized.');
+                                                return;
+                                            }
 
-  // Obtenir l'URI de l'image du graphique
-  this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
-    const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
-    const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
+                                            // Obtenir l'URI de l'image du graphique
+                                            this.chartInstance.dataURI().then(({ imgURI }: { imgURI: string }) => {
+                                                const originalWidth = this.chartInstance.w.globals.svgWidth || 800;  // Largeur du graphique
+                                                const originalHeight = this.chartInstance.w.globals.svgHeight || 600; // Hauteur du graphique
 
-    // Créer un document PDF avec un format A4
-    const pdf = new jsPDF({
-      orientation: 'landscape',  // Format paysage (landscape)
-      unit: 'px',                // Unité en pixels
-      format: 'a4',              // Format A4 standard
-    });
+                                                // Créer un document PDF avec un format A4
+                                                const pdf = new jsPDF({
+                                                    orientation: 'landscape',  // Format paysage (landscape)
+                                                    unit: 'px',                // Unité en pixels
+                                                    format: 'a4',              // Format A4 standard
+                                                });
 
-    // Récupérer les dimensions de la page A4 en paysage
-    const pageWidth = 595;   // Largeur de la page A4 en paysage
-    const pageHeight = 421;  // Hauteur de la page A4 en paysage
+                                                // Récupérer les dimensions de la page A4 en paysage
+                                                const pageWidth = 595;   // Largeur de la page A4 en paysage
+                                                const pageHeight = 421;  // Hauteur de la page A4 en paysage
 
-    // Calculer l'échelle nécessaire pour que le graphique tienne sur la page
-    const scaleX = pageWidth / originalWidth;  // Facteur d'échelle en largeur
-    const scaleY = pageHeight / originalHeight; // Facteur d'échelle en hauteur
+                                                // Calculer l'échelle nécessaire pour que le graphique tienne sur la page
+                                                const scaleX = pageWidth / originalWidth;  // Facteur d'échelle en largeur
+                                                const scaleY = pageHeight / originalHeight; // Facteur d'échelle en hauteur
 
-    // Prendre le plus petit facteur d'échelle pour garder les proportions
-    const scaleFactor = Math.min(scaleX, scaleY);
+                                                // Prendre le plus petit facteur d'échelle pour garder les proportions
+                                                const scaleFactor = Math.min(scaleX, scaleY);
 
-    // Appliquer l'échelle pour redimensionner l'image
-    const newWidth = originalWidth * scaleFactor;
-    const newHeight = originalHeight * scaleFactor;
+                                                // Appliquer l'échelle pour redimensionner l'image
+                                                const newWidth = originalWidth * scaleFactor;
+                                                const newHeight = originalHeight * scaleFactor;
 
-    // Centrer le graphique dans la page PDF
-    const x = (pageWidth - newWidth) / 2;  // Position X pour centrer l'image
-    const y = (pageHeight - newHeight) / 2; // Position Y pour centrer l'image
+                                                // Centrer le graphique dans la page PDF
+                                                const x = (pageWidth - newWidth) / 2;  // Position X pour centrer l'image
+                                                const y = (pageHeight - newHeight) / 2; // Position Y pour centrer l'image
 
-    // Ajouter l'image du graphique dans le PDF
-    pdf.addImage(imgURI, 'PNG', x, y, newWidth, newHeight);
+                                                // Ajouter l'image du graphique dans le PDF
+                                                pdf.addImage(imgURI, 'PNG', x, y, newWidth, newHeight);
 
-    // Sauvegarder le PDF
-    pdf.save('chart.pdf');
-  });
-}
-,
-      zoom: true,
-      zoomin: true,
-      zoomout: true,
-      pan: true,
-      reset: true
+                                                // Sauvegarder le PDF
+                                                pdf.save('chart.pdf');
+                                            });
+                                        }
+                                        ,
+                                        zoom: true,
+                                        zoomin: true,
+                                        zoomout: true,
+                                        pan: true,
+                                        reset: true
                                     }
                                 ]
 
@@ -140,7 +140,14 @@ export class PieDonutChartService {
 
                                 },
                                 legend: {
-                                    position: "bottom"
+                                    position: "bottom",
+                                     formatter: function(seriesName:any) {
+  
+    const maxLen = 15;
+    return seriesName.length > maxLen
+      ? seriesName.substring(0, maxLen) + '\n' + seriesName.substring(maxLen)
+      : seriesName;
+  }
                                 }
                             }
                         }
@@ -166,7 +173,7 @@ export class PieDonutChartService {
                     dataLabels: {
                         enabled: true,
                         formatter: (val: number) => {
-                            const percentage = (val).toFixed(1); 
+                            const percentage = (val).toFixed(1);
                             return `${percentage}%`;
                         },
                         style: {
