@@ -44,19 +44,33 @@ export class PieDonutChartService {
                 const categories = this.data.map(item => item.label);
 
                 const seriesData = this.data.map(item => item.caht);
-                const total = seriesData.reduce((acc, val) => acc + val, 0);
+                
                 const colors = this.generateUniqueColors(this.data.length);
 
                 const toolbarColor = isDarkMode ? 'white' : 'red';
+                const combined = categories.map((label, i) => ({
+                    label,
+                    value: seriesData[i]
+                }));
+                combined.sort((a, b) => b.value - a.value);
+                const top10 = combined.slice(0, 20);
+                const filteredSeriesData = top10.map(item => item.value);
+                const filteredCategories = top10.map(item => item.label);
+                 const total = filteredSeriesData.reduce((acc, val) => acc + val, 0);
+
+               console.log(filteredCategories);
+
                 const options = {
-                    series: seriesData,
+                    series: filteredSeriesData,
                     chart: {
+                        height:400,
                         type: "donut",
                         zoom: {
                             enabled: true,
                             type: 'x',
                             autoScaleYaxis: true
                         },
+                       
                         toolbar: {
                             show: true,
 
@@ -130,7 +144,7 @@ export class PieDonutChartService {
                             }
                         }
                     },
-                    labels: categories,
+                    labels: filteredCategories,
                     responsive: [
                         {
                             breakpoint: 450,
@@ -141,27 +155,27 @@ export class PieDonutChartService {
                                 },
                                 legend: {
                                     position: "bottom",
-                                     formatter: function(seriesName:any) {
-  
-    const maxLen = 15;
-    return seriesName.length > maxLen
-      ? seriesName.substring(0, maxLen) + '\n' + seriesName.substring(maxLen)
-      : seriesName;
-  }
+                                    
                                 }
+
                             }
                         }
                     ],
+                    
                     legend: {
                         offsetY: 0,
-                        fontSize: "14px",
-                        labels: {
-                            colors: '#919aa3'
-                        },
-                        itemMargin: {
-                            horizontal: 0,
-                            vertical: 5
-                        }
+                        horizontalAlign: 'center',
+    floating: false,  // rend la légende hors du graphique
+    
+  fontSize: "11px",
+  labels: {
+    colors: '#919aa3'
+  },
+ 
+  itemMargin: {
+    horizontal: 20,
+    vertical: 5
+  }
                     },
                     stroke: {
                         width: 0,
@@ -172,10 +186,8 @@ export class PieDonutChartService {
                     ],
                     dataLabels: {
                         enabled: true,
-                        formatter: (val: number) => {
-                            const percentage = (val).toFixed(1);
-                            return `${percentage}%`;
-                        },
+                        formatter: (val: number) => `${val.toFixed(1)}%`
+,
                         style: {
                             fontSize: '14px',
                         },

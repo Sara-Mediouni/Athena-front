@@ -43,6 +43,7 @@ export class PieDonutChartComponent implements AfterViewInit, OnChanges, OnDestr
     if (changes['data'] && this.data && this.data.length > 0) {
       this.pieDonutChartService.setData(this.data);
       this.hasLoadedData = true;
+      console.log(this.data);
 
       if (this.viewInitialized) {
         this.pieDonutChartService.loadChart(this.currentTheme);

@@ -83,7 +83,10 @@ export class VenteCaCommercialComponent {
       }
     });
   }
-
+  applyFilter(event: Event): void {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
   loadCA(filtre: any): void {
     this.lastFiltre = filtre;
     const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];

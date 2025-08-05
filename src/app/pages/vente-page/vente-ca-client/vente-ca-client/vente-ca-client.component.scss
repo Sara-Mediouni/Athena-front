@@ -387,3 +387,7 @@ mat-icon {
   font-size: 20px;
   vertical-align: middle;
 }
+::ng-deep .mat-sort-header-arrow {
+  opacity: 0.54 !important;
+  visibility: visible !important;
+}

@@ -196,6 +196,10 @@
     }
 
 }
+::ng-deep .mat-sort-header-arrow {
+  opacity: 0.54 !important;
+  visibility: visible !important;
+}
 .a-disabled{
       opacity: 0.5;
   pointer-events: none;
@@ -208,7 +212,7 @@
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
+  text-align: start;
 }
 
 /* Min width 768px to Max width 991px */

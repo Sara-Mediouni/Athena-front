@@ -67,6 +67,10 @@
   min-width: 800px;
   display: block;
 }
+::ng-deep .mat-sort-header-arrow {
+  opacity: 0.54 !important;
+  visibility: visible !important;
+}
 ::ng-deep {
     .mat-mdc-card {
         &.daxa-card {

@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -33,7 +34,7 @@ import { VenteService } from '../../../../Service/VenteService';
   selector: 'app-vente-ca-article',
   imports: [MatCardModule, MatMenuModule, MatButtonModule, MatIconModule,
 
-    MatFormFieldModule,
+    MatFormFieldModule,MatSortModule,
     MatSelectModule,
     MatInputModule, CommonModule,
     MatButtonModule, MatDatepickerModule, MatCheckboxModule,
@@ -41,14 +42,15 @@ import { VenteService } from '../../../../Service/VenteService';
     , FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
     MatProgressSpinner,
     NgxMaterialTimepickerModule, PieDonutChartComponent,
-    RouterLink, MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule, CommonModule, VenteFilterComponent],
+    RouterLink, MatProgressSpinnerModule, MatTableModule,
+     MatPaginatorModule, MatTooltipModule, CommonModule, VenteFilterComponent],
 
   
   templateUrl: './vente-ca-article.component.html',
   styleUrl: './vente-ca-article.component.scss'
 })
 export class VenteCaArticleComponent {
- displayedColumns: string[] = ['nom_article', 'caht', 'cattc'];
+ displayedColumns: string[] = ['nom_article', 'caht', 'cattc','qte'];
   entreprises: EntrepriseDTO[] = [];
   errorMessage: string = '';
   isLoading = true;
@@ -59,9 +61,13 @@ export class VenteCaArticleComponent {
   currentUser: any;
   CAGlobal: any;
   data: [] = [];
-  dataSource = new MatTableDataSource<EntrepriseDTO>([]);
+   dataSource = new MatTableDataSource<any>([]);
   selection = new SelectionModel<Entreprise>(true, []);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+
   private entrepriseSub!: Subscription;
 
   private lastFiltre: any;
@@ -88,6 +94,7 @@ export class VenteCaArticleComponent {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
+
   loadCA(filtre: any): void {
     this.lastFiltre = filtre;
     const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];
@@ -103,6 +110,7 @@ export class VenteCaArticleComponent {
         this.CAGlobal = data;
         this.isLoading = false;
         this.dataSource.data = this.CAGlobal;
+        this.dataSource.sort = this.sort;
       },
       error: (error:any) => {
         console.error('Erreur lors du chargement du CA Article', error);
@@ -112,9 +120,19 @@ export class VenteCaArticleComponent {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
+ ngAfterViewInit(): void {
+  setTimeout(() => {
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.sort.active = 'nom_article';
+this.sort.direction = 'asc'; 
+this.sort.sortChange.emit({ active: this.sort.active, direction: this.sort.direction });
+
+    }
+  });
+}
+
   ngOnDestroy(): void {
     this.entrepriseSub?.unsubscribe();
   }

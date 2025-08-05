@@ -7,82 +7,89 @@
             </a>
         </li>
         <li class="breadcrumb-item position-relative">Vente</li>
-        <li class="breadcrumb-item position-relative">CA par Commercial</li>
+        <li class="breadcrumb-item position-relative">CA par Commercial/li>
     </ol>
 </div>
 <div class="d-flex flex-column gap-4 w-100">
 
+  <app-vente-filter (filtrer)="loadCA($event)" [defaultGroupBy]="'commercial'"></app-vente-filter>
 
-    <app-vente-filter (filtrer)="loadCA($event)" [defaultGroupBy]="'commercial'"></app-vente-filter>
+  <!-- Card Chart Full Width -->
+  <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
+    <mat-card-content>
 
-    <div class="filter-card-wrapper">
-        <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
-            <mat-card-content>
+      <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
+        <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
+      </div>
 
-
-                <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
-                    <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
-                </div>
-
-
-                <div *ngIf="!isLoading" class="chart-container">
+     
+                <div *ngIf="!isLoading" class="chart-container w-100">
                       <div class="scrollable-chart">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 d-flex justify-content-center">
+                   
                             <div class="chart-wrapper">
+                              
                                 <app-pie-donut-chart *ngIf="CAGlobal?.length > 0"
                                     [data]="CAGlobal">
                                 </app-pie-donut-chart>
                             </div>
-                        </div>
-                    </div>
+                       
 </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
+</div>
+    </mat-card-content>
+  </mat-card>
 
-                            <table mat-table [dataSource]="dataSource">
+  <!-- Card Table Full Width -->
+  <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
+    <mat-card-header>
+      <mat-card-title>
+        <form class="search-box position-relative">
+          <i class="material-symbols-outlined">search</i>
+          <input
+            type="text"
+            class="input-search d-block w-100 border-none outline-0"
+            placeholder="Rechercher article..."
+            (keyup)="applyFilter($event)"
+            #input
+          />
+        </form>
+      </mat-card-title>
+    </mat-card-header>
 
+    <mat-card-content>
 
-                                <ng-container matColumnDef="nom_co">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom Commercial</th>
-                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.label }}</td>
-                                </ng-container>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort *ngIf="dataSource.data.length > 0" class="w-100">
 
-                                <!-- CAHT -->
-                                <ng-container matColumnDef="caht">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CA (HT)</th>
-                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.caht.toLocaleString('fr-FR', {
-                                        minimumFractionDigits: 3, maximumFractionDigits: 3 })}}</td>
-                                </ng-container>
+          <!-- Label Column -->
+          <ng-container matColumnDef="nom_co">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom Commercial</th>
+            <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.label }}</td>
+          </ng-container>
 
-                                <!-- CATTC -->
-                                <ng-container matColumnDef="cattc">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>CA(TTC)</th>
-                                    <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.cattc.toLocaleString('fr-FR', {
-                                        minimumFractionDigits: 3, maximumFractionDigits: 3 })}}</td>
-                                </ng-container>
+          <!-- CAHT Column -->
+          <ng-container matColumnDef="caht">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CA (HT)</th>
+            <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.caht | number : '1.3-3' }}</td>
+          </ng-container>
 
+          <!-- CATTC Column -->
+          <ng-container matColumnDef="cattc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CA(TTC)</th>
+            <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.cattc | number : '1.3-3' }}</td>
+          </ng-container>
 
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="6">Aucune recherche ne correspond au filtre</td>
+          </tr>
+        </table>
+      </div>
 
+      <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
 
-                                
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </mat-card-content>
+  </mat-card>
 
-                                <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="6">Aucune recherche ne correspond au filtre </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-
-                <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
-
-
-            </mat-card-content>
-        </mat-card>
-    </div>
 </div>
