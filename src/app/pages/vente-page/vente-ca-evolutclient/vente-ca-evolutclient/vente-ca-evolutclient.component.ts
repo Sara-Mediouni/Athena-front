@@ -12,12 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { BasicColumnChartComponent } from '../../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
 import { VenteFilterComponent } from '../../../../common/filters/vente-filter/vente-filter.component';
 import { VenteService } from '../../../../Service/VenteService';
 import { EntrepriseSelectionService } from '../../../../Service/EntrepriseSelectionService';
 import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
+import { LineColumnChartComponent } from '../../../../apexcharts/mixed-charts/line-column-chart/line-column-chart.component';
+import { LineAreaChartComponent } from '../../../../apexcharts/mixed-charts/line-area-chart/line-area-chart.component';
+import { DistributedColumnChartComponent } from '../../../../apexcharts/column-charts/distributed-column-chart/distributed-column-chart.component';
 
 
 @Component({
@@ -26,7 +29,6 @@ import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    BasicColumnChartComponent,
     MatInputModule,CommonModule,VenteFilterComponent,
     MatButtonModule,MatDatepickerModule,MatCheckboxModule,
      MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule,
@@ -37,66 +39,81 @@ import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
   styleUrl: './vente-ca-evolutclient.component.scss'
 })
 export class VenteCaEvolutclientComponent {
-  @Output() groupByChange = new EventEmitter<string>();
-
-  
-  data: []=[];
-  errorMessage: string = '';
-  CAGlobal: any;
-  private entrepriseSub!: Subscription;
-  private lastFiltre: any;
-  doc: any;
-  isLoading: boolean = false;
-
-  
-   constructor(private fb: FormBuilder,private venteService: VenteService,
-       private entrepriseSelectionService: EntrepriseSelectionService) { 
-       }
+   private entrepriseSub!: Subscription;
+       
+     private lastFiltre: any;
+   data: [] = [];
+   errorMessage: string = '';
+   CAGlobal1: any;
+   CAGlobal2: any;
+   isLoading: boolean = false;
+   start1:any;
+   CATTC:any;
+   CAHT:any;
+   start2:any;
+   end1:any;
+   end2:any;
+   constructor(private venteService: VenteService,
+       private entrepriseSelectionService: EntrepriseSelectionService) {
+    
  
-  ngOnInit(): void {
+   }
+ 
+ 
+ 
+ 
+   ngOnInit(): void {
+    
+     this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
+       if (entreprise && this.lastFiltre) {
+         this.loadCA(this.lastFiltre);
+       }
+     });
+   }
+ 
+ loadCA(filtre: any): void {
    
-    this.entrepriseSub = this.entrepriseSelectionService.selectedEntreprise$.subscribe((entreprise: EntrepriseDTO | null) => {
-      if (entreprise && this.lastFiltre) {
-        this.loadCA(this.lastFiltre);
-      }
-    });
-  }
-
-
-loadCA(filtre: any): void {
   this.lastFiltre = filtre;
   const dateDebut = new Date(filtre.dateDebut).toISOString().split('T')[0];
-
-
-  const dateFin = new Date(filtre.dateFin).toISOString().split('T')[0];
-  const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
-  const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
-
-
-  const groupBy = filtre.groupBy || 'mois';
-
-  this.isLoading = true; 
-
-  this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy).subscribe({
-    next: (data) => {
-      this.CAGlobal = data;
-      this.isLoading = false;
-    },
-    error: (error) => {
-      console.error('Erreur lors du chargement du CA Global', error);
-      this.errorMessage = 'Erreur lors du chargement du CA Global';
-      this.isLoading = false; 
-    }
-  });
-}
-
-
-}
+ 
+ 
+   const dateFin = new Date(filtre.dateFin).toISOString().split('T')[0];
+     const dateDebut2 = new Date(filtre.dateDebut2).toISOString().split('T')[0];
+   const dateFin2 = new Date(filtre.dateFin2).toISOString().split('T')[0];
+   this.CAHT= filtre.HT ? 'true' : 'false';
+   this.CATTC= filtre.TTC ? 'true' : 'false';
+   this.start1=dateDebut;
+   this.end1=dateFin;
+   this.start2=dateDebut2;
+   this.end2=dateFin2;
+   const inclureBLs = filtre.inclureBLs ? 'true' : 'false';
+   const mode = filtre.dateFacture ? 'dateFacture' : (filtre.dateBL ? 'dateBL' : 'dateFacture');
+   const groupBy = "client";
+ 
+   this.isLoading = true;
+ 
+   forkJoin([ this.venteService.getCAPeriod(dateDebut2, dateFin2, mode, inclureBLs, groupBy),
+     this.venteService.getCAPeriod(dateDebut, dateFin, mode, inclureBLs, groupBy)
     
-
-
-
-
-
-
-
+   ]).subscribe({
+     next: ([data1, data2]) => {
+       this.CAGlobal1 = data1;
+       this.CAGlobal2 = data2;
+       this.isLoading = false;
+       console.log('CA Global 1 :', this.CAGlobal1);
+       console.log('CA Global 2 :', this.CAGlobal2);
+     },
+     error: (error) => {
+       console.error('Erreur lors du chargement du CA Global', error);
+       this.errorMessage = 'Erreur lors du chargement du CA Global';
+       this.isLoading = false;
+     }
+   });
+ }
+ 
+ ngOnDestroy(): void {
+     this.entrepriseSub?.unsubscribe();
+   }
+ 
+ }
+ 

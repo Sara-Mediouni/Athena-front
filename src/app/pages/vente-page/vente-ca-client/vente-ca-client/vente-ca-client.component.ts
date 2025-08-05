@@ -49,7 +49,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   styleUrl: './vente-ca-client.component.scss'
 })
 export class VenteCaClientComponent {
-  displayedColumns: string[] = ['nom_client', 'caht', 'cattc'];
+  displayedColumns: string[] = ['label', 'caht', 'cattc'];
   entreprises: EntrepriseDTO[] = [];
   errorMessage: string = '';
   isLoading = true;
@@ -121,7 +121,7 @@ export class VenteCaClientComponent {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.sort.active = 'nom_client';
+      this.sort.active = 'label';
 this.sort.direction = 'asc'; 
 this.sort.sortChange.emit({ active: this.sort.active, direction: this.sort.direction });
 

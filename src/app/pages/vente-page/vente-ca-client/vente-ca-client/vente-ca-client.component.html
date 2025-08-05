@@ -60,7 +60,7 @@
         <table mat-table [dataSource]="dataSource" matSort class="w-100">
 
           <!-- Label Column -->
-          <ng-container matColumnDef="nom_client">
+          <ng-container matColumnDef="label">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom Client</th>
             <td mat-cell *matCellDef="let CAGlobal">{{ CAGlobal.label }}</td>
           </ng-container>

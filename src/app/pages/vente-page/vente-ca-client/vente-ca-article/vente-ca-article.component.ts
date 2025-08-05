@@ -50,7 +50,7 @@ import { VenteService } from '../../../../Service/VenteService';
   styleUrl: './vente-ca-article.component.scss'
 })
 export class VenteCaArticleComponent {
- displayedColumns: string[] = ['nom_article', 'caht', 'cattc','qte'];
+ displayedColumns: string[] = ['label', 'caht', 'cattc','qte'];
   entreprises: EntrepriseDTO[] = [];
   errorMessage: string = '';
   isLoading = true;
@@ -125,7 +125,7 @@ export class VenteCaArticleComponent {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.sort.active = 'nom_article';
+      this.sort.active = 'label';
 this.sort.direction = 'asc'; 
 this.sort.sortChange.emit({ active: this.sort.active, direction: this.sort.direction });
 
