@@ -29,7 +29,7 @@ import { EntrepriseSelectionService } from '../../../../Service/EntrepriseSelect
 import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
 import { Entreprise } from '../../../../Model/Entreprise';
 import { VenteService } from '../../../../Service/VenteService';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 @Component({
   selector: 'app-vente-ca-client',
   imports: [MatCardModule, MatMenuModule, MatButtonModule, MatIconModule,
@@ -40,7 +40,7 @@ import { MatSort } from '@angular/material/sort';
     MatButtonModule, MatDatepickerModule, MatCheckboxModule,
     MatCardModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule
     , FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
-    MatProgressSpinner,
+    MatProgressSpinner,MatSortModule,
     NgxMaterialTimepickerModule, PieDonutChartComponent,
     RouterLink, MatProgressSpinnerModule, MatTableModule, MatPaginatorModule,
      MatTooltipModule, CommonModule, VenteFilterComponent],

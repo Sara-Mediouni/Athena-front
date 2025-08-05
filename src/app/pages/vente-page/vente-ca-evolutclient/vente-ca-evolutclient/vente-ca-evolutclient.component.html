@@ -1,0 +1,42 @@
+
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+  <h5 class="mb-0">Chiffre d'affaires Par Periode</h5>
+  <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+    <li class="breadcrumb-item position-relative">
+      <a routerLink="/" class="d-inline-block position-relative">
+        <i class="ri-home-8-line"></i> Dashboard
+      </a>
+    </li>
+    <li class="breadcrumb-item position-relative">Vente</li>
+    <li class="breadcrumb-item position-relative">Evolution CA par Client</li>
+  </ol>
+</div>
+
+
+<div class="d-flex flex-column gap-4 w-100">
+
+
+ <app-vente-filter (filtrer)="loadCA($event)" [defaultGroupBy]="'client'" [showGroupBy]="true"></app-vente-filter>
+ 
+  <div class="filter-card-wrapper">
+    <mat-card class="daxa-card vente-card border-radius bg-white border-none w-100">
+      <mat-card-content>
+
+        
+        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center p-5">
+          <mat-progress-spinner color="primary" mode="indeterminate" diameter="40"></mat-progress-spinner>
+        </div>
+
+      
+       <div *ngIf="!isLoading" class="chart-container">
+  <div class="scrollable-chart">
+    <app-basic-column-chart *ngIf="CAGlobal?.length > 0" [data]="CAGlobal"></app-basic-column-chart>
+  </div>
+</div>
+     
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

@@ -10,17 +10,18 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VenteService } from '../../../Service/VenteService';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { BasicColumnChartComponent } from '../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
-import { VenteFilterComponent } from '../../../common/filters/vente-filter/vente-filter.component';
-import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
-import { EntrepriseDTO } from '../../../Model/EntrepriseDTO';
+
 import { Subscription } from 'rxjs';
+import { BasicColumnChartComponent } from '../../../../apexcharts/column-charts/basic-column-chart/basic-column-chart.component';
+import { VenteFilterComponent } from '../../../../common/filters/vente-filter/vente-filter.component';
+import { VenteService } from '../../../../Service/VenteService';
+import { EntrepriseSelectionService } from '../../../../Service/EntrepriseSelectionService';
+import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
 
 
 @Component({
-  selector: 'app-vente-ca-periode',
+  selector: 'app-vente-ca-evolutclient',
     imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -32,19 +33,18 @@ import { Subscription } from 'rxjs';
        FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
       MatProgressSpinner,
       NgxMaterialTimepickerModule],
-  templateUrl: './vente-ca-periode.component.html',
-  styleUrl: './vente-ca-periode.component.scss'
+  templateUrl: './vente-ca-evolutclient.component.html',
+  styleUrl: './vente-ca-evolutclient.component.scss'
 })
-export class VenteCaPeriodeComponent {
-    @Output() groupByChange = new EventEmitter<string>();
+export class VenteCaEvolutclientComponent {
+  @Output() groupByChange = new EventEmitter<string>();
 
   
   data: []=[];
   errorMessage: string = '';
   CAGlobal: any;
-     private entrepriseSub!: Subscription;
-      
-    private lastFiltre: any;
+  private entrepriseSub!: Subscription;
+  private lastFiltre: any;
   doc: any;
   isLoading: boolean = false;
 
@@ -93,6 +93,7 @@ loadCA(filtre: any): void {
 
 }
     
+
 
 
 

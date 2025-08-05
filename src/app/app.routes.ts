@@ -211,6 +211,7 @@ import { VenteCaCommercialComponent } from './pages/vente-page/vente-ca-commerci
 import { VenteCaEvolutComponent } from './pages/vente-page/vente-ca-evolut/vente-ca-evolut.component';
 import { VenteCaClientComponent } from './pages/vente-page/vente-ca-client/vente-ca-client/vente-ca-client.component';
 import { VenteCaArticleComponent } from './pages/vente-page/vente-ca-client/vente-ca-article/vente-ca-article.component';
+import { VenteCaEvolutclientComponent } from './pages/vente-page/vente-ca-evolutclient/vente-ca-evolutclient/vente-ca-evolutclient.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/entreprises', pathMatch: 'full'}, 
@@ -414,8 +415,8 @@ export const routes: Routes = [
             {path: 'depot', component: VenteCaDepotComponent},
             {path: 'commercial', component: VenteCaCommercialComponent},
             {path: 'client', component: VenteCaClientComponent},
-             {path: 'article', component: VenteCaArticleComponent},
-
+            {path: 'article', component: VenteCaArticleComponent},
+            {path: 'evolution Ca par client', component: VenteCaEvolutclientComponent},
             {path: 'evolution', component: VenteCaEvolutComponent},
         ]
     },

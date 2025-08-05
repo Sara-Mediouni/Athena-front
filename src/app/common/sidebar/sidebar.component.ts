@@ -51,6 +51,7 @@ modules = [
       { label: 'CA par Article', link: '/vente/article' },
       { label: 'CA par Client', link: '/vente/client' },
       { label: 'Evolution CA', link: '/vente/evolution' },
+      { label: 'Evolution CA par Client', link: '/vente/evolutionclient' },
     ]
   },
   {
