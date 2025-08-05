@@ -29,6 +29,7 @@ import { EntrepriseSelectionService } from '../../../../Service/EntrepriseSelect
 import { EntrepriseDTO } from '../../../../Model/EntrepriseDTO';
 import { Entreprise } from '../../../../Model/Entreprise';
 import { VenteService } from '../../../../Service/VenteService';
+import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-vente-ca-client',
   imports: [MatCardModule, MatMenuModule, MatButtonModule, MatIconModule,
@@ -41,7 +42,8 @@ import { VenteService } from '../../../../Service/VenteService';
     , FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule,
     MatProgressSpinner,
     NgxMaterialTimepickerModule, PieDonutChartComponent,
-    RouterLink, MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatTooltipModule, CommonModule, VenteFilterComponent],
+    RouterLink, MatProgressSpinnerModule, MatTableModule, MatPaginatorModule,
+     MatTooltipModule, CommonModule, VenteFilterComponent],
 
   templateUrl: './vente-ca-client.component.html',
   styleUrl: './vente-ca-client.component.scss'
@@ -61,6 +63,7 @@ export class VenteCaClientComponent {
   dataSource = new MatTableDataSource<EntrepriseDTO>([]);
   selection = new SelectionModel<Entreprise>(true, []);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   private entrepriseSub!: Subscription;
 
   private lastFiltre: any;
@@ -102,6 +105,7 @@ export class VenteCaClientComponent {
         this.CAGlobal = data;
         this.isLoading = false;
         this.dataSource.data = this.CAGlobal;
+         this.dataSource.sort = this.sort;
       },
       error: (error:any) => {
         console.error('Erreur lors du chargement du CA Client', error);
@@ -111,9 +115,19 @@ export class VenteCaClientComponent {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
+ 
+ ngAfterViewInit(): void {
+  setTimeout(() => {
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.sort.active = 'nom_client';
+this.sort.direction = 'asc'; 
+this.sort.sortChange.emit({ active: this.sort.active, direction: this.sort.direction });
+
+    }
+  });
+}
   ngOnDestroy(): void {
     this.entrepriseSub?.unsubscribe();
   }
