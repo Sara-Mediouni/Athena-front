@@ -89,12 +89,9 @@ modules = [
 ];
 
  ngOnInit(): void {
-  if (typeof localStorage !== "undefined"){
-    this.token = localStorage.getItem('accessToken');
-  }
-     if (this.token) {
+
     // Récupérer l'utilisateur connecté en utilisant le token
-    this.userService.getUserConnected(this.token)
+    this.userService.getUserConnected()
     const subscription = this.authService.currentUser$
     .subscribe(
       (user) => {
@@ -107,7 +104,7 @@ modules = [
       (error) => {
         console.error('Erreur lors de la récupération de l\'utilisateur connecté :', error);
         this.currentUserRole = null;
-      })}
+      })
  
  }
  

@@ -49,9 +49,7 @@ constructor(
     
     ) {}
    ngOnInit(): void {
-  if (typeof window !== 'undefined') {
-    this.token = localStorage.getItem('accessToken');
-    this.authService.loadUserFromToken(this.token);
+  
 
     this.authService.currentUser$.subscribe(user => {
       if (user) {
@@ -83,7 +81,7 @@ constructor(
         console.log('Utilisateur non trouvé');
       }
     });
-  }
+  
 }
 
 

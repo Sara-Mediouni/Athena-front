@@ -44,7 +44,7 @@ export class PieDonutChartService {
                 const categories = this.data.map(item => item.label);
 
                 const seriesData = this.data.map(item => item.caht);
-                
+
                 const colors = this.generateUniqueColors(this.data.length);
 
                 const toolbarColor = isDarkMode ? 'white' : 'red';
@@ -56,21 +56,21 @@ export class PieDonutChartService {
                 const top10 = combined.slice(0, 20);
                 const filteredSeriesData = top10.map(item => item.value);
                 const filteredCategories = top10.map(item => item.label);
-                 const total = filteredSeriesData.reduce((acc, val) => acc + val, 0);
+                const total = filteredSeriesData.reduce((acc, val) => acc + val, 0);
 
-               console.log(filteredCategories);
+                console.log(filteredCategories);
 
                 const options = {
                     series: filteredSeriesData,
                     chart: {
-                        height:400,
+                        height: 400,
                         type: "donut",
                         zoom: {
                             enabled: true,
                             type: 'x',
                             autoScaleYaxis: true
                         },
-                       
+
                         toolbar: {
                             show: true,
 
@@ -145,74 +145,99 @@ export class PieDonutChartService {
                         }
                     },
                     labels: filteredCategories,
-                    responsive: [
-                        {
-                            breakpoint: 450,
-                            options: {
-                                chart: {
-                                    width: 200
-
-                                },
-                                legend: {
-                                    position: "bottom",
-                                    
-                                }
-
+                    plotOptions: {
+                        pie: {
+                            dataLabels: {
+                                minAngleToShowLabel: 0 
                             }
-                        }
-                    ],
-                    
-                    legend: {
-                        offsetY: 0,
-                        horizontalAlign: 'center',
-    floating: false,  // rend la légende hors du graphique
-    
-  fontSize: "11px",
-  labels: {
-    colors: '#919aa3'
-  },
- 
-  itemMargin: {
-    horizontal: 20,
-    vertical: 5
-  }
-                    },
-                    stroke: {
-                        width: 0,
-                        show: true
-                    },
-                    colors: [
-                        // "#0f79f3", "#796df6", "#e74c3c", "#00cae3", "#ffb264",
-                    ],
-                    dataLabels: {
-                        enabled: true,
-                        formatter: (val: number) => `${val.toFixed(1)}%`
-,
-                        style: {
-                            fontSize: '14px',
-                        },
+                        }},
+                        responsive: [
+                            {
+                                breakpoint: 450,
+                                options: {
+                                    chart: {
+                                        width: 200
 
-                        dropShadow: {
-                            enabled: false
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: (val: number) => {
-                                const percentage = ((val / total) * 100).toFixed(1);
-                                return `${percentage}%`;
+                                    },
+                                    legend: {
+                                        position: "bottom",
+
+                                    }
+
+                                }
+                            }
+                        ],
+
+                        legend: {
+                            offsetY: 0,
+                            horizontalAlign: 'center',
+                            floating: false,  // rend la légende hors du graphique
+
+                            fontSize: "11px",
+                            labels: {
+                                colors: '#919aa3'
+                            },
+
+                            itemMargin: {
+                                horizontal: 20,
+                                vertical: 5
+                            }
+                        },
+                        stroke: {
+                            width: 0,
+                            show: true
+                        },
+                        colors: [
+                            // "#0f79f3", "#796df6", "#e74c3c", "#00cae3", "#ffb264",
+                        ],
+                        dataLabels: {
+                            enabled: true,
+                           formatter: function (val:any) {
+      return val >= 2 ? val.toFixed(1) + '%' : ''; // cacher <2%
+    },
+                            style: {
+                                fontSize: '12px',
+                            },
+
+                            dropShadow: {
+                                enabled: false
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: (val: number) => {
+                                    const percentage = ((val / total) * 100).toFixed(1);
+                                    return `${percentage}%`;
+                                }
                             }
                         }
                     }
-                }
 
                 // Initialize and render the chart
                 this.chartInstance = new ApexCharts(document.querySelector('#pie_donut_chart'), options);
-                this.chartInstance.render();
-            } catch (error) {
-                console.error('Error loading ApexCharts:', error);
+                    this.chartInstance.render();
+                    const calloutsContainer = document.getElementById("callouts");
+if (calloutsContainer) {
+  this.data.forEach((item) => {
+    const percentage = (item.value / total) * 100;
+    if (percentage < 2) {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+          <span style="background: #eee; padding: 4px 8px; border-radius: 4px;">
+            ${item.label}: ${percentage.toFixed(1)}%
+          </span>
+          <span style="margin-left: 6px;">⬅️</span>
+        </div>
+      `;
+      calloutsContainer.appendChild(div);
+    }
+  });
+}
+                } catch (error) {
+                    console.error('Error loading ApexCharts:', error);
+                }
             }
-        }
     }
 
-}
+    }

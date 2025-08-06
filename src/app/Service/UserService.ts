@@ -1,86 +1,40 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router"
-import { Observable } from "rxjs";
-import { jwtDecode } from 'jwt-decode';
+import { Observable, throwError } from "rxjs";
 import { catchError } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
   private apiUrl = 'http://localhost:5500/api/users';
-  
-  constructor(private http: HttpClient, private router: Router) {}
+
+  constructor(private http: HttpClient) {}
 
   getUserById(id: number): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+    return this.http.get(`${this.apiUrl}/getbyid/${id}`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.get(`${this.apiUrl}/getbyid/${id}`,{headers});
-}
-updateUser(id: number, data: any): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, data, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.put(`${this.apiUrl}/update/${id}`, data,{headers});
-}
-getAllUsers(): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-  
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  getAllUsers(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users-custom`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  
-  return this.http.get<any>(`${this.apiUrl}/users-custom`,{headers});
-
-}
-getUsersByMyEntreprise(){
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-  
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  getUsersByMyEntreprise(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/by-entreprise`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
   
-  return this.http.get<any>(`${this.apiUrl}/by-entreprise`,{headers});
-
+  getUserConnected(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
+      catchError(error => {
+        console.error('Erreur lors de la récupération de l\'utilisateur connecté:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }
-  getUserConnected(token: string): Observable<any> {
-    if (typeof localStorage !== 'undefined') {
-      const decodedToken: any = jwtDecode(token);
-      const userId = decodedToken.userId;
-      
-       return this.getUserById(userId).pipe(
-        catchError((error:any) => {
-          console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-          throw error;  
-        })
-      );
-    } else {
-      throw new Error('localStorage is not available');
-    }
-  }}

@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   isToggled = false;
   isLoading = true;
-  
+
   private cookieService = inject(CookieService);
   private subscriptions: Subscription = new Subscription();
 
@@ -54,56 +54,52 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    this.authService.loadUserFromToken(token); // Appelé ailleurs ? Supprime si déjà fait
-  }
+    
 
-  const userSub = this.authService.currentUser$.subscribe(user => {
-    if (user) {
-      console.log('[HeaderComponent] User reçu :', user);
-      this.user = user.name;
-      this.role = user.role;
+    const userSub = this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        console.log('[HeaderComponent] User reçu :', user);
+        this.user = user.name;
+        this.role = user.role;
 
-      this.isLoading = true;
+        this.isLoading = true;
 
-      const entrepriseObs = this.role === 'SUPER_ADMIN'
-        ? this.entService.getAll()
-        : this.entService.getMyEntreprise();
+        const entrepriseObs = this.role === 'SUPER_ADMIN'
+          ? this.entService.getAll()
+          : this.entService.getMyEntreprise();
 
-      entrepriseObs.subscribe({
-        next: (data) => {
-          console.log('Entreprises chargées :', data);
-          this.entreprises = data;
-          this.loadSelectedEntrepriseFromCookie();
-          this.isLoading = false;
-          this.cdRef.detectChanges();
-        },
-        error: (err) => {
-          console.error('Erreur entreprises', err);
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.user = null;
-      this.role = null;
-      this.entreprises = [];
-      this.isLoading = false;
-    }
+        entrepriseObs.subscribe({
+          next: (data) => {
+            console.log('Entreprises chargées :', data);
+            this.entreprises = data;
+            this.loadSelectedEntrepriseFromCookie();
+            this.isLoading = false;
+            this.cdRef.detectChanges();
+          },
+          error: (err) => {
+            console.error('Erreur entreprises', err);
+            this.isLoading = false;
+          }
+        });
+      } else {
+        this.user = null;
+        this.role = null;
+        this.entreprises = [];
+        this.isLoading = false;
+      }
 
-    this.cdRef.detectChanges();
-  });
-
-  this.subscriptions.add(userSub);
-
-  // Entreprise sélectionnée
-  this.subscriptions.add(
-    this.entrepriseSelectionService.selectedEntreprise$.subscribe(ent => {
-      this.selectedEntreprise = ent;
       this.cdRef.detectChanges();
-    })
-  );
-}
+    });
+
+    this.subscriptions.add(userSub);
+
+    this.subscriptions.add(
+      this.entrepriseSelectionService.selectedEntreprise$.subscribe(ent => {
+        this.selectedEntreprise = ent;
+        this.cdRef.detectChanges();
+      })
+    );
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -158,28 +154,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   loadUser(): void {
-  if (typeof localStorage !== 'undefined') {
-    this.token = localStorage.getItem('accessToken');
-
-    if (this.token) {
-      this.isLoading = true;
-
-      this.authService.loadUserFromToken(this.token);
-
+    
       const sub = this.authService.currentUser$.subscribe(user => {
         if (user) {
           this.user = user.name;
           this.role = user.role;
-          this.cdRef.detectChanges(); 
+          this.cdRef.detectChanges();
+
           if (this.role === 'SUPER_ADMIN') {
             this.entService.getAll().subscribe({
               next: (data) => {
                 this.entreprises = data;
-                   this.cdRef.detectChanges(); 
-                console.log('ENTREPRISES:', data);
-
+                this.cdRef.detectChanges();
                 this.loadSelectedEntrepriseFromCookie();
-                this.isLoading = false; 
+                this.isLoading = false;
               },
               error: (error) => {
                 console.error('Erreur lors du chargement des entreprises', error);
@@ -192,16 +180,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
               next: (entreprises: EntrepriseDTO[] | null) => {
                 if (entreprises && entreprises.length > 0) {
                   this.entreprises = entreprises;
-                     this.cdRef.detectChanges(); 
+                  this.cdRef.detectChanges();
                   this.loadSelectedEntrepriseFromCookie();
                 } else {
                   console.error('Aucune entreprise trouvée');
                 }
-                this.isLoading = false; // Fin du chargement
+                this.isLoading = false;
               },
               error: (err) => {
                 console.error('Erreur lors du chargement des entreprises', err);
-                this.isLoading = false; // Fin du chargement en cas d'erreur
+                this.isLoading = false;
               }
             });
           }
@@ -214,20 +202,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       this.subscriptions.add(sub);
 
-    } else {
-      console.error('Aucun token trouvé dans localStorage');
-      this.user = null;
-      this.role = null;
-      this.isLoading = false; // Fin du chargement même si le token est manquant
-    }
-  } else {
-    console.error('localStorage n\'est pas disponible');
-    this.user = null;
-    this.role = null;
-    this.isLoading = false; // Fin du chargement si localStorage est indisponible
+    
   }
-}
-
 
   logout() {
     this.authService.logout();

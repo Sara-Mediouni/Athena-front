@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router"
 import { Observable } from "rxjs";
 import { EntrepriseDTO } from "../Model/EntrepriseDTO";
 
@@ -8,90 +7,31 @@ import { EntrepriseDTO } from "../Model/EntrepriseDTO";
   providedIn: 'root'
 })
 export class EntService {
-
   private apiUrl = 'http://localhost:5500/api/ent';
-  private addUrl = 'http://localhost:5500/api/ent/add';
-  private getUrl = 'http://localhost:5500/api/ent/all';
-  constructor(private http: HttpClient, private router: Router) {}
 
-  add(entreprise:any): Observable<any>{
-    const token = localStorage.getItem('accessToken');
+  constructor(private http: HttpClient) {}
 
-
-
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  
-  return this.http.post(`${this.apiUrl}/add`, entreprise,{headers});
-}
-
-  
-getAll(): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-  
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  add(entreprise: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/add`, entreprise, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  
-  return this.http.get<any>(this.getUrl, { headers });
-}
-deleteEntreprise(id: number): Observable<void> {
-    const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  getAll(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/all`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers });
-}
-updateEntreprise(id: number, data: any): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  deleteEntreprise(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.put(`${this.apiUrl}/update/${id}`, data,{headers});
-}
-
-getEntrepriseById(id: number): Observable<any> {
-  const token = localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  updateEntreprise(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, data, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.get(`${this.apiUrl}/getbyid/${id}`,{headers});
-}
-getMyEntreprise(): Observable<EntrepriseDTO[] | null> {
-  const token =  (typeof window !== 'undefined') && localStorage != undefined ? localStorage.getItem('accessToken'): '';
-  console.log('Token utilisé:', token);
-
-   if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  getEntrepriseById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getbyid/${id}`, { withCredentials: true });
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-  return this.http.get<EntrepriseDTO[] | null>(`${this.apiUrl}/me`,{headers});
-}
+  getMyEntreprise(): Observable<EntrepriseDTO[] | null> {
+    return this.http.get<EntrepriseDTO[] | null>(`${this.apiUrl}/me`, { withCredentials: true });
+  }
 }

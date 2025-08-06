@@ -61,8 +61,8 @@ ngOnInit(): void {
   this.loadEntreprises(); 
   this.token = localStorage.getItem('accessToken'); 
 
-  if (this.token) {
-     this.userService.getUserConnected(this.token).subscribe(
+  this.userService.getUserConnected().subscribe(
+
       (user) => {
         this.currentUser = user;
         this.currentUserRole = user.role; 
@@ -83,9 +83,7 @@ ngOnInit(): void {
         console.error('Erreur lors de la récupération de l\'utilisateur:', error);
       }
     );
-  } else {
-    console.error("Token non trouvé dans localStorage");
-  }
+ 
 }
 
     getEntreprisesLabelList(user: User): string {

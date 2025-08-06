@@ -57,33 +57,31 @@ export class SignUpComponent {
 }
 
 
-    onSubmit() {
-    const email = this.authForm.get('email')?.value;
-    const password = this.authForm.get('password')?.value;
-    const name = this.authForm.get('name')?.value;
-    const role = this.authForm.get('role')?.value;
+   onSubmit() {
+  const email = this.authForm.get('email')?.value;
+  const password = this.authForm.get('password')?.value;
+  const name = this.authForm.get('name')?.value;
+  const role = this.authForm.get('role')?.value;
 
+  console.log('Email:', email);
+  console.log('Password:', password);
+  console.log('Role:', role);
+  console.log('Name:', name);
 
-
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('role:', role);
-    console.log('name:', name);
-
-        this.authService.signup(email,name,password,role).subscribe({
-          next: (response) => {
-            this.authService.setUsernameOrEmail(this.email);
-            console.log('signup mail:', this.email);
-            this.router.navigate(['/commerce']);
-            console.log('signup successful:', response);
-          },
-          error: (error) => {
-          this.error=error.error.message;
-          console.error('signup error:', error.error.message);
-          console.error('signup error:', error);
-          },
-        });
+  this.authService.signup(email, name, password, role).subscribe({
+    next: (response) => {
       
+
+      console.log('Signup successful:', response);
+      this.router.navigate(['/commerce']);
+    },
+    error: (error) => {
+      this.error = error.error?.message || 'Erreur lors de l\'inscription';
+      console.error('Signup error:', this.error);
+      console.error(error);
     }
+  });
+}
+
 
 }

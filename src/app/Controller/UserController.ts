@@ -1,107 +1,67 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { User } from "../Model/User";
 import { UserCreateDTO } from "../Model/UserCreateDTO";
 
-
-
-
 @Injectable({
-    providedIn: 'root'
-  })
-
-
+  providedIn: 'root'
+})
 export class UserController {
 
+  private baseUrl = "http://localhost:5500/api/users";
 
-    private baseUrl = "http://localhost:5500/api/users";
+  constructor(private http: HttpClient) {}
 
-    
-
-
-    constructor(private http: HttpClient) {}        
-
-
-
-    getUser () : Observable <[User]> {
-  if (typeof window === 'undefined') {
-    throw new Error('localStorage is not accessible (environnement non-navigateur)');
-  }
-       const token = localStorage.getItem('accessToken');
-  console.log('Token utilisé:', token);
-
-  // Vérifie que le token existe bien
-  if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  getUser(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/all`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Erreur getUser:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-
-
-        return this.http.get<[User]>(`${this.baseUrl}/all`,{headers});
-  
-      }
-
-
-
-      addUser(user: UserCreateDTO): Observable<User> {
-        console.log("add user called");
-       const token = localStorage.getItem('accessToken');
-  console.log('Token utilisé:', token);
-
-  // Vérifie que le token existe bien
-  if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  addUser(user: UserCreateDTO): Observable<User> {
+    console.log("➕ addUser appelé");
+    return this.http.post<User>(`${this.baseUrl}/add`, user, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Erreur addUser:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-
-
-        return this.http.post<User>(`${this.baseUrl}/add`, user,{headers});
-      }
-
-      updateUser(id:number , data:any): Observable<User> {
-        console.log('🟢 update  appelé');
-               const token = localStorage.getItem('accessToken');
-  console.log('Token utilisé:', token);
-
-  // Vérifie que le token existe bien
-  if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  updateUser(id: number, data: any): Observable<User> {
+    console.log('🟢 updateUser appelé');
+    return this.http.put<User>(`${this.baseUrl}/put/${id}`, data, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Erreur updateUser:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-
-        return this.http.put<User>(`${this.baseUrl}/put/${id}`, data,{headers});
-      }
-
-      deleteUser(id: number): Observable<void> {
-               const token = localStorage.getItem('accessToken');
-  console.log('Token utilisé:', token);
-
-  // Vérifie que le token existe bien
-  if (!token) {
-    throw new Error('Token d\'authentification manquant');
+  deleteUser(id: number): Observable<void> {
+    console.log('🗑️ deleteUser appelé');
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Erreur deleteUser:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  const headers = {
-    Authorization: `Bearer ${token}`
-  };
-
-        return this.http.delete<void>(`${this.baseUrl}/delete/${id}`,{headers});
-      }
-
-
-      getNameByEmail(email: string): Observable<{ name: string }> {
-        return this.http.get<{ name: string }>(`${this.baseUrl}/name?email=${email}`,{ responseType: 'text' as 'json' });
-      }
-
-
+  getNameByEmail(email: string): Observable<{ name: string }> {
+    return this.http.get<{ name: string }>(
+      `${this.baseUrl}/name?email=${encodeURIComponent(email)}`,
+      { withCredentials: true }
+    ).pipe(
+      catchError(err => {
+        console.error('Erreur getNameByEmail:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 }
