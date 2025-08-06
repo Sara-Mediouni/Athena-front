@@ -11,6 +11,9 @@ export class UserService {
   private apiUrl = 'http://localhost:5500/api/users';
 
   constructor(private http: HttpClient) {}
+  ngOnInit() {
+  
+}
 
   getUserById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/getbyid/${id}`, { withCredentials: true });
@@ -30,6 +33,7 @@ export class UserService {
 
   
   getUserConnected(): Observable<any> {
+    
     return this.http.get<any>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
       catchError(error => {
         console.error('Erreur lors de la récupération de l\'utilisateur connecté:', error);

@@ -90,8 +90,8 @@ modules = [
 
  ngOnInit(): void {
 
-    // Récupérer l'utilisateur connecté en utilisant le token
-    this.userService.getUserConnected()
+   
+     this.authService.loadUser();
     const subscription = this.authService.currentUser$
     .subscribe(
       (user) => {

@@ -21,11 +21,7 @@ import { MY_DATE_FORMATS } from '../../../app.config';
   ],
   templateUrl: './vente-filter.component.html',
   styleUrl: './vente-filter.component.scss',
-  providers: [
- { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-   { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-  { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
-  ]
+  providers: [] 
 })
 export class VenteFilterComponent implements OnInit {
   

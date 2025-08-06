@@ -25,10 +25,10 @@ export const MY_DATE_FORMATS: MatDateFormats = {
 };
 
 export const appConfig: ApplicationConfig = {
-    providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(MatMomentDateModule), 
+    providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), 
         provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync() ,  provideHttpClient(),
     
-    provideHttpClient(withInterceptors([spinnerInterceptor])), 
+    provideHttpClient(withInterceptors([spinnerInterceptor])), importProvidersFrom(MatMomentDateModule),
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
      {
       provide: DateAdapter,

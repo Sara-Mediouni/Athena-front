@@ -27,6 +27,7 @@ export class AuthService {
   login(usernameOrEmail: string, password: string): Observable<any> {
     return this.http.post<any>(this.baseUrl, { usernameOrEmail, password }, { withCredentials: true }).pipe(
       tap(() => {
+
         this.isAuthenticatedSubject.next(true);
         this.loadUser();
       })
@@ -34,7 +35,12 @@ export class AuthService {
   }
 
   signup(usernameOrEmail: string, name: string, password: string, role: string): Observable<any> {
-    return this.http.post<any>(this.signUrl, { usernameOrEmail, name, password, role }, { withCredentials: true });
+    return this.http.post<any>(this.signUrl, { usernameOrEmail, name, password, role }, { withCredentials: true }).pipe(
+      tap(() => {
+        
+        this.isAuthenticatedSubject.next(true);
+        this.loadUser();
+      }));
   }
 
   loadUser(): void {
@@ -49,7 +55,9 @@ export class AuthService {
       }
     });
   }
-
+setCurrentUser(user: User | null): void {
+  this.currentUserSubject.next(user);
+}
   logout(): void {
     
     this.http.post('/api/auth/logout', {}, { withCredentials: true }).subscribe(() => {
