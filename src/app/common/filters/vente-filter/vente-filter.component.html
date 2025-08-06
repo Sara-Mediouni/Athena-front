@@ -4,7 +4,18 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row g-2">
 
-          
+          <mat-form-field appearance="outline" class="full-width" *ngIf="showClient">
+  <input type="text"
+         matInput
+         placeholder="Rechercher un client"
+         [formControl]="clientCtrl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onClientSelected($event.option.value)">
+    <mat-option *ngFor="let client of filteredClients | async" [value]="client.name">
+      {{ client.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
           <div class="col-md-6 mb-2 mb-md-3 mt-10" *ngIf="showExtendedDates">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Début Période</mat-label>
@@ -41,11 +52,11 @@
               <mat-datepicker #pickerEnd></mat-datepicker>
             </mat-form-field>
           </div>
-
+ 
          
           <div class="col-12 d-flex justify-content-between align-items-center mt-10">
-
-           
+      
+                
             <div class="d-flex flex-column gap-3">
 
         
@@ -55,7 +66,7 @@
                 <mat-checkbox formControlName="dateBL">Date BL</mat-checkbox>
                 <mat-checkbox formControlName="inclureBLs">Inclure BLs</mat-checkbox>
               </div>
-
+        
             
               <div class="d-flex align-items-center gap-2" *ngIf="showExtendedValues">
                 <mat-icon class="me-1">build</mat-icon>

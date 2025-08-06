@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -10,25 +10,29 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatOption } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../../app.config';
+import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
+import { debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-vente-filter',
   standalone:true,
   imports: [MatCard,MatCardContent,ReactiveFormsModule, MatCardModule,MatIconModule,MatButtonModule,MatCheckboxModule
-    ,MatDatepickerModule,MatInputModule,MatFormFieldModule,CommonModule,MatMomentDateModule,
+    ,MatDatepickerModule,MatInputModule,MatFormFieldModule,CommonModule,MatMomentDateModule,MatOption,MatAutocompleteModule,
   ],
   templateUrl: './vente-filter.component.html',
   styleUrl: './vente-filter.component.scss',
   providers: [] 
 })
 export class VenteFilterComponent implements OnInit {
-  
+   clientCtrl = new FormControl();
+  filteredClients!: Observable<any[]>;
   @Input() defaultGroupBy:any;
   @Output() filtrer = new EventEmitter<any>(); 
   form: FormGroup;
   @Input() showExtendedDates: boolean = false; 
+   @Input() showClient: boolean = false; 
   @Input() showExtendedValues: boolean = false; 
   @Input() showGroupBy: boolean=false;
   constructor(private fb: FormBuilder) {
@@ -52,6 +56,11 @@ export class VenteFilterComponent implements OnInit {
   });}
 
   ngOnInit(): void {
+       this.filteredClients = this.clientCtrl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(value => this.searchClients(value))
+    );
     const now = new Date();
      const startOfYear = new Date(2023, 0, 1); 
   const endOfYear = new Date(2023, 11, 31);
@@ -84,7 +93,28 @@ export class VenteFilterComponent implements OnInit {
     }
   this.filtrer.emit(this.form.value);
   }
+  searchClients(query: string): Observable<any[]> {
+    if (!query || query.length < 2) {
+      return of([]); // ou retourne quelques résultats par défaut
+    }
 
+    // Appelle ton API ici pour chercher les clients
+    // Exemple simulé :
+    return of(this.fakeClients.filter(client =>
+      client.name.toLowerCase().includes(query.toLowerCase())
+    ));
+  }
+
+  onClientSelected(client: any) {
+    console.log('Client sélectionné :', client);
+    // Tu peux ici filtrer ton chart selon le client sélectionné
+  }
+
+  fakeClients = [
+    { id: 1, name: 'Alice Dupont' },
+    { id: 2, name: 'Bob Martin' },
+    { id: 3, name: 'Charlie Leroy' }
+  ];
   onSubmit() {
     if (this.form.valid) {
       this.filtrer.emit(this.form.value);

@@ -149,7 +149,10 @@ export class PieDonutChartService {
                         pie: {
                             dataLabels: {
                                 minAngleToShowLabel: 0 
-                            }
+                            },
+                            
+                     expandOnClick: true
+      
                         }},
                         responsive: [
                             {
@@ -192,9 +195,8 @@ export class PieDonutChartService {
                         ],
                         dataLabels: {
                             enabled: true,
-                           formatter: function (val:any) {
-      return val >= 2 ? val.toFixed(1) + '%' : ''; // cacher <2%
-    },
+                            formatter: (val: number) => `${val.toFixed(1)}%`
+                            ,
                             style: {
                                 fontSize: '12px',
                             },
@@ -216,24 +218,6 @@ export class PieDonutChartService {
                 // Initialize and render the chart
                 this.chartInstance = new ApexCharts(document.querySelector('#pie_donut_chart'), options);
                     this.chartInstance.render();
-                    const calloutsContainer = document.getElementById("callouts");
-if (calloutsContainer) {
-  this.data.forEach((item) => {
-    const percentage = (item.value / total) * 100;
-    if (percentage < 2) {
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-          <span style="background: #eee; padding: 4px 8px; border-radius: 4px;">
-            ${item.label}: ${percentage.toFixed(1)}%
-          </span>
-          <span style="margin-left: 6px;">⬅️</span>
-        </div>
-      `;
-      calloutsContainer.appendChild(div);
-    }
-  });
-}
                 } catch (error) {
                     console.error('Error loading ApexCharts:', error);
                 }
