@@ -13,7 +13,11 @@ import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatOption } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../../app.config';
 import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
-import { debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { VenteService } from '../../../Service/VenteService';
+import { Entreprise } from '../../../Model/Entreprise';
+import { EntService } from '../../../Service/entService';
+import { EntrepriseSelectionService } from '../../../Service/EntrepriseSelectionService';
 
 @Component({
   selector: 'app-vente-filter',
@@ -28,6 +32,9 @@ import { debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'r
 export class VenteFilterComponent implements OnInit {
    clientCtrl = new FormControl();
   filteredClients!: Observable<any[]>;
+  @Input() clients:any;
+  @Input() client: any;
+@Output() clientSelected = new EventEmitter<string>()
   @Input() defaultGroupBy:any;
   @Output() filtrer = new EventEmitter<any>(); 
   form: FormGroup;
@@ -35,7 +42,10 @@ export class VenteFilterComponent implements OnInit {
    @Input() showClient: boolean = false; 
   @Input() showExtendedValues: boolean = false; 
   @Input() showGroupBy: boolean=false;
-  constructor(private fb: FormBuilder) {
+  ClientList:any;
+  private entrepriseSub!: Subscription;
+
+  constructor(private fb: FormBuilder,private venteService: VenteService,private entService: EntrepriseSelectionService) {
  
   
   const now = new Date();
@@ -52,15 +62,12 @@ export class VenteFilterComponent implements OnInit {
     groupBy: [this.defaultGroupBy||'mois'],
     HT: [true],
     TTC: [false],
+    client: [null]
 
   });}
 
   ngOnInit(): void {
-       this.filteredClients = this.clientCtrl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(value => this.searchClients(value))
-    );
+   
     const now = new Date();
      const startOfYear = new Date(2023, 0, 1); 
   const endOfYear = new Date(2023, 11, 31);
@@ -91,30 +98,35 @@ export class VenteFilterComponent implements OnInit {
       this.form.addControl('dateDebut2', this.fb.control(startOfYear));
       this.form.addControl('dateFin2', this.fb.control(endOfYear));
     }
-  this.filtrer.emit(this.form.value);
-  }
-  searchClients(query: string): Observable<any[]> {
-    if (!query || query.length < 2) {
-      return of([]); // ou retourne quelques résultats par défaut
-    }
+  this.filteredClients = this.clientCtrl.valueChanges.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(value => this.searchClients(value))
+  );
 
-    // Appelle ton API ici pour chercher les clients
-    // Exemple simulé :
-    return of(this.fakeClients.filter(client =>
-      client.name.toLowerCase().includes(query.toLowerCase())
-    ));
+
+this.filtrer.emit(this.form.value);
+
+
+}
+
+  searchClients(query: string): Observable<any[]> {
+  if (!query || query.length < 2) {
+    return of([]);
   }
+
+  return of((this.clients || []).filter((client: any) =>
+    client.toLowerCase().includes(query.toLowerCase())
+  ));
+}
+
 
   onClientSelected(client: any) {
-    console.log('Client sélectionné :', client);
-    // Tu peux ici filtrer ton chart selon le client sélectionné
-  }
+  console.log('Client sélectionné :', client);
+  this.form.get('client')?.setValue(client); 
+   this.clientSelected.emit(client);
+}
 
-  fakeClients = [
-    { id: 1, name: 'Alice Dupont' },
-    { id: 2, name: 'Bob Martin' },
-    { id: 3, name: 'Charlie Leroy' }
-  ];
   onSubmit() {
     if (this.form.valid) {
       this.filtrer.emit(this.form.value);

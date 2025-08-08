@@ -4,18 +4,19 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row g-2">
 
-          <mat-form-field appearance="outline" class="full-width" *ngIf="showClient">
+        <mat-form-field appearance="outline" class="full-width" *ngIf="showClient">
   <input type="text"
          matInput
          placeholder="Rechercher un client"
          [formControl]="clientCtrl"
          [matAutocomplete]="auto">
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onClientSelected($event.option.value)">
-    <mat-option *ngFor="let client of filteredClients | async" [value]="client.name">
-      {{ client.name }}
+    <mat-option *ngFor="let client of filteredClients | async" [value]="client">
+      {{ client }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
+
           <div class="col-md-6 mb-2 mb-md-3 mt-10" *ngIf="showExtendedDates">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Début Période</mat-label>

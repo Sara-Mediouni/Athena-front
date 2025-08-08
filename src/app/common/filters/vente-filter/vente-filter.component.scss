@@ -21,6 +21,10 @@
         }
     }
 }
+::ng-deep .mat-option {
+  color: black !important;
+}
+
 .mat-mdc-card {
     &.daxa-card {
         &.vente-card {

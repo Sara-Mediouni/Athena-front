@@ -59,4 +59,45 @@ export class VenteService  {
       })
     );
   }
+   getCAClient(dateDebut: string, dateFin: string, mode: string, InclureBLs: string,client:string, groupBy: string): Observable<any> {
+    return this.entrepriseSelectionService.selectedEntreprise$.pipe(
+      take(1),
+      switchMap(ent => {
+        if (!ent || !ent.id) {
+          return throwError(() => new Error('Aucune entreprise sélectionnée ou ID manquant'));
+        }
+
+        const params = new HttpParams()
+          .set('dateDebut', dateDebut)
+          .set('dateFin', dateFin)
+          .set('client', client)
+          .set('mode', mode)
+          .set('InclureBLs', InclureBLs)
+          .set('groupBy', groupBy)
+          .set('id', ent.id.toString());
+
+        return this.http.get(`${this.apiUrl}/chiffre-client`, { params, withCredentials: true });
+      })
+    );
+  }
+    getClientList(dateDebut: string, dateFin: string, mode: string, InclureBLs: string, groupBy: string): Observable<any> {
+    return this.entrepriseSelectionService.selectedEntreprise$.pipe(
+      take(1),
+      switchMap(ent => {
+        if (!ent || !ent.id) {
+          return throwError(() => new Error('Aucune entreprise sélectionnée ou ID manquant'));
+        }
+
+        const params = new HttpParams()
+          .set('dateDebut', dateDebut)
+          .set('dateFin', dateFin)
+          .set('mode', mode)
+          .set('InclureBLs', InclureBLs)
+          .set('groupBy', "client")
+          .set('id', ent.id.toString());
+
+        return this.http.get(`${this.apiUrl}/list-clients`, { params, withCredentials: true });
+      })
+    );
+  }
 }

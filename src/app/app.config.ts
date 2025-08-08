@@ -10,7 +10,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { AuthService } from './Service/AuthService';
 import { MatDateFormats } from '@angular/material/core';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { AuthInterceptor } from './Service/JwtInterceptor';
+import { TokenInterceptor } from './Service/JwtInterceptor';
+import { AuthInterceptor } from './Service/AuthInterceptor';
 
 export const MY_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -35,11 +36,16 @@ export const appConfig: ApplicationConfig = {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE]
     },
+      {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     {
       provide: MAT_DATE_FORMATS,
       useValue: MY_DATE_FORMATS
     },
-     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 
     {
   provide: APP_INITIALIZER,
